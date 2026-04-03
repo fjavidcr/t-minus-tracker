@@ -81,7 +81,7 @@ const defaultImage = 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?
 
       <div class="mt-auto">
         <NuxtLink :to="`/missions/${launch.id}`"
-          class="w-full bg-transparent border-2 border-primary/20 text-primary py-3.5 text-[0.65rem] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-primary hover:text-on-primary hover:border-primary transition-all active:scale-[0.98] font-label inline-block text-center cursor-pointer">
+          class="w-full bg-primary text-on-primary py-3.5 text-[0.65rem] font-bold uppercase tracking-[0.2em] rounded-lg shadow-[0_8px_20px_-8px_rgba(11,61,145,0.6)] hover:shadow-[0_12px_24px_-8px_rgba(11,61,145,0.7)] hover:brightness-110 hover:-translate-y-0.5 transition-all active:scale-[0.98] font-label inline-block text-center cursor-pointer">
           MISSION SPECS
         </NuxtLink>
       </div>
