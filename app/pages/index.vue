@@ -86,40 +86,40 @@ onUnmounted(() => {
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end relative">
         <!-- Light bleed glow behind hero -->
         <div
-          class="absolute -top-20 left-0 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(255,109,0,0.06)_0%,transparent_70%)] pointer-events-none">
+          class="absolute -top-20 left-0 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(11,61,145,0.06)_0%,transparent_70%)] pointer-events-none">
         </div>
         <div class="lg:col-span-8 hero-glow">
           <div class="flex items-center gap-2 mb-4 relative z-10">
-            <span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#FF6D00]"></span>
-            <span class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Live Telemetry: Active
+            <span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#0B3D91]"></span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary font-label">Live Telemetry: Active
               Mission</span>
           </div>
 
           <h2
-            class="text-5xl font-black tracking-tight text-on-surface leading-[0.95] mb-8 lg:text-7xl uppercase relative z-10">
+            class="text-5xl font-black tracking-tighter text-on-surface leading-[0.95] mb-8 lg:text-7xl uppercase relative z-10 font-headline">
             {{ heroMissionNameSegments[0] }}:<br v-if="heroMissionNameSegments[0]" />
             <span class="mission-text-stroke line-clamp-1 break-all">{{ heroMissionNameSegments[1] }}</span>
           </h2>
 
-          <div class="flex flex-wrap gap-4 lg:gap-10">
+          <div class="flex flex-wrap gap-4 lg:gap-10 font-headline">
             <div>
-              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Days</p>
-              <p class="font-bold text-on-surface text-4xl md:text-5xl tabular-nums">{{ padZero(days) }}</p>
+              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Days</p>
+              <p class="font-black text-on-surface text-4xl md:text-5xl tabular-nums">{{ padZero(days) }}</p>
             </div>
             <div class="h-14 w-px bg-outline-variant/30 mt-2"></div>
             <div>
-              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Hours</p>
-              <p class="font-bold text-on-surface text-4xl md:text-5xl tabular-nums">{{ padZero(hours) }}</p>
+              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Hours</p>
+              <p class="font-black text-on-surface text-4xl md:text-5xl tabular-nums">{{ padZero(hours) }}</p>
             </div>
             <div class="h-14 w-px bg-outline-variant/30 mt-2"></div>
             <div>
-              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Minutes</p>
-              <p class="font-bold text-on-surface text-4xl md:text-5xl tabular-nums">{{ padZero(minutes) }}</p>
+              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Minutes</p>
+              <p class="font-black text-on-surface text-4xl md:text-5xl tabular-nums">{{ padZero(minutes) }}</p>
             </div>
             <div class="h-14 w-px bg-outline-variant/30 mt-2"></div>
             <div>
-              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Seconds</p>
-              <p class="font-bold text-primary text-4xl md:text-5xl tabular-nums">{{ padZero(seconds) }}</p>
+              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Seconds</p>
+              <p class="font-black text-primary text-4xl md:text-5xl tabular-nums">{{ padZero(seconds) }}</p>
             </div>
           </div>
         </div>
@@ -161,19 +161,19 @@ onUnmounted(() => {
       <section class="space-y-8 mt-16 pt-8">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Classification:
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Classification:
               Schedule</p>
-            <h3 class="text-3xl font-bold text-on-surface">Upcoming Deployments</h3>
+            <h3 class="text-3xl font-black text-on-surface font-headline uppercase tracking-tight">Upcoming Deployments</h3>
           </div>
-          <div class="flex gap-1 p-1 bg-surface-container-low rounded-lg">
+          <div class="flex gap-1 p-1 bg-surface-container-low rounded-lg font-label">
             <button
-              class="px-5 py-2 text-[0.65rem] font-bold uppercase tracking-widest bg-primary text-on-primary rounded-md shadow-sm">All</button>
+              class="px-5 py-2 text-[10px] font-bold uppercase tracking-widest bg-primary text-on-primary rounded-md shadow-sm transition-all focus:outline-none">All</button>
             <button
-              class="px-5 py-2 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">NASA</button>
+              class="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors focus:outline-none">NASA</button>
             <button
-              class="px-5 py-2 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">SpaceX</button>
+              class="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors focus:outline-none">SpaceX</button>
             <button
-              class="px-5 py-2 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">ESA</button>
+              class="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors focus:outline-none">ESA</button>
           </div>
         </div>
 
@@ -187,9 +187,9 @@ onUnmounted(() => {
         <!-- News Feed -->
         <div class="lg:col-span-7 space-y-8">
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Intelligence: Agency
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Intelligence: Agency
               Feed</p>
-            <h3 class="text-2xl font-bold text-on-surface">Global Dispatch</h3>
+            <h3 class="text-2xl font-black text-on-surface font-headline uppercase tracking-tight">Global Dispatch</h3>
           </div>
           <div class="space-y-8">
             <div class="flex gap-6 items-start group">
@@ -216,34 +216,34 @@ onUnmounted(() => {
         </div>
 
         <!-- Archival Insights / Stats -->
-        <div class="lg:col-span-5 bg-surface-container-low p-10 rounded-lg space-y-10 relative overflow-hidden">
+        <div class="lg:col-span-5 bg-surface-container-low p-10 rounded-xl space-y-10 relative overflow-hidden border border-outline-variant/10">
           <!-- Light bleed on stats card -->
           <div
-            class="absolute -top-10 -right-10 w-[200px] h-[200px] bg-[radial-gradient(ellipse_at_center,rgba(255,109,0,0.05)_0%,transparent_70%)] pointer-events-none">
+            class="absolute -top-10 -right-10 w-[200px] h-[200px] bg-[radial-gradient(ellipse_at_center,rgba(11,61,145,0.05)_0%,transparent_70%)] pointer-events-none">
           </div>
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Archive: Global Metrics
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Archive: Global Metrics
             </p>
-            <h3 class="text-2xl font-bold text-on-surface">Yearly Logistics</h3>
+            <h3 class="text-2xl font-black text-on-surface font-headline uppercase tracking-tight">Yearly Logistics</h3>
           </div>
-          <div class="grid grid-cols-2 gap-x-12 gap-y-10">
+          <div class="grid grid-cols-2 gap-x-12 gap-y-10 font-headline">
             <div>
-              <p class="text-4xl font-bold text-on-surface tabular-nums">142</p>
-              <p class="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface-variant mt-2">Global Launches
+              <p class="text-4xl font-black text-on-surface tabular-nums">142</p>
+              <p class="text-[9px] font-black uppercase tracking-widest text-on-surface-variant mt-2 font-label">Global Launches
               </p>
             </div>
             <div>
-              <p class="text-4xl font-bold text-primary tabular-nums">98.4%</p>
-              <p class="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface-variant mt-2">Success Rate</p>
+              <p class="text-4xl font-black text-primary tabular-nums">98.4%</p>
+              <p class="text-[9px] font-black uppercase tracking-widest text-on-surface-variant mt-2 font-label">Success Rate</p>
             </div>
             <div>
-              <p class="text-4xl font-bold text-on-surface tabular-nums">412.5</p>
-              <p class="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface-variant mt-2">Tons to Orbit
+              <p class="text-4xl font-black text-on-surface tabular-nums">412.5</p>
+              <p class="text-[9px] font-black uppercase tracking-widest text-on-surface-variant mt-2 font-label">Tons to Orbit
               </p>
             </div>
             <div>
-              <p class="text-4xl font-bold text-on-surface tabular-nums">12</p>
-              <p class="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface-variant mt-2">Crewed Missions
+              <p class="text-4xl font-black text-on-surface tabular-nums">12</p>
+              <p class="text-[9px] font-black uppercase tracking-widest text-on-surface-variant mt-2 font-label">Crewed Missions
               </p>
             </div>
           </div>

@@ -43,23 +43,23 @@ const defaultImage = 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?
 
 <template>
   <div
-    class="group bg-surface-variant/70 backdrop-blur-xl hover:shadow-[0_12px_40px_rgba(255,109,0,0.08)] transition-all duration-300 rounded-lg overflow-hidden flex flex-col relative">
+    class="group bg-surface-container-low backdrop-blur-xl hover:shadow-[0_12px_40px_rgba(11,61,145,0.1)] transition-all duration-300 rounded-xl overflow-hidden flex flex-col relative border border-outline-variant/10">
     <div class="h-52 overflow-hidden relative">
       <img :src="launch.image || defaultImage" :alt="launch.name"
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 grayscale-[0.2] contrast-125" />
       <div class="absolute top-4 left-4 max-w-[80%]">
         <div
-          class="bg-surface-container-highest/90 backdrop-blur px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-widest text-on-surface truncate">
+          class="bg-surface-container/90 backdrop-blur px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-widest text-on-surface truncate font-label">
           {{ launch.name?.split('|')?.[1] || launch.name }}
         </div>
       </div>
       <div class="absolute bottom-4 right-4">
         <span v-if="tMinusData.isUrgent"
-          class="bg-primary text-on-primary px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-widest rounded shadow-[0_4px_14px_rgba(255,109,0,0.4)]">
+          class="bg-secondary text-on-secondary px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-widest rounded shadow-[0_4px_14px_rgba(252,61,33,0.4)] font-label">
           {{ tMinusData.label }}
         </span>
         <span v-else
-          class="bg-surface-container-highest/90 backdrop-blur text-on-surface-variant px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-widest rounded">
+          class="bg-surface-container-highest/90 backdrop-blur text-on-surface-variant px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-widest rounded font-label">
           {{ tMinusData.label }}
         </span>
       </div>
@@ -68,20 +68,20 @@ const defaultImage = 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?
     <div class="p-8 space-y-6 flex-1 flex flex-col">
       <div class="flex justify-between items-start gap-4">
         <div class="flex-1">
-          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-1">Agency</p>
-          <p class="text-sm font-bold text-on-surface tracking-wide line-clamp-1"
+          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-primary mb-1 font-label">Agency</p>
+          <p class="text-xs font-bold text-on-surface tracking-wide line-clamp-1 font-body uppercase"
             :title="launch.launch_service_provider?.name">{{ launch.launch_service_provider?.name || 'Unknown' }}</p>
         </div>
         <div class="text-right flex-1">
-          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-1">Launch Site</p>
-          <p class="text-sm font-bold text-on-surface tracking-wide line-clamp-1" :title="launch.pad?.location?.name">{{
+          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-primary mb-1 font-label">Launch Site</p>
+          <p class="text-xs font-bold text-on-surface tracking-wide line-clamp-1 font-body uppercase" :title="launch.pad?.location?.name">{{
             launch.pad?.location?.name?.split(',')[0] || 'Unknown' }}</p>
         </div>
       </div>
 
       <div class="mt-auto">
         <button
-          class="w-full bg-transparent border-2 border-primary/20 text-primary py-3.5 text-xs font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-primary hover:text-on-primary hover:border-primary transition-all active:scale-[0.98]">
+          class="w-full bg-transparent border-2 border-primary/20 text-primary py-3.5 text-[0.65rem] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-primary hover:text-on-primary hover:border-primary transition-all active:scale-[0.98] font-label">
           MISSION SPECS
         </button>
       </div>
