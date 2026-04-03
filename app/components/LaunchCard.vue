@@ -45,7 +45,7 @@ const defaultImage = 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?
   <div
     class="group bg-surface-container-low backdrop-blur-xl hover:shadow-[0_12px_40px_rgba(11,61,145,0.1)] transition-all duration-300 rounded-xl overflow-hidden flex flex-col relative border border-outline-variant/10">
     <div class="h-52 overflow-hidden relative">
-      <img :src="launch.image || defaultImage" :alt="launch.name"
+      <img :src="launch.image?.image_url || launch.image?.thumbnail_url || defaultImage" :alt="launch.name"
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 grayscale-[0.2] contrast-125" />
       <div class="absolute top-4 left-4 max-w-[80%]">
         <div

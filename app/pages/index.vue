@@ -180,6 +180,17 @@ onUnmounted(() => {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <LaunchCard v-for="launch in activeDeployments" :key="launch.id" :launch="launch" />
         </div>
+
+        <!-- View All link -->
+        <div class="mt-8 flex justify-center">
+          <NuxtLink 
+            to="/missions"
+            class="group flex items-center gap-4 bg-surface-container-low px-8 py-4 rounded-xl border border-outline-variant/10 hover:border-secondary/30 transition-all font-label text-[10px] font-bold uppercase tracking-[0.4em] text-on-surface-variant hover:text-secondary group"
+          >
+            Access Full Archive
+            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </NuxtLink>
+        </div>
       </section>
 
       <!-- Bottom Dashboard Row: News Feed & Archival Logs -->

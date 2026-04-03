@@ -1,6 +1,6 @@
 export default defineCachedEventHandler(async () => {
   try {
-    const response = await $fetch<{ results: any[] }>('https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=10', {
+    const response = await $fetch<{ results: any[] }>('https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=10', {
       headers: {
         'Accept': 'application/json',
       }

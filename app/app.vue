@@ -121,7 +121,7 @@ body,
           <div class="flex items-center gap-8">
             <span class="md:hidden text-xl font-black tracking-tighter text-on-surface uppercase font-headline">Orbitar</span>
             <nav class="hidden md:flex gap-8 font-label text-[10px] uppercase tracking-[0.15em] font-bold">
-              <NuxtLink to="/" class="text-on-surface-variant hover:text-primary transition-colors">Missions</NuxtLink>
+              <NuxtLink to="/missions" class="text-on-surface-variant hover:text-primary transition-colors">Missions</NuxtLink>
               <NuxtLink to="/calendar" class="text-on-surface-variant hover:text-primary transition-colors router-link-active:text-primary router-link-active:border-b-2 router-link-active:border-primary pb-1">Calendar</NuxtLink>
               <NuxtLink to="/agencies" class="text-on-surface-variant hover:text-primary transition-colors">Agencies</NuxtLink>
               <NuxtLink to="/support" class="text-on-surface-variant hover:text-primary transition-colors">Support</NuxtLink>
