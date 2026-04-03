@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ORBITAR | Launch Calendar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "inverse-surface": "#dfe2ee",
+                "on-primary-container": "#8dadff",
+                "outline": "#8e909d",
+                "on-secondary-fixed": "#341100",
+                "surface-container": "#1c2028",
+                "surface": "#0f131c",
+                "surface-variant": "#31353e",
+                "on-tertiary": "#163440",
+                "surface-dim": "#0f131c",
+                "primary": "#0B3D91",
+                "secondary-fixed-dim": "#ffb692",
+                "on-primary-fixed-variant": "#144296",
+                "error-container": "#93000a",
+                "on-secondary-fixed-variant": "#7a3000",
+                "surface-container-lowest": "#0a0e16",
+                "on-secondary-container": "#562000",
+                "secondary-fixed": "#ffdbcb",
+                "inverse-on-surface": "#2c3039",
+                "on-primary": "#ffffff",
+                "secondary": "#ffb692",
+                "surface-container-low": "#181c24",
+                "inverse-primary": "#345baf",
+                "surface-bright": "#353942",
+                "on-tertiary-fixed": "#001f2a",
+                "error": "#ffb4ab",
+                "on-primary-fixed": "#001947",
+                "primary-container": "#0b3d91",
+                "on-secondary": "#562000",
+                "on-error-container": "#ffdad6",
+                "tertiary": "#adcbda",
+                "primary-fixed": "#dae2ff",
+                "secondary-container": "#fd6c00",
+                "primary-fixed-dim": "#b1c5ff",
+                "on-tertiary-fixed-variant": "#2e4b57",
+                "tertiary-fixed-dim": "#adcbda",
+                "on-tertiary-container": "#96b3c2",
+                "background": "#0f131c",
+                "tertiary-container": "#294653",
+                "on-surface-variant": "#c4c6d3",
+                "surface-container-high": "#262a33",
+                "surface-container-highest": "#31353e",
+                "on-background": "#dfe2ee",
+                "outline-variant": "#434652",
+                "tertiary-fixed": "#c9e7f7",
+                "on-surface": "#dfe2ee",
+                "on-error": "#690005",
+                "surface-tint": "#b1c5ff"
+              },
+              fontFamily: {
+                "headline": ["Space Grotesk"],
+                "body": ["Space Grotesk"],
+                "label": ["Space Grotesk"]
+              },
+              borderRadius: {
+                "DEFAULT": "0.5rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "1rem"
+              },
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+          background-color: #0f131c;
+          color: #dfe2ee;
+          font-family: 'Space Grotesk', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #181c24;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #31353e;
+          border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky z-50 bg-[#0f131c] dark:bg-[#0f131c] flex justify-between items-center h-16 px-8">
+<div class="flex items-center gap-8">
+<div class="text-xl font-bold tracking-tighter text-[#dfe2ee] uppercase">ORBITAR</div>
+<nav class="hidden md:flex items-center gap-6 font-headline tracking-tight text-sm">
+<a class="text-[#c4c6d3] hover:text-[#ffb692] transition-colors" href="#">Missions</a>
+<a class="text-[#b1c5ff] border-b-2 border-[#0B3D91] pb-1 hover:text-[#ffb692] transition-colors" href="#">Calendar</a>
+<a class="text-[#c4c6d3] hover:text-[#ffb692] transition-colors" href="#">Agencies</a>
+<a class="text-[#c4c6d3] hover:text-[#ffb692] transition-colors" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-low border-none rounded-lg py-1.5 pl-10 pr-4 text-xs text-on-surface focus:ring-1 focus:ring-primary w-64" placeholder="Search archive..." type="text"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 left-0 sticky hidden lg:flex flex-col py-8 bg-[#181c24] border-r-0 shadow-[40px_0_40px_-15px_rgba(11,61,145,0.08)]">
+<div class="px-6 mb-8">
+<div class="text-lg font-black text-[#dfe2ee] tracking-tighter uppercase">ORBITAR</div>
+<div class="text-[10px] uppercase tracking-[0.2em] text-[#0B3D91] font-bold">Deep Space Archive</div>
+</div>
+<nav class="flex-1 space-y-1 font-headline label-md uppercase tracking-widest">
+<a class="flex items-center gap-4 text-[#c4c6d3] px-4 py-3 hover:bg-[#1c2028] hover:text-[#ffb692] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span>Upcoming</span>
+</a>
+<a class="flex items-center gap-4 bg-[#1c2028] text-[#0B3D91] px-4 py-3 rounded-r-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">database</span>
+<span>Fleet</span>
+</a>
+<a class="flex items-center gap-4 text-[#c4c6d3] px-4 py-3 hover:bg-[#1c2028] hover:text-[#ffb692] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">history</span>
+<span>Historical</span>
+</a>
+</nav>
+<div class="mt-auto px-4 space-y-1 font-headline label-md uppercase tracking-widest">
+<button class="w-full text-center bg-[#0B3D91] text-white font-bold py-3 mb-6 rounded-lg text-xs tracking-widest hover:brightness-110 transition-all uppercase">Archive Directory</button>
+<a class="flex items-center gap-4 text-[#c4c6d3] px-4 py-3 hover:bg-[#1c2028] hover:text-[#ffb692] transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col md:flex-row overflow-hidden bg-surface-dim">
+<!-- Calendar View -->
+<section class="flex-1 p-8 overflow-y-auto custom-scrollbar">
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="label-md text-on-surface-variant uppercase tracking-[0.3em] font-medium text-[10px] mb-2">Classification: Schedule-Alpha</div>
+<h1 class="text-4xl font-extrabold tracking-tight text-on-surface font-headline uppercase leading-none">September 2024</h1>
+</div>
+<div class="flex items-center gap-2 bg-surface-container p-1 rounded-lg">
+<button class="px-6 py-2 text-xs font-bold uppercase tracking-wider bg-[#0B3D91] text-white rounded-lg shadow-sm transition-all">Month</button>
+<button class="px-6 py-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-all">Week</button>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="flex flex-wrap gap-4 mb-8">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low rounded-lg border border-outline-variant/10">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">NASA</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low rounded-lg border border-outline-variant/10">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">ESA</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low rounded-lg border border-outline-variant/10">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">SpaceX</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low rounded-lg border border-outline-variant/10">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">JAXA</span>
+</div>
+<button class="ml-auto text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 text-primary hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                        Advanced Filters
+                    </button>
+</div>
+<!-- Calendar Grid -->
+<div class="grid grid-cols-7 gap-px bg-outline-variant/10 border border-outline-variant/10 overflow-hidden rounded-xl">
+<!-- Days Header -->
+<div class="bg-surface-container-low py-3 text-center border-b border-outline-variant/10">
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant">Sun</span>
+</div>
+<div class="bg-surface-container-low py-3 text-center border-b border-outline-variant/10">
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant">Mon</span>
+</div>
+<div class="bg-surface-container-low py-3 text-center border-b border-outline-variant/10">
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant">Tue</span>
+</div>
+<div class="bg-surface-container-low py-3 text-center border-b border-outline-variant/10">
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant">Wed</span>
+</div>
+<div class="bg-surface-container-low py-3 text-center border-b border-outline-variant/10">
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant">Thu</span>
+</div>
+<div class="bg-surface-container-low py-3 text-center border-b border-outline-variant/10">
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant">Fri</span>
+</div>
+<div class="bg-surface-container-low py-3 text-center border-b border-outline-variant/10">
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant">Sat</span>
+</div>
+<!-- Calendar Days -->
+<div class="min-h-[120px] bg-surface p-2 opacity-30">
+<span class="text-xs font-medium">27</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2 opacity-30">
+<span class="text-xs font-medium">28</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2 opacity-30">
+<span class="text-xs font-medium">29</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2 opacity-30">
+<span class="text-xs font-medium">30</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2 opacity-30">
+<span class="text-xs font-medium">31</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">1</span>
+<div class="mt-2 space-y-1">
+<div class="p-1.5 bg-primary/10 border-l-2 border-primary rounded-r-sm text-[9px] font-bold uppercase tracking-tighter text-primary truncate">Artemis II Prep</div>
+</div>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">2</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">3</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">4</span>
+<div class="mt-2 space-y-1">
+<div class="p-1.5 bg-secondary/10 border-l-2 border-secondary rounded-r-sm text-[9px] font-bold uppercase tracking-tighter text-secondary truncate">Ariane 6 Payload</div>
+</div>
+</div>
+<div class="min-h-[120px] bg-surface-container-low p-2 ring-1 ring-inset ring-secondary-container/30">
+<span class="text-xs font-bold text-secondary-container">5</span>
+<div class="mt-2 space-y-1">
+<div class="p-1.5 bg-secondary-container text-on-secondary-container rounded-sm text-[9px] font-black uppercase tracking-tighter truncate shadow-lg">STARLINK v6.2</div>
+<div class="p-1.5 bg-tertiary/10 border-l-2 border-tertiary rounded-r-sm text-[9px] font-bold uppercase tracking-tighter text-tertiary truncate">Cargo Drag.</div>
+</div>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">6</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">7</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">8</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">9</span>
+<div class="mt-2 space-y-1">
+<div class="p-1.5 bg-error/10 border-l-2 border-error rounded-r-sm text-[9px] font-bold uppercase tracking-tighter text-error truncate">H3-F4 Launch</div>
+</div>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">10</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">11</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">12</span>
+<div class="mt-2 space-y-1">
+<div class="p-1.5 bg-primary/10 border-l-2 border-primary rounded-r-sm text-[9px] font-bold uppercase tracking-tighter text-primary truncate">Mars Sample Rec.</div>
+</div>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">13</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">14</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">15</span>
+</div>
+<div class="min-h-[120px] bg-surface p-2">
+<span class="text-xs font-medium">16</span>
+</div>
+</div>
+</section>
+<!-- Upcoming Milestones Side Panel -->
+<aside class="w-full md:w-80 lg:w-96 bg-surface-container-low border-l-0 md:border-l border-outline-variant/10 p-8 flex flex-col gap-8 overflow-y-auto custom-scrollbar">
+<div>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-bold tracking-tight text-on-surface uppercase">Upcoming Milestones</h2>
+<span class="material-symbols-outlined text-secondary-container">priority_high</span>
+</div>
+<div class="space-y-6">
+<!-- Milestone 1 -->
+<div class="relative group cursor-pointer">
+<div class="flex items-start gap-4">
+<div class="h-10 w-10 shrink-0 bg-surface-container rounded-lg flex items-center justify-center ring-1 ring-outline-variant/20 group-hover:ring-primary/50 transition-all">
+<span class="material-symbols-outlined text-primary">rocket</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-black text-primary uppercase tracking-widest">NASA</span>
+<span class="text-[10px] font-bold text-on-surface-variant">T-04D 12H</span>
+</div>
+<h3 class="text-sm font-bold text-on-surface mb-1">Artemis II Orion Integration</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Final assembly of the crew module with the service module at Kennedy Space Center.</p>
+</div>
+</div>
+</div>
+<!-- Milestone 2 -->
+<div class="relative group cursor-pointer">
+<div class="flex items-start gap-4">
+<div class="h-10 w-10 shrink-0 bg-surface-container rounded-lg flex items-center justify-center ring-1 ring-outline-variant/20 group-hover:ring-secondary/50 transition-all">
+<span class="material-symbols-outlined text-secondary">satellite_alt</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-black text-secondary uppercase tracking-widest">ESA</span>
+<span class="text-[10px] font-bold text-on-surface-variant">T-09D 04H</span>
+</div>
+<h3 class="text-sm font-bold text-on-surface mb-1">JUICE Probe Correction</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Deep space maneuver to optimize the trajectory for the Jovian system injection.</p>
+</div>
+</div>
+</div>
+<!-- Milestone 3 -->
+<div class="relative group cursor-pointer">
+<div class="flex items-start gap-4">
+<div class="h-10 w-10 shrink-0 bg-surface-container rounded-lg flex items-center justify-center ring-1 ring-outline-variant/20 group-hover:ring-tertiary/50 transition-all">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">dataset</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-black text-tertiary uppercase tracking-widest">SpaceX</span>
+<span class="text-[10px] font-bold text-on-surface-variant">T-14D 18H</span>
+</div>
+<h3 class="text-sm font-bold text-on-surface mb-1">Starship Flight 5 Static Fire</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Full 33-engine raptor ignition test at Starbase, Boca Chica launch pad.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- System Diagnostics -->
+<div class="mt-auto pt-8 border-t border-outline-variant/10">
+<div class="mb-4">
+<h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant mb-4">Launch Site Status</h4>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-[11px] text-on-surface">KSC Launch Complex 39B</span>
+<span class="text-[10px] font-bold text-secondary-container uppercase">Go for Launch</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[92%]"></div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="text-[11px] text-on-surface">Vandenberg SLC-4E</span>
+<span class="text-[10px] font-bold text-[#0B3D91] uppercase">Nominal</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-[#0B3D91] w-[75%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface-container rounded-xl border border-outline-variant/20">
+<div class="flex items-center gap-3 mb-3">
+<div class="h-2 w-2 rounded-full bg-secondary-container animate-pulse"></div>
+<span class="text-[11px] font-black uppercase tracking-widest text-on-surface">Live Telemetry Active</span>
+</div>
+<div class="aspect-video bg-surface-container-low rounded-lg relative overflow-hidden">
+<img alt="Space Shuttle engine firing with intense orange and blue plasma" class="w-full h-full object-cover opacity-60 mix-blend-luminosity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9UOB87rKotqG8xS6PKv5MYVLlpDgd38-mwWMyiDdwFRf6BO4o6Ijnu22P-EJvgalTiCJr12szt22pr-jaEGFWWbl5x-QAike5AVV1_YsjKzxX6Fcb-ZbE0TZ_4xMTdnPupDnQHQaFUjRQAvYL7jq7rbdDYywCZ-wDpBw_UNSN6VgLuREr7x4mnzYsTXyvNPKvTLWh1wMBmEfBiWs279FChWih8pNjV_hsGc2kHwTzB7yvXgXUsCMclWD55pX9fpm8Dvts8rUB7Lo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-transparent"></div>
+<div class="absolute bottom-2 left-2 right-2 flex justify-between items-end">
+<div>
+<p class="text-[8px] font-bold text-on-surface-variant uppercase">Rocket Cam 04</p>
+<p class="text-[10px] font-black text-on-surface">STATIC_FIRE_TEST_092</p>
+</div>
+<span class="material-symbols-outlined text-sm text-secondary-container">videocam</span>
+</div>
+</div>
+</div>
+</aside>
+</main>
+</div>
+<!-- Bottom Navigation (Mobile Only) -->
+<footer class="md:hidden sticky bottom-0 w-full bg-[#181c24] border-t-0 shadow-lg z-50">
+<nav class="flex justify-around items-center h-16">
+<a class="flex flex-col items-center gap-1 text-[#0B3D91]" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Missions</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#b1c5ff]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Calendar</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#c4c6d3]" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Agencies</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#c4c6d3]" href="#">
+<span class="material-symbols-outlined">info</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">About</span>
+</a>
+</nav>
+</footer>
+</body></html>

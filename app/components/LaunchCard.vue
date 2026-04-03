@@ -1,69 +1,90 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps<{
   launch: any;
 }>();
 
-const launchDate = computed(() => {
-  return new Date(props.launch.net).toLocaleDateString('es-ES', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+const getTimeUntil = (dateString: string) => {
+  const targetDate = new Date(dateString).getTime();
+  const now = new Date().getTime();
+  const difference = targetDate - now;
+
+  if (difference <= 0) return 'LAUNCHED';
+
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+
+  const isUrgent = days <= 3;
+
+  return {
+    label: `T-Minus ${days}d`,
+    isUrgent
+  };
+};
+
+const tMinusData = ref({ label: 'CALCULATING', isUrgent: false });
+let interval: any;
+
+onMounted(() => {
+  tMinusData.value = getTimeUntil(props.launch.net) as any;
+  interval = setInterval(() => {
+    tMinusData.value = getTimeUntil(props.launch.net) as any;
+  }, 60000); // UI update every minute
 });
 
-const statusColor = computed(() => {
-  switch (props.launch.status?.abbrev) {
-    case 'GO':
-    case 'Success':
-      return 'bg-secondary text-secondary-foreground';
-    case 'TBD':
-    case 'TBC':
-      return 'bg-muted text-muted-foreground';
-    case 'Failure':
-      return 'bg-destructive text-destructive-foreground';
-    default:
-      return 'bg-primary text-primary-foreground';
-  }
+onUnmounted(() => {
+  if (interval) clearInterval(interval);
 });
+
+const defaultImage = 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&q=80';
 </script>
 
 <template>
-  <Card class="bg-card/70 backdrop-blur-xl border-border/15 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/5">
-    <CardHeader class="pb-3 border-b border-border/5">
-      <div class="flex justify-between items-start">
-        <Badge :class="statusColor" class="mb-2 uppercase tracking-wide px-2 py-0.5 font-mono text-xs">
-          {{ launch.status?.abbrev || 'Unknown' }}
-        </Badge>
-      </div>
-      <CardTitle class="text-2xl lg:text-3xl font-display font-medium text-foreground tracking-tight leading-tight">
-        {{ launch.name }}
-      </CardTitle>
-      <CardDescription class="text-sm font-mono tracking-wide uppercase text-primary mt-1">
-        {{ launch.launch_service_provider?.name }}
-      </CardDescription>
-    </CardHeader>
-    <CardContent class="pt-4 pb-2">
-      <div class="space-y-3">
-        <div class="flex flex-col">
-          <span class="text-xs text-muted-foreground uppercase tracking-widest font-mono">Date (NET)</span>
-          <span class="text-foreground tracking-tight">{{ launchDate }}</span>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-xs text-muted-foreground uppercase tracking-widest font-mono">Rocket</span>
-          <span class="text-foreground tracking-tight">{{ launch.rocket?.configuration?.name || 'Unknown' }}</span>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-xs text-muted-foreground uppercase tracking-widest font-mono">Location</span>
-          <span class="text-foreground tracking-tight line-clamp-1">{{ launch.pad?.location?.name || 'Unknown' }}</span>
+  <div
+    class="group bg-surface-variant/70 backdrop-blur-xl hover:shadow-[0_12px_40px_rgba(255,109,0,0.08)] transition-all duration-300 rounded-lg overflow-hidden flex flex-col relative">
+    <div class="h-52 overflow-hidden relative">
+      <img :src="launch.image || defaultImage" :alt="launch.name"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 grayscale-[0.2] contrast-125" />
+      <div class="absolute top-4 left-4 max-w-[80%]">
+        <div
+          class="bg-surface-container-highest/90 backdrop-blur px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-widest text-on-surface truncate">
+          {{ launch.name?.split('|')?.[1] || launch.name }}
         </div>
       </div>
-    </CardContent>
-  </Card>
+      <div class="absolute bottom-4 right-4">
+        <span v-if="tMinusData.isUrgent"
+          class="bg-primary text-on-primary px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-widest rounded shadow-[0_4px_14px_rgba(255,109,0,0.4)]">
+          {{ tMinusData.label }}
+        </span>
+        <span v-else
+          class="bg-surface-container-highest/90 backdrop-blur text-on-surface-variant px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-widest rounded">
+          {{ tMinusData.label }}
+        </span>
+      </div>
+    </div>
+
+    <div class="p-8 space-y-6 flex-1 flex flex-col">
+      <div class="flex justify-between items-start gap-4">
+        <div class="flex-1">
+          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-1">Agency</p>
+          <p class="text-sm font-bold text-on-surface tracking-wide line-clamp-1"
+            :title="launch.launch_service_provider?.name">{{ launch.launch_service_provider?.name || 'Unknown' }}</p>
+        </div>
+        <div class="text-right flex-1">
+          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-1">Launch Site</p>
+          <p class="text-sm font-bold text-on-surface tracking-wide line-clamp-1" :title="launch.pad?.location?.name">{{
+            launch.pad?.location?.name?.split(',')[0] || 'Unknown' }}</p>
+        </div>
+      </div>
+
+      <div class="mt-auto">
+        <button
+          class="w-full bg-transparent border-2 border-primary/20 text-primary py-3.5 text-xs font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-primary hover:text-on-primary hover:border-primary transition-all active:scale-[0.98]">
+          MISSION SPECS
+        </button>
+      </div>
+    </div>
+  </div>
 </template>

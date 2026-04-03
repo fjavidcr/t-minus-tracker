@@ -1,53 +1,271 @@
 <script setup lang="ts">
 import { useSeoMeta } from '#imports';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
-// SEO Meta Data following the seo-audit skill guidelines
+// SEO Meta Data
 useSeoMeta({
   title: 'Orbitar App - NASA & Global Space Launch Calendar',
   ogTitle: 'Orbitar App - NASA & Global Space Launch Calendar',
   description: 'Descubre los próximos lanzamientos espaciales de NASA, SpaceX, y más. Mantente actualizado sobre exploración espacial, datos logísticos y rastreo orbital.',
-  ogDescription: 'Descubre los próximos lanzamientos espaciales de NASA, SpaceX, y más. Seguimiento completo de misiones orbitales.',
-  ogImage: 'https://orbitar.app/og-image.jpg',
-  twitterCard: 'summary_large_image',
 });
 
-// Fetch data automatically from our Nitro Server Route (which caches the API)
+// Fetch data from Nitro backend
 const { data: launches, pending, error } = await useFetch('/api/launches');
+
+const futureLaunches = computed(() => {
+  if (!launches.value) return [];
+  const now = new Date().getTime();
+  return launches.value.filter((l: any) => new Date(l.net).getTime() > now);
+});
+
+const heroLaunch = computed(() => {
+  return futureLaunches.value.length > 0 ? futureLaunches.value[0] : null;
+});
+
+const activeDeployments = computed(() => {
+  return futureLaunches.value.length > 1 ? futureLaunches.value.slice(1, 4) : [];
+});
+
+const heroMissionNameSegments = computed(() => {
+  if (!heroLaunch.value) return ['', ''];
+  const parts = heroLaunch.value.name.split('|');
+  return [parts[0]?.trim() || 'Mission', parts[1]?.trim() || heroLaunch.value.name];
+});
+
+// Countdown logic for the Hero Section
+const days = ref(0);
+const hours = ref(0);
+const minutes = ref(0);
+const seconds = ref(0);
+let intervalId: any;
+
+const updateHeroCountdown = () => {
+  if (!heroLaunch.value || !heroLaunch.value.net) return;
+  const targetDate = new Date(heroLaunch.value.net).getTime();
+  const now = new Date().getTime();
+  const difference = targetDate - now;
+
+  if (difference > 0) {
+    days.value = Math.floor(difference / (1000 * 60 * 60 * 24));
+    hours.value = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    minutes.value = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    seconds.value = Math.floor((difference % (1000 * 60)) / 1000);
+  } else {
+    days.value = 0; hours.value = 0; minutes.value = 0; seconds.value = 0;
+  }
+};
+
+const padZero = (num: number) => num.toString().padStart(2, '0');
+
+onMounted(() => {
+  updateHeroCountdown();
+  intervalId = setInterval(updateHeroCountdown, 1000);
+});
+
+onUnmounted(() => {
+  if (intervalId) clearInterval(intervalId);
+});
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <header class="mb-16">
-      <h1 class="text-5xl lg:text-7xl font-display font-medium text-foreground tracking-tighter mb-4">
-        Lanzamientos<br/><span class="text-muted-foreground">Orbitales</span>
-      </h1>
-      <p class="text-lg text-muted-foreground max-w-2xl">
-        Monitor de telemetría de misiones. Información en tiempo real programada respecto a lanzamientos de vehículos orbitales.
-      </p>
-    </header>
+  <div class="p-4 md:p-8 lg:p-12 space-y-12">
+    <!-- Loading State -->
+    <div v-if="pending" class="h-96 flex items-center justify-center">
+      <span class="w-8 h-8 rounded-full bg-primary animate-ping"></span>
+    </div>
 
-    <main>
-      <div v-if="pending" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="i in 6" :key="i" class="bg-card/40 rounded-xl h-64 animate-pulse border border-border/10"></div>
-      </div>
-      
-      <div v-else-if="error" class="bg-destructive/10 text-destructive p-6 rounded-xl border border-destructive/20 font-mono">
-        Error of transmission. Unable to connect to orbital data nodes.
-      </div>
-      
-      <!-- Asymmetric grid as mandated by "The Orbiting Observatory" -->
-      <div v-else-if="launches && launches.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <LaunchCard 
-          v-for="(launch, index) in launches" 
-          :key="launch.id" 
-          :launch="launch" 
-          :class="{ 'lg:col-span-2': index % 5 === 0 }"
-        />
-      </div>
-      
-      <div v-else class="text-muted-foreground text-center py-20 font-mono">
-        No hay lanzamientos inminentes en la red.
-      </div>
-    </main>
+    <!-- Error State -->
+    <div v-else-if="error"
+      class="bg-error-container text-on-error-container p-6 rounded-lg border border-error/20 font-mono">
+      Error of transmission. Unable to connect to orbital data nodes.
+    </div>
+
+    <!-- Loaded State -->
+    <template v-else-if="heroLaunch">
+      <!-- Hero Section: Central Countdown -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end relative">
+        <!-- Light bleed glow behind hero -->
+        <div
+          class="absolute -top-20 left-0 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(255,109,0,0.06)_0%,transparent_70%)] pointer-events-none">
+        </div>
+        <div class="lg:col-span-8 hero-glow">
+          <div class="flex items-center gap-2 mb-4 relative z-10">
+            <span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#FF6D00]"></span>
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Live Telemetry: Active
+              Mission</span>
+          </div>
+
+          <h2
+            class="text-5xl font-black tracking-tight text-on-surface leading-[0.95] mb-8 lg:text-7xl uppercase relative z-10">
+            {{ heroMissionNameSegments[0] }}:<br v-if="heroMissionNameSegments[0]" />
+            <span class="mission-text-stroke line-clamp-1 break-all">{{ heroMissionNameSegments[1] }}</span>
+          </h2>
+
+          <div class="flex flex-wrap gap-4 lg:gap-10">
+            <div>
+              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Days</p>
+              <p class="font-bold text-on-surface text-4xl md:text-5xl tabular-nums">{{ padZero(days) }}</p>
+            </div>
+            <div class="h-14 w-px bg-outline-variant/30 mt-2"></div>
+            <div>
+              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Hours</p>
+              <p class="font-bold text-on-surface text-4xl md:text-5xl tabular-nums">{{ padZero(hours) }}</p>
+            </div>
+            <div class="h-14 w-px bg-outline-variant/30 mt-2"></div>
+            <div>
+              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Minutes</p>
+              <p class="font-bold text-on-surface text-4xl md:text-5xl tabular-nums">{{ padZero(minutes) }}</p>
+            </div>
+            <div class="h-14 w-px bg-outline-variant/30 mt-2"></div>
+            <div>
+              <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Seconds</p>
+              <p class="font-bold text-primary text-4xl md:text-5xl tabular-nums">{{ padZero(seconds) }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="lg:col-span-4 bg-surface-variant/60 backdrop-blur-xl p-8 rounded-lg relative overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.4)]">
+          <div class="absolute top-0 right-0 p-4 opacity-5">
+            <span class="material-symbols-outlined text-8xl line-clamp-1">rocket</span>
+          </div>
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-6">Environment Status</p>
+          <div class="space-y-6">
+            <div>
+              <div class="flex justify-between items-end mb-2">
+                <span class="text-xs font-medium text-on-surface-variant uppercase tracking-wider">Rocket Config</span>
+                <span class="text-lg font-bold text-on-surface line-clamp-1 text-right ml-4">{{
+                  heroLaunch.rocket?.configuration?.name || 'Unknown' }}</span>
+              </div>
+              <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+                <div class="bg-primary h-full w-[85%]"></div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center pt-2 gap-4">
+              <span class="text-xs font-medium text-on-surface-variant uppercase tracking-wider">Pad Target</span>
+              <span class="text-sm font-bold text-on-surface uppercase tracking-widest text-right line-clamp-1">{{
+                heroLaunch.pad?.name || 'Unknown' }}</span>
+            </div>
+            <div class="flex justify-between items-center pt-2">
+              <span class="text-xs font-medium text-on-surface-variant uppercase tracking-wider">Window Status</span>
+              <span
+                class="text-[0.65rem] font-bold px-3 py-1 bg-primary/10 text-primary rounded uppercase tracking-widest">
+                {{ heroLaunch.status?.name || 'TBD' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Upcoming Launches with Filter -->
+      <section class="space-y-8 mt-16 pt-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Classification:
+              Schedule</p>
+            <h3 class="text-3xl font-bold text-on-surface">Upcoming Deployments</h3>
+          </div>
+          <div class="flex gap-1 p-1 bg-surface-container-low rounded-lg">
+            <button
+              class="px-5 py-2 text-[0.65rem] font-bold uppercase tracking-widest bg-primary text-on-primary rounded-md shadow-sm">All</button>
+            <button
+              class="px-5 py-2 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">NASA</button>
+            <button
+              class="px-5 py-2 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">SpaceX</button>
+            <button
+              class="px-5 py-2 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">ESA</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <LaunchCard v-for="launch in activeDeployments" :key="launch.id" :launch="launch" />
+        </div>
+      </section>
+
+      <!-- Bottom Dashboard Row: News Feed & Archival Logs -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-16 mt-8">
+        <!-- News Feed -->
+        <div class="lg:col-span-7 space-y-8">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Intelligence: Agency
+              Feed</p>
+            <h3 class="text-2xl font-bold text-on-surface">Global Dispatch</h3>
+          </div>
+          <div class="space-y-8">
+            <div class="flex gap-6 items-start group">
+              <span class="text-[0.65rem] font-bold text-primary uppercase tracking-widest mt-1 min-w-[70px]">04:12
+                GMT</span>
+              <div class="space-y-2">
+                <h4 class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors tracking-wide">
+                  Federal space administration approves orbital window.</h4>
+                <p class="text-xs text-on-surface-variant leading-relaxed">Flight readiness review scheduled for T-minus
+                  24 hours. Weather parameters hold within launch feasibility.</p>
+              </div>
+            </div>
+            <div class="flex gap-6 items-start group">
+              <span
+                class="text-[0.65rem] font-bold text-on-surface-variant uppercase tracking-widest mt-1 min-w-[70px]">Yesterday</span>
+              <div class="space-y-2">
+                <h4 class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors tracking-wide">
+                  Payload integration completed for commercial payload.</h4>
+                <p class="text-xs text-on-surface-variant leading-relaxed">Structural integrity confirmed through vacuum
+                  testing. Standard payload processing proceeds without anomalies.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Archival Insights / Stats -->
+        <div class="lg:col-span-5 bg-surface-container-low p-10 rounded-lg space-y-10 relative overflow-hidden">
+          <!-- Light bleed on stats card -->
+          <div
+            class="absolute -top-10 -right-10 w-[200px] h-[200px] bg-[radial-gradient(ellipse_at_center,rgba(255,109,0,0.05)_0%,transparent_70%)] pointer-events-none">
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2">Archive: Global Metrics
+            </p>
+            <h3 class="text-2xl font-bold text-on-surface">Yearly Logistics</h3>
+          </div>
+          <div class="grid grid-cols-2 gap-x-12 gap-y-10">
+            <div>
+              <p class="text-4xl font-bold text-on-surface tabular-nums">142</p>
+              <p class="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface-variant mt-2">Global Launches
+              </p>
+            </div>
+            <div>
+              <p class="text-4xl font-bold text-primary tabular-nums">98.4%</p>
+              <p class="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface-variant mt-2">Success Rate</p>
+            </div>
+            <div>
+              <p class="text-4xl font-bold text-on-surface tabular-nums">412.5</p>
+              <p class="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface-variant mt-2">Tons to Orbit
+              </p>
+            </div>
+            <div>
+              <p class="text-4xl font-bold text-on-surface tabular-nums">12</p>
+              <p class="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface-variant mt-2">Crewed Missions
+              </p>
+            </div>
+          </div>
+          <div class="pt-8">
+            <p class="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant mb-4">Active Payloads
+              by Orbit</p>
+            <div class="flex h-3 w-full bg-surface-container overflow-hidden rounded-full">
+              <div class="bg-primary h-full" style="width: 65%" title="LEO"></div>
+              <div class="bg-primary/60 h-full" style="width: 20%" title="GEO"></div>
+              <div class="bg-primary/30 h-full" style="width: 10%" title="Deep Space"></div>
+              <div class="bg-outline/20 h-full" style="width: 5%" title="Other"></div>
+            </div>
+            <div
+              class="flex justify-between mt-3 text-[0.55rem] font-bold uppercase tracking-widest text-on-surface-variant">
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> LEO
+                65%</span>
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary/30"></span> Deep
+                Space 10%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
   </div>
 </template>

@@ -6,10 +6,17 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts'
   ],
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false
+    }
+  ],
   googleFonts: {
     families: {
-      'Space Grotesk': [400, 500, 600, 700],
-      Inter: [400, 500, 600]
+      'Space Grotesk': [300, 400, 500, 600, 700],
+      Inter: [300, 400, 500, 600, 700],
+      Lexend: [300, 400, 500, 600, 700]
     }
   }
 })

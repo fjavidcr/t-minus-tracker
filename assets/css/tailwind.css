@@ -4,58 +4,75 @@
 
 @layer base {
   :root {
-    /* Orbiting Observatory Palette (Dark Mode Base) */
-    --background: 210 20% 8%; /* #101418 */
-    --foreground: 214 15% 91%; /* #e0e3e8 (on_background) */
-    
-    --card: 210 12% 13%; /* #1c2024 surface-container */
-    --card-foreground: 214 15% 91%;
-    
-    --popover: 210 14% 11%; /* #181c20 surface-container-low */
-    --popover-foreground: 214 15% 91%;
-    
-    --primary: 210 100% 80%; /* #98cbff */
-    --primary-foreground: 206 100% 10%; /* #003354 on_primary */
-    
-    --secondary: 16 100% 80%; /* #ffb59a */
-    --secondary-foreground: 18 100% 18%; /* #5a1b00 on_secondary */
-    
-    --muted: 213 8% 21%; /* #31353a surface-variant */
-    --muted-foreground: 228 6% 77%; /* #c5c6cb on_surface_variant */
-    
-    --accent: 213 8% 21%; /* #31353a */
-    --accent-foreground: 214 15% 91%;
-    
-    --destructive: 0 100% 71%; /* #ffb4ab error */
-    --destructive-foreground: 360 100% 21%; /* #690005 on_error */
-    
-    --border: 213 8% 21%; /* #31353a surface-variant */
-    --input: 213 8% 21%; 
-    --ring: 210 100% 80%; /* primary */
+    /* Orbitar App Palette (Dark Mode Base) */
+    --background: 225 31% 8%; /* #0f131c */
+    --foreground: 225 33% 91%; /* #dfe2ee */
+
+    --card: 225 18% 13%; /* #1c2028 */
+    --card-foreground: 225 33% 91%;
+
+    --popover: 225 20% 11%;
+    --popover-foreground: 225 33% 91%;
+
+    --surface-container-low: 225 20% 11%;
+    --surface-container: 225 18% 13%;
+    --surface-container-high: 221 14% 18%;
+    --surface-container-highest: 221 14% 18%;
+    --on-surface: 225 33% 91%;
+    --on-surface-variant: 224 10% 60%;
+    --outline: 225 12% 35%;
+    --outline-variant: 225 12% 22%;
+
+    --primary: 25 100% 50%; /* #FF6D00 */
+    --primary-foreground: 0 0% 100%; /* #ffffff */
+
+    --secondary: 25 100% 50%; /* #FF6D00 */
+    --secondary-foreground: 0 0% 100%; /* #ffffff */
+
+    --muted: 225 12% 22%; /* #31353e */
+    --muted-foreground: 225 15% 79%; /* #c4c6d3 */
+
+    --accent: 225 12% 22%; /* #31353e */
+    --accent-foreground: 225 33% 91%;
+
+    --destructive: 0 100% 71%; /* #ffb4ab */
+    --destructive-foreground: 0 100% 21%; /* #690005 */
+
+    --border: 225 12% 22%; /* #31353e */
+    --input: 225 12% 22%;
+    --ring: 25 100% 50%; /* primary */
 
     --radius: 0.5rem;
   }
   .dark {
     /* Enforce same as root for pure dark mode */
-    --background: 210 20% 8%;
-    --foreground: 214 15% 91%;
-    --card: 210 12% 13%;
-    --card-foreground: 214 15% 91%;
-    --popover: 210 14% 11%;
-    --popover-foreground: 214 15% 91%;
-    --primary: 210 100% 80%;
-    --primary-foreground: 206 100% 10%;
-    --secondary: 16 100% 80%;
-    --secondary-foreground: 18 100% 18%;
-    --muted: 213 8% 21%;
-    --muted-foreground: 228 6% 77%;
-    --accent: 213 8% 21%;
-    --accent-foreground: 214 15% 91%;
+    --background: 225 31% 8%;
+    --foreground: 225 33% 91%;
+    --card: 225 18% 13%;
+    --card-foreground: 225 33% 91%;
+    --popover: 225 20% 11%;
+    --popover-foreground: 225 33% 91%;
+    --surface-container-low: 225 20% 11%;
+    --surface-container: 225 18% 13%;
+    --surface-container-high: 221 14% 18%;
+    --surface-container-highest: 221 14% 18%;
+    --on-surface: 225 33% 91%;
+    --on-surface-variant: 224 10% 60%;
+    --outline: 225 12% 35%;
+    --outline-variant: 225 12% 22%;
+    --primary: 25 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 25 100% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 225 12% 22%;
+    --muted-foreground: 225 15% 79%;
+    --accent: 225 12% 22%;
+    --accent-foreground: 225 33% 91%;
     --destructive: 0 100% 71%;
-    --destructive-foreground: 360 100% 21%;
-    --border: 213 8% 21%;
-    --input: 213 8% 21%;
-    --ring: 210 100% 80%;
+    --destructive-foreground: 0 100% 21%;
+    --border: 225 12% 22%;
+    --input: 225 12% 22%;
+    --ring: 25 100% 50%;
   }
 }
 
@@ -65,5 +82,12 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .mission-text-stroke {
+    color: transparent !important;
+    -webkit-text-stroke: 1px #FF6D00 !important;
   }
 }
