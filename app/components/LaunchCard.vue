@@ -68,12 +68,12 @@ const defaultImage = 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?
     <div class="p-8 space-y-6 flex-1 flex flex-col">
       <div class="flex justify-between items-start gap-4">
         <div class="flex-1">
-          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-primary mb-1 font-label">Agency</p>
+          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-secondary mb-1 font-label">Agency</p>
           <p class="text-xs font-bold text-on-surface tracking-wide line-clamp-1 font-body uppercase"
             :title="launch.launch_service_provider?.name">{{ launch.launch_service_provider?.name || 'Unknown' }}</p>
         </div>
         <div class="text-right flex-1">
-          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-primary mb-1 font-label">Launch Site</p>
+          <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-secondary mb-1 font-label">Launch Site</p>
           <p class="text-xs font-bold text-on-surface tracking-wide line-clamp-1 font-body uppercase" :title="launch.pad?.location?.name">{{
             launch.pad?.location?.name?.split(',')[0] || 'Unknown' }}</p>
         </div>

@@ -84,14 +84,14 @@ onUnmounted(() => {
     <template v-else-if="heroLaunch">
       <!-- Hero Section: Central Countdown -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end relative">
-        <!-- Light bleed glow behind hero -->
+        <!-- Light bleed glow behind hero (Artemis Orange for contrast) -->
         <div
-          class="absolute -top-20 left-0 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(11,61,145,0.06)_0%,transparent_70%)] pointer-events-none">
+          class="absolute -top-20 left-0 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(252,61,33,0.08)_0%,transparent_70%)] pointer-events-none">
         </div>
         <div class="lg:col-span-8 hero-glow">
           <div class="flex items-center gap-2 mb-4 relative z-10">
-            <span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#0B3D91]"></span>
-            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary font-label">Live Telemetry: Active
+            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse shadow-[0_0_10px_#Fc3d21]"></span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary font-label">Live Telemetry: Active
               Mission</span>
           </div>
 
@@ -119,7 +119,7 @@ onUnmounted(() => {
             <div class="h-14 w-px bg-outline-variant/30 mt-2"></div>
             <div>
               <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Seconds</p>
-              <p class="font-black text-primary text-4xl md:text-5xl tabular-nums">{{ padZero(seconds) }}</p>
+              <p class="font-black text-secondary text-4xl md:text-5xl tabular-nums">{{ padZero(seconds) }}</p>
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@ onUnmounted(() => {
                   heroLaunch.rocket?.configuration?.name || 'Unknown' }}</span>
               </div>
               <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
-                <div class="bg-primary h-full w-[85%]"></div>
+                <div class="bg-secondary h-full w-[85%]"></div>
               </div>
             </div>
             <div class="flex justify-between items-center pt-2 gap-4">
@@ -149,7 +149,7 @@ onUnmounted(() => {
             <div class="flex justify-between items-center pt-2">
               <span class="text-xs font-medium text-on-surface-variant uppercase tracking-wider">Window Status</span>
               <span
-                class="text-[0.65rem] font-bold px-3 py-1 bg-primary/10 text-primary rounded uppercase tracking-widest">
+                class="text-[0.65rem] font-bold px-3 py-1 bg-secondary/10 text-secondary rounded uppercase tracking-widest">
                 {{ heroLaunch.status?.name || 'TBD' }}
               </span>
             </div>
@@ -193,7 +193,7 @@ onUnmounted(() => {
           </div>
           <div class="space-y-8">
             <div class="flex gap-6 items-start group">
-              <span class="text-[0.65rem] font-bold text-primary uppercase tracking-widest mt-1 min-w-[70px]">04:12
+              <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mt-1 min-w-[70px]">04:12
                 GMT</span>
               <div class="space-y-2">
                 <h4 class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors tracking-wide">
@@ -217,9 +217,9 @@ onUnmounted(() => {
 
         <!-- Archival Insights / Stats -->
         <div class="lg:col-span-5 bg-surface-container-low p-10 rounded-xl space-y-10 relative overflow-hidden border border-outline-variant/10">
-          <!-- Light bleed on stats card -->
+          <!-- Light bleed on stats card (Artemis Orange) -->
           <div
-            class="absolute -top-10 -right-10 w-[200px] h-[200px] bg-[radial-gradient(ellipse_at_center,rgba(11,61,145,0.05)_0%,transparent_70%)] pointer-events-none">
+            class="absolute -top-10 -right-10 w-[200px] h-[200px] bg-[radial-gradient(ellipse_at_center,rgba(252,61,33,0.08)_0%,transparent_70%)] pointer-events-none">
           </div>
           <div>
             <p class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Archive: Global Metrics
@@ -233,7 +233,7 @@ onUnmounted(() => {
               </p>
             </div>
             <div>
-              <p class="text-4xl font-black text-primary tabular-nums">98.4%</p>
+              <p class="text-4xl font-black text-secondary tabular-nums">98.4%</p>
               <p class="text-[9px] font-black uppercase tracking-widest text-on-surface-variant mt-2 font-label">Success Rate</p>
             </div>
             <div>
@@ -251,16 +251,16 @@ onUnmounted(() => {
             <p class="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant mb-4">Active Payloads
               by Orbit</p>
             <div class="flex h-3 w-full bg-surface-container overflow-hidden rounded-full">
-              <div class="bg-primary h-full" style="width: 65%" title="LEO"></div>
-              <div class="bg-primary/60 h-full" style="width: 20%" title="GEO"></div>
-              <div class="bg-primary/30 h-full" style="width: 10%" title="Deep Space"></div>
+              <div class="bg-secondary h-full" style="width: 65%" title="LEO"></div>
+              <div class="bg-secondary/60 h-full" style="width: 20%" title="GEO"></div>
+              <div class="bg-secondary/30 h-full" style="width: 10%" title="Deep Space"></div>
               <div class="bg-outline/20 h-full" style="width: 5%" title="Other"></div>
             </div>
             <div
               class="flex justify-between mt-3 text-[0.55rem] font-bold uppercase tracking-widest text-on-surface-variant">
-              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> LEO
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> LEO
                 65%</span>
-              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary/30"></span> Deep
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-secondary/30"></span> Deep
                 Space 10%</span>
             </div>
           </div>
