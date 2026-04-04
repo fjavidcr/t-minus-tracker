@@ -56,6 +56,14 @@ const landing = computed(() => launcherStage.value?.landing);
 const missionPatch = computed(() => mission.value?.mission_patches?.[0]?.image_url);
 const program = computed(() => mission.value?.program?.[0]);
 
+// Robust Celestial Data Source
+const celestialBody = computed(() => {
+  return mission.value?.mission?.orbit?.celestial_body?.mass 
+    ? mission.value.mission.orbit.celestial_body 
+    : mission.value?.pad?.location?.celestial_body;
+});
+
+
 const formatDate = (dateStr: string) => {
   if (!dateStr) return 'TBD';
   return new Date(dateStr).toLocaleString('en-US', {
@@ -66,6 +74,20 @@ const formatDate = (dateStr: string) => {
     minute: '2-digit',
     timeZoneName: 'short'
   });
+};
+
+const formatCurrency = (value: number) => {
+  if (!value) return 'TBD';
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
+  }).format(value);
+};
+
+const formatNumber = (value: number, unit: string = '') => {
+  if (!value) return 'TBD';
+  return new Intl.NumberFormat('en-US').format(value) + (unit ? ` ${unit}` : '');
 };
 </script>
 
@@ -104,6 +126,7 @@ const formatDate = (dateStr: string) => {
             <div class="flex flex-wrap items-center gap-3 mb-6 font-label uppercase text-[9px] font-black tracking-widest">
               <span class="bg-secondary text-on-secondary px-3 py-1 rounded-full shadow-lg shadow-secondary/20">{{ mission.status?.name || 'ACTIVE' }}</span>
               <span v-if="program" class="bg-primary/80 backdrop-blur-md text-on-primary border border-primary/30 px-3 py-1 rounded-full shadow-lg shadow-primary/20">{{ program.name }}</span>
+              <span v-if="mission.probability" class="bg-surface/60 backdrop-blur-sm text-on-surface border border-outline-variant/30 px-3 py-1 rounded-full">WX PROB: {{ mission.probability }}%</span>
               <span class="text-on-surface font-bold bg-surface/40 backdrop-blur-sm px-3 py-1 rounded-full">NODE_ID: {{ mission.id?.slice(0, 8).toUpperCase() }}</span>
             </div>
 
@@ -203,9 +226,15 @@ const formatDate = (dateStr: string) => {
                 <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest font-label">Landing Target</span>
                 <span class="text-sm font-black text-secondary text-right ml-4 line-clamp-1 uppercase">{{ landing?.location?.name || 'Ocean Splashdown' }}</span>
               </div>
-              <div class="pt-4">
+              <div class="pt-4 border-b border-outline-variant/10 pb-4">
                 <p class="text-[9px] font-black text-on-surface-variant uppercase tracking-widest font-label mb-2">Recovery Method</p>
                 <p class="text-xs text-on-surface font-body leading-relaxed">{{ landing?.type?.name || 'Direct recovery or non-reusable profile.' }}</p>
+              </div>
+              <!-- Added Target Orbit context -->
+              <div class="pt-4">
+                <p class="text-[9px] font-black text-secondary uppercase tracking-widest font-label mb-2">Orbital Destination</p>
+                <p class="text-sm font-black text-on-surface uppercase">{{ mission.mission?.orbit?.name || 'Unknown Orbit' }}</p>
+                <p class="text-[8px] text-on-surface-variant font-bold mt-1 uppercase">{{ mission.mission?.orbit?.abbrev }} Profile</p>
               </div>
             </div>
           </div>
@@ -239,6 +268,19 @@ const formatDate = (dateStr: string) => {
                       <p class="text-sm font-body text-on-surface leading-relaxed line-clamp-4">{{ mission.rocket?.configuration?.description || 'No detailed vehicle description available.' }}</p>
                    </div>
 
+                   <!-- Added Capacity Specs -->
+                   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div v-for="cap in [
+                        { l: 'LEO CAP', v: formatNumber(mission.rocket?.configuration?.leo_capacity, 'kg') },
+                        { l: 'GTO CAP', v: formatNumber(mission.rocket?.configuration?.gto_capacity, 'kg') },
+                        { l: 'GEO CAP', v: formatNumber(mission.rocket?.configuration?.geo_capacity, 'kg') },
+                        { l: 'HEIGHT', v: formatNumber(mission.rocket?.configuration?.length, 'm') }
+                      ]" :key="cap.l" class="bg-surface-container/50 p-4 rounded-lg border border-outline-variant/10 text-center">
+                         <p class="text-xs font-black text-on-surface uppercase">{{ cap.v }}</p>
+                         <p class="text-[7px] text-on-surface-variant font-black uppercase mt-1">{{ cap.l }}</p>
+                      </div>
+                   </div>
+
                    <div class="bg-surface-container/30 rounded-xl p-6 border border-outline-variant/5">
                       <div class="flex justify-between items-center mb-6">
                          <p class="text-[10px] font-black text-on-surface uppercase tracking-[0.2em] font-label">Systems Health</p>
@@ -246,13 +288,13 @@ const formatDate = (dateStr: string) => {
                       </div>
                       <div class="grid grid-cols-3 gap-8">
                          <div v-for="stat in [
-                           { l: 'Max Thrust', v: mission.rocket?.configuration?.max_stage || '1st', u: 'STAGE' },
-                           { l: 'Success MSN', v: mission.rocket?.configuration?.successful_launches, u: 'LOG' },
-                           { l: 'Pad Turnaround', v: mission.pad_turnaround || '12', u: 'DAYS' }
-                         ]" :key="stat.l" class="text-center">
-                            <p class="text-xl font-black text-on-surface tabular-nums mb-1 font-headline">{{ stat.v }}</p>
-                            <p class="text-[8px] text-on-surface-variant font-black uppercase tracking-widest font-label">{{ stat.l }}</p>
-                         </div>
+                            { l: 'Max Thrust', v: formatNumber(mission.rocket?.configuration?.to_thrust, 'kN'), u: 'UNIT' },
+                            { l: 'Launch Cost', v: formatCurrency(mission.rocket?.configuration?.launch_cost), u: 'USD' },
+                            { l: 'Success MSN', v: mission.rocket?.configuration?.successful_launches, u: 'LOG' }
+                          ]" :key="stat.l" class="text-center">
+                             <p class="text-xl font-black text-on-surface tabular-nums mb-1 font-headline">{{ stat.v }}</p>
+                             <p class="text-[8px] text-on-surface-variant font-black uppercase tracking-widest font-label">{{ stat.l }}</p>
+                          </div>
                       </div>
                    </div>
                 </div>
@@ -278,13 +320,16 @@ const formatDate = (dateStr: string) => {
               <div class="space-y-12">
                  <div v-for="update in (mission.updates?.slice(0, 3) || [])" :key="update.id" class="flex gap-8 group">
                     <div class="flex flex-col items-center">
-                       <div class="w-1.5 h-1.5 rounded-full bg-primary mt-1 shadow-[0_0_8px_#0B3D91]"></div>
+                       <div v-if="update.profile_image" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/20 mb-2">
+                          <img :src="update.profile_image" class="w-full h-full object-cover" />
+                       </div>
+                       <div v-else class="w-1.5 h-1.5 rounded-full bg-primary mt-1 shadow-[0_0_8px_#0B3D91]"></div>
                        <div class="w-px flex-1 bg-outline-variant/20 my-2"></div>
                     </div>
                     <div class="pb-1">
                        <p class="text-[9px] font-black text-secondary uppercase tracking-widest mb-2 font-label">{{ formatDate(update.created_on) }}</p>
                        <p class="text-sm font-bold text-on-surface leading-snug mb-2">{{ update.comment }}</p>
-                       <p class="text-xs text-on-surface-variant font-body">Source: <span class="text-primary">{{ update.info_url.split('/')[2] }}</span></p>
+                       <p class="text-xs text-on-surface-variant font-body">Source: <span class="text-primary">{{ update.info_url ? update.info_url.split('/')[2] : 'Ground Control' }}</span></p>
                     </div>
                  </div>
                  <div v-if="!mission.updates?.length" class="text-center py-12 border-2 border-dashed border-outline-variant/10 rounded-xl">
@@ -295,47 +340,172 @@ const formatDate = (dateStr: string) => {
            </div>
 
            <!-- Provider Quick Stats -->
-           <div class="lg:col-span-4 flex flex-col gap-8">
-              <div class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 flex-1 flex flex-col">
-                 <p class="text-[10px] font-black tracking-widest text-secondary uppercase mb-1 font-label">Agency Profile</p>
-                 <h3 class="text-xl font-black font-headline uppercase mb-8 text-on-surface tracking-tight">{{ mission.launch_service_provider?.name }}</h3>
+           <div class="lg:col-span-4 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 flex flex-col">
+              <p class="text-[10px] font-black tracking-widest text-secondary uppercase mb-1 font-label">Agency Profile</p>
+              <h3 class="text-xl font-black font-headline uppercase mb-8 text-on-surface tracking-tight">{{ mission.launch_service_provider?.name }}</h3>
 
-                 <div class="flex-1 flex items-center justify-center mb-8">
-                    <img v-if="mission.launch_service_provider?.logo" :src="mission.launch_service_provider.logo.image_url" class="max-h-24 object-contain grayscale hover:grayscale-0 transition-all" />
+              <div class="flex-1 flex items-center justify-center mb-8">
+                 <img v-if="mission.launch_service_provider?.logo" :src="mission.launch_service_provider.logo.image_url" class="max-h-24 object-contain grayscale hover:grayscale-0 transition-all" />
+              </div>
+
+              <div class="space-y-4 pt-4 border-t border-outline-variant/10">
+                 <div class="flex justify-between items-center">
+                    <span class="text-[9px] font-black text-on-surface-variant uppercase font-label">Total Missions</span>
+                    <span class="text-sm font-black text-on-surface tabular-nums">{{ mission.launch_service_provider?.total_launch_count }}</span>
                  </div>
+                 <div class="flex justify-between items-center">
+                    <span class="text-[9px] font-black text-on-surface-variant uppercase font-label">Established</span>
+                    <span class="text-sm font-black text-on-surface tabular-nums">{{ mission.launch_service_provider?.founding_year || 'N/A' }}</span>
+                 </div>
+              </div>
+           </div>
+        </div>
 
-                 <div class="space-y-4 pt-4 border-t border-outline-variant/10">
-                    <div class="flex justify-between items-center">
-                       <span class="text-[9px] font-black text-on-surface-variant uppercase font-label">Total Missions</span>
-                       <span class="text-sm font-black text-on-surface tabular-nums">{{ mission.launch_service_provider?.total_launch_count }}</span>
+        <!-- Detailed Agency, Location & Celestial Data -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+           <!-- Expanded Agency Knowledge Base -->
+           <div class="lg:col-span-8 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10">
+              <div class="flex items-center justify-between mb-8">
+                 <div>
+                    <p class="text-[10px] font-black tracking-widest text-secondary uppercase mb-1 font-label">Agency Knowledge Base</p>
+                    <h3 class="text-2xl font-black font-headline uppercase text-on-surface tracking-tight">{{ mission.launch_service_provider?.name }}</h3>
+                 </div>
+                 <img v-if="mission.launch_service_provider?.logo" :src="mission.launch_service_provider.logo.image_url" class="h-12 object-contain grayscale opacity-50" />
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                 <div class="space-y-6">
+                    <p class="text-sm font-body text-on-surface-variant leading-relaxed">{{ mission.launch_service_provider?.description }}</p>
+                    <div class="flex flex-wrap gap-4 pt-4">
+                       <a v-if="mission.launch_service_provider?.info_url" :href="mission.launch_service_provider.info_url" target="_blank" class="text-[10px] font-black text-primary uppercase tracking-widest flex items-center gap-2 hover:underline">
+                          OFFICIAL SITE <span class="material-symbols-outlined text-xs">open_in_new</span>
+                       </a>
+                       <a v-if="mission.launch_service_provider?.wiki_url" :href="mission.launch_service_provider.wiki_url" target="_blank" class="text-[10px] font-black text-primary uppercase tracking-widest flex items-center gap-2 hover:underline">
+                          WIKIPEDIA <span class="material-symbols-outlined text-xs">library_books</span>
+                       </a>
                     </div>
-                    <div class="flex justify-between items-center">
-                       <span class="text-[9px] font-black text-on-surface-variant uppercase font-label">Established</span>
-                       <span class="text-sm font-black text-on-surface tabular-nums">{{ mission.launch_service_provider?.founding_year || 'N/A' }}</span>
+                 </div>
+                 
+                 <div class="bg-surface-container/30 rounded-xl p-6 border border-outline-variant/5 space-y-6">
+                    <h4 class="text-[10px] font-black text-on-surface uppercase tracking-[0.2em] font-label">Operational Record</h4>
+                    <div class="space-y-4">
+                       <div v-for="rec in [
+                          { l: 'Successful Missions', v: mission.launch_service_provider?.successful_launches, c: 'text-primary' },
+                          { l: 'Consecutive Success', v: mission.launch_service_provider?.consecutive_successful_launches, c: 'text-[#00FF41]' },
+                          { l: 'Pending Operations', v: mission.launch_service_provider?.pending_launches, c: 'text-on-surface' }
+                       ]" :key="rec.l" class="flex justify-between items-center border-b border-outline-variant/10 pb-2">
+                          <span class="text-[9px] font-bold text-on-surface-variant uppercase font-label">{{ rec.l }}</span>
+                          <span class="text-lg font-black tabular-nums" :class="rec.c">{{ rec.v }}</span>
+                       </div>
+                    </div>
+                    <div class="pt-2">
+                       <p class="text-[9px] font-black text-on-surface-variant uppercase mb-1 font-label">Leadership</p>
+                       <p class="text-xs font-bold text-on-surface">{{ mission.launch_service_provider?.administrator || 'Classified' }}</p>
                     </div>
                  </div>
               </div>
+           </div>
 
-              <!-- Pad Snapshot -->
-              <div class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/10">
+           <!-- Celestial & Environmental Data -->
+           <div class="lg:col-span-4 flex flex-col gap-8">
+              <!-- Celestial Body: Academic Context -->
+              <div v-if="celestialBody" class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 flex-1 relative overflow-hidden group">
+                 <div class="absolute -right-10 -top-10 w-48 h-48 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+                 
+                 <p class="text-[10px] font-black tracking-widest text-secondary uppercase mb-4 font-label">Celestial Mechanics</p>
                  <div class="flex items-center gap-4 mb-6">
-                    <div class="w-10 h-10 bg-surface-container flex items-center justify-center rounded-lg">
-                       <span class="material-symbols-outlined text-secondary">location_on</span>
-                    </div>
+                    <img v-if="celestialBody.image?.image_url" :src="celestialBody.image.image_url" class="w-16 h-16 rounded-full object-cover shadow-2xl animate-float" />
                     <div>
-                       <p class="text-[9px] font-black text-on-surface-variant uppercase font-label tracking-widest">Operational Site</p>
-                       <p class="text-xs font-bold font-body text-on-surface uppercase">{{ mission.pad?.location?.name.split(',')[0] }}</p>
+                       <h3 class="text-xl font-black font-headline uppercase text-on-surface tracking-tight">{{ celestialBody.name }}</h3>
+                       <p class="text-[9px] font-bold text-on-surface-variant uppercase font-label">Target Gravitational Well</p>
                     </div>
                  </div>
-                 <div class="space-y-3">
-                    <div class="flex justify-between text-[9px] font-bold uppercase tracking-widest text-on-surface-variant font-label">
-                       <span>Total Pad Flights</span>
-                       <span class="text-on-surface">{{ mission.pad?.total_launch_count }}</span>
+                 
+                 <div class="space-y-4 font-label text-[10px]">
+                    <div class="flex justify-between border-b border-outline-variant/10 pb-2">
+                       <span class="text-on-surface-variant uppercase">Mass Index</span>
+                       <span class="text-on-surface font-black" v-if="celestialBody.mass">{{ celestialBody.mass.toExponential(2) }} kg</span>
+                       <span class="text-on-surface font-black" v-else>TBD</span>
                     </div>
-                    <div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
-                       <div class="bg-secondary h-full" style="width: 75%"></div>
+                    <div class="flex justify-between border-b border-outline-variant/10 pb-2">
+                       <span class="text-on-surface-variant uppercase">Gravitational Pull</span>
+                       <span class="text-on-surface font-black" v-if="celestialBody.gravity">{{ celestialBody.gravity }} m/s²</span>
+                       <span class="text-on-surface font-black" v-else>TBD</span>
+                    </div>
+                    <div class="flex justify-between border-b border-outline-variant/10 pb-2">
+                       <span class="text-on-surface-variant uppercase">Atmosphere</span>
+                       <span class="text-on-surface font-black uppercase">{{ celestialBody.atmosphere ? 'DETECTED' : 'VACUUM' }}</span>
                     </div>
                  </div>
+                 
+                 <p class="mt-6 text-[10px] text-on-surface-variant font-body leading-relaxed line-clamp-3 opacity-60">
+                    {{ celestialBody.description }}
+                 </p>
+              </div>
+
+              <!-- Operational Site Map -->
+              <div class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 group">
+                 <div class="flex items-center justify-between mb-6">
+                    <div>
+                       <p class="text-[10px] font-black text-on-surface-variant uppercase font-label tracking-widest">Ground Segment</p>
+                       <p class="text-xs font-bold font-body text-on-surface uppercase">{{ mission.pad?.name }}</p>
+                    </div>
+                    <a v-if="mission.pad?.map_url" :href="mission.pad.map_url" target="_blank" class="w-10 h-10 bg-primary/10 flex items-center justify-center rounded-lg text-primary hover:bg-primary hover:text-on-primary transition-all">
+                       <span class="material-symbols-outlined">map</span>
+                    </a>
+                 </div>
+                 <div class="aspect-video bg-surface-container rounded-lg overflow-hidden relative mb-4">
+                    <img v-if="mission.pad?.image?.image_url" :src="mission.pad.image.image_url" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent"></div>
+                    <div class="absolute bottom-3 left-3 flex items-center gap-2">
+                       <span class="material-symbols-outlined text-sm text-secondary">location_on</span>
+                       <span class="text-[8px] font-black text-white uppercase tracking-widest">{{ mission.pad?.location?.name }}</span>
+                    </div>
+                 </div>
+                 <p class="text-[9px] text-on-surface-variant font-body leading-relaxed line-clamp-2">
+                    {{ mission.pad?.location?.description }}
+                 </p>
+              </div>
+           </div>
+        </div>
+
+        <!-- Multimedia Coverage Hub -->
+        <div v-if="mission.vid_urls?.length || mission.info_urls?.length" class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/10">
+           <div class="flex items-center gap-4 mb-8">
+              <span class="material-symbols-outlined text-secondary text-3xl">broadcast_on_home</span>
+              <div>
+                 <p class="text-[10px] font-black tracking-widest text-secondary uppercase mb-1 font-label">Multimedia Coverage</p>
+                 <h3 class="text-2xl font-black font-headline uppercase text-on-surface tracking-tight">Mission Broadcasts & Resources</h3>
+              </div>
+           </div>
+           
+           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div v-for="vid in mission.vid_urls" :key="vid.url" class="bg-surface-container/50 rounded-xl p-6 border border-outline-variant/10 flex flex-col group">
+                 <div class="aspect-video bg-surface-container rounded-lg overflow-hidden mb-4 relative">
+                    <img v-if="vid.feature_image" :src="vid.feature_image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                       <span class="material-symbols-outlined text-white text-5xl">play_circle</span>
+                    </div>
+                    <span v-if="vid.type?.name" class="absolute top-2 right-2 bg-black/60 text-white text-[8px] px-2 py-0.5 rounded font-black uppercase tracking-widest">{{ vid.type.name }}</span>
+                 </div>
+                 <h4 class="text-sm font-black text-on-surface uppercase mb-2 line-clamp-1">{{ vid.title }}</h4>
+                 <p class="text-[10px] text-on-surface-variant font-body mb-6 line-clamp-3 leading-relaxed">{{ vid.description }}</p>
+                 <div class="mt-auto flex items-center justify-between">
+                    <span class="text-[8px] font-black text-secondary tracking-widest uppercase">{{ vid.publisher }}</span>
+                    <a :href="vid.url" target="_blank" class="bg-primary/10 text-primary p-2 rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+                       <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    </a>
+                 </div>
+              </div>
+              
+              <!-- Info Links as smaller cards -->
+              <div v-for="info in mission.info_urls" :key="info.url" class="bg-surface-container/50 rounded-xl p-6 border border-outline-variant/10 flex flex-col items-center justify-center text-center group border-dashed hover:border-solid transition-all">
+                 <span class="material-symbols-outlined text-primary text-3xl mb-4 group-hover:rotate-12 transition-transform">article</span>
+                 <h4 class="text-xs font-black text-on-surface uppercase mb-1">{{ info.title || info.source }}</h4>
+                 <p class="text-[8px] text-on-surface-variant uppercase tracking-widest font-label mb-4">{{ info.type?.name || 'External Resource' }}</p>
+                 <a :href="info.url" target="_blank" class="w-full bg-surface-container text-on-surface-variant py-3 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] hover:bg-primary hover:text-on-primary transition-all">
+                    ACCESS DOCUMENT
+                 </a>
               </div>
            </div>
         </div>

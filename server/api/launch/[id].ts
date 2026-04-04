@@ -9,7 +9,7 @@ export default defineCachedEventHandler(async (event) => {
   }
 
   try {
-    const response = await $fetch(`https://ll.thespacedevs.com/2.3.0/launches/${id}/`, {
+    const response = await $fetch(`https://ll.thespacedevs.com/2.3.0/launches/${id}/?mode=detailed`, {
       headers: {
         'Accept': 'application/json'
       }
