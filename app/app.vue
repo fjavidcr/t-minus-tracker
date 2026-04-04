@@ -72,105 +72,71 @@ body,
 </style>
 
 <template>
-  <!-- Since body uses flex, we use fragment so aside and main are direct children of body like Stitch -->
-  <div
-    class="flex min-h-screen selection:bg-secondary selection:text-on-secondary bg-surface text-on-surface font-body antialiased w-full">
-    <!-- Sidebar -->
-    <aside class="hidden md:flex flex-col h-screen w-64 left-0 sticky top-0 bg-surface-container-low py-8 z-50 shadow-[20px_0_40px_-15px_rgba(11,61,145,0.05)]">
-      <div class="px-8 mb-12">
-        <h1 class="text-xl font-black text-on-surface tracking-tighter uppercase font-headline">Orbitar</h1>
-        <p class="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-primary mt-1 font-label">Deep Space Archive</p>
-      </div>
-      <nav class="flex-1 px-4 space-y-1 font-label uppercase tracking-widest text-[10px]">
-        <NuxtLink to="/"
-          class="flex items-center gap-4 text-on-surface-variant hover:bg-surface-container hover:text-primary px-4 py-3 rounded-lg transition-all active:scale-95 router-link-active:bg-surface-container router-link-active:text-primary font-bold">
-          <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
-          <span>Upcoming</span>
+  <div class="flex flex-col min-h-screen selection:bg-secondary selection:text-on-secondary bg-surface text-on-surface font-body antialiased w-full">
+    <!-- Top Global Navigation -->
+    <header class="w-full top-0 sticky bg-surface/80 backdrop-blur-xl z-[100] border-b border-outline-variant/10">
+      <div class="flex justify-between items-center h-20 px-4 md:px-12 max-w-[1440px] mx-auto w-full">
+        <!-- Logo & Brand -->
+        <NuxtLink to="/" class="flex flex-col items-start group">
+          <h1 class="text-2xl font-black text-on-surface tracking-tighter uppercase font-headline leading-none group-hover:text-primary transition-colors">T-minus</h1>
+          <p class="text-[0.6rem] font-bold uppercase tracking-[0.3em] text-primary/60 font-label">Deep Space Archive</p>
         </NuxtLink>
-        <NuxtLink to="/calendar"
-          class="flex items-center gap-4 text-on-surface-variant px-4 py-3 font-bold hover:bg-surface-container hover:text-primary transition-colors rounded-lg router-link-active:bg-surface-container router-link-active:text-primary">
-          <span class="material-symbols-outlined text-lg">calendar_month</span>
-          <span>Calendar</span>
-        </NuxtLink>
-        <NuxtLink to="/fleet"
-          class="flex items-center gap-4 text-on-surface-variant px-4 py-3 font-bold hover:bg-surface-container hover:text-primary transition-colors rounded-lg router-link-active:bg-surface-container router-link-active:text-primary">
-          <span class="material-symbols-outlined text-lg">database</span>
-          <span>Fleet</span>
-        </NuxtLink>
-      </nav>
-      <div class="mt-auto px-4 space-y-1 pt-8 font-label uppercase tracking-widest text-[10px]">
-        <NuxtLink to="/settings"
-          class="flex items-center gap-4 text-on-surface-variant px-4 py-3 font-bold hover:bg-surface-container hover:text-primary transition-colors rounded-lg router-link-active:bg-surface-container router-link-active:text-primary">
-          <span class="material-symbols-outlined text-lg">settings</span>
-          <span>Settings</span>
-        </NuxtLink>
-        <div class="mt-8 px-4 py-6 bg-surface-container rounded-xl border border-outline-variant/10">
-          <p class="text-[0.55rem] font-bold text-on-surface-variant uppercase tracking-widest mb-4">PUBLIC ACCESS TERMINAL</p>
-          <button
-            class="w-full bg-primary text-on-primary py-3 text-[0.65rem] font-bold uppercase tracking-[0.15em] rounded-lg hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_4px_20px_rgba(11,61,145,0.3)]">
-            DOWNLOAD MANIFEST
-          </button>
-        </div>
-      </div>
-    </aside>
 
-    <main class="flex-1 relative pb-20 md:pb-0">
-      <!-- Top Navigation -->
-      <header class="w-full top-0 sticky bg-surface z-40 border-b border-outline-variant/5">
-        <div class="flex justify-between items-center h-16 px-4 md:px-8 w-full">
-          <div class="flex items-center gap-8">
-            <span class="md:hidden text-xl font-black tracking-tighter text-on-surface uppercase font-headline">Orbitar</span>
-            <nav class="hidden md:flex gap-8 font-label text-[10px] uppercase tracking-[0.15em] font-bold">
-              <NuxtLink to="/missions" class="text-on-surface-variant hover:text-primary transition-colors">Missions</NuxtLink>
-              <NuxtLink to="/calendar" class="text-on-surface-variant hover:text-primary transition-colors router-link-active:text-primary router-link-active:border-b-2 router-link-active:border-primary pb-1">Calendar</NuxtLink>
-              <NuxtLink to="/agencies" class="text-on-surface-variant hover:text-primary transition-colors">Agencies</NuxtLink>
-              <NuxtLink to="/support" class="text-on-surface-variant hover:text-primary transition-colors">Support</NuxtLink>
-            </nav>
+        <!-- Primary Navigation -->
+        <nav class="hidden lg:flex items-center gap-10 font-label text-[10px] uppercase tracking-[0.2em] font-black">
+          <NuxtLink to="/" class="text-on-surface-variant hover:text-primary transition-all py-2 border-b-2 border-transparent router-link-exact-active:border-primary router-link-exact-active:text-primary">Upcoming</NuxtLink>
+          <NuxtLink to="/missions" class="text-on-surface-variant hover:text-primary transition-all py-2 border-b-2 border-transparent router-link-active:border-primary router-link-active:text-primary">Missions</NuxtLink>
+          <NuxtLink to="/calendar" class="text-on-surface-variant hover:text-primary transition-all py-2 border-b-2 border-transparent router-link-active:border-primary router-link-active:text-primary">Calendar</NuxtLink>
+          <NuxtLink to="/fleet" class="text-on-surface-variant hover:text-primary transition-all py-2 border-b-2 border-transparent router-link-active:border-primary router-link-active:text-primary">Fleet</NuxtLink>
+          <NuxtLink to="/agencies" class="text-on-surface-variant hover:text-primary/60 transition-all py-2 opacity-50 cursor-help">Agencies</NuxtLink>
+        </nav>
+
+        <!-- Search & Control -->
+        <div class="flex items-center gap-6">
+          <div class="hidden md:flex bg-surface-container-low px-4 py-2.5 items-center gap-3 rounded-full border border-outline-variant/10 focus-within:border-primary/40 transition-all">
+            <span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+            <input
+              class="bg-transparent border-none text-[10px] focus:ring-0 text-on-surface placeholder-on-surface-variant/40 w-48 font-label uppercase tracking-[0.2em] outline-none"
+              placeholder="Search Deep Space..." type="text" />
           </div>
-          <div class="flex items-center gap-4">
-            <div class="bg-surface-container-low px-4 py-2 flex items-center gap-3 rounded-lg border border-outline-variant/10">
-              <span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
-              <input
-                class="bg-transparent border-none text-[10px] focus:ring-0 text-on-surface placeholder-on-surface-variant/40 w-48 md:w-64 font-label uppercase tracking-widest outline-none"
-                placeholder="Search archive..." type="text" />
-            </div>
+          <div class="flex items-center gap-2">
+            <NuxtLink to="/settings" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant hover:text-primary">
+              <span class="material-symbols-outlined text-xl">settings</span>
+            </NuxtLink>
+            <!-- Mobile Menu Toggle -->
+            <button class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface">
+              <span class="material-symbols-outlined text-2xl">menu</span>
+            </button>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
 
+    <!-- Main Content Area -->
+    <main class="flex-1 relative w-full pt-4 md:pt-8">
       <NuxtRouteAnnouncer />
       <NuxtPage />
-
-      <!-- Floating Action Button -->
-      <button
-        class="fixed bottom-8 right-8 w-14 h-14 bg-secondary text-on-secondary rounded-full shadow-[0_10px_30px_rgba(252,61,33,0.3)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all group z-50">
-        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">priority_high</span>
-        <span
-          class="absolute right-full mr-6 bg-surface-container-highest/90 backdrop-blur-xl px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest text-on-surface opacity-0 group-hover:opacity-100 whitespace-nowrap pointer-events-none transition-all -translate-x-2 group-hover:translate-x-0 shadow-[0_12px_32px_rgba(0,0,0,0.4)]">Mission Alert</span>
-      </button>
     </main>
 
-    <!-- Mobile Bottom Navigation -->
-    <nav
-      class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-low border-t border-outline-variant/10 flex justify-around items-center h-16 px-4 z-50">
-      <NuxtLink to="/" class="flex flex-col items-center gap-1 text-on-surface-variant router-link-active:text-primary">
+    <!-- Mobile Bottom Navigation (Optional fallback) -->
+    <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface-container-low/95 backdrop-blur-xl border-t border-outline-variant/10 flex justify-around items-center h-20 px-4 z-50">
+      <NuxtLink to="/" class="flex flex-col items-center gap-1.5 text-on-surface-variant router-link-exact-active:text-primary">
         <span class="material-symbols-outlined text-xl">rocket_launch</span>
-        <span class="text-[0.55rem] font-bold uppercase tracking-tighter font-label">Missions</span>
+        <span class="text-[0.6rem] font-bold uppercase tracking-widest font-label">Upcoming</span>
       </NuxtLink>
-      <NuxtLink to="/calendar" class="flex flex-col items-center gap-1 text-on-surface-variant router-link-active:text-primary">
-        <span class="material-symbols-outlined text-xl">calendar_month</span>
-        <span class="text-[0.55rem] font-bold uppercase tracking-tighter font-label">Calendar</span>
-      </NuxtLink>
-      <NuxtLink to="/fleet" class="flex flex-col items-center gap-1 text-on-surface-variant router-link-active:text-primary">
+      <NuxtLink to="/missions" class="flex flex-col items-center gap-1.5 text-on-surface-variant router-link-active:text-primary">
         <span class="material-symbols-outlined text-xl">database</span>
-        <span class="text-[0.55rem] font-bold uppercase tracking-tighter font-label">Fleet</span>
+        <span class="text-[0.6rem] font-bold uppercase tracking-widest font-label">Archive</span>
       </NuxtLink>
-      <NuxtLink to="/settings" class="flex flex-col items-center gap-1 text-on-surface-variant router-link-active:text-primary">
+      <NuxtLink to="/calendar" class="flex flex-col items-center gap-1.5 text-on-surface-variant router-link-active:text-primary">
+        <span class="material-symbols-outlined text-xl">calendar_month</span>
+        <span class="text-[0.6rem] font-bold uppercase tracking-widest font-label">Calendar</span>
+      </NuxtLink>
+      <NuxtLink to="/settings" class="flex flex-col items-center gap-1.5 text-on-surface-variant router-link-active:text-primary">
         <span class="material-symbols-outlined text-xl">settings</span>
-        <span class="text-[0.55rem] font-bold uppercase tracking-tighter font-label">Settings</span>
+        <span class="text-[0.6rem] font-bold uppercase tracking-widest font-label">Settings</span>
       </NuxtLink>
     </nav>
   </div>
-
 </template>
 

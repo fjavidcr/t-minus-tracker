@@ -4,8 +4,8 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 // SEO Meta Data
 useSeoMeta({
-  title: 'Orbitar App - NASA & Global Space Launch Calendar',
-  ogTitle: 'Orbitar App - NASA & Global Space Launch Calendar',
+  title: 'T-minus - NASA & Global Space Launch Calendar',
+  ogTitle: 'T-minus - NASA & Global Space Launch Calendar',
   description: 'Descubre los próximos lanzamientos espaciales de NASA, SpaceX, y más. Mantente actualizado sobre exploración espacial, datos logísticos y rastreo orbital.',
 });
 

@@ -3,7 +3,7 @@
   "url": "string",
   "name": "string",
   "response_mode": "detailed",
-  "slug": "6jedxqvV8zw1-YASctsQOxBJZk4aR-dKvzrOjnviOFZp4D3lMk0i-Fx8ruw3D1eZhKIvX8EGTlTWRnwX60ASarib4L",
+  "slug": "-XDcPfQ7YewwdSX9IAQlrJVb96I",
   "launch_designator": "string",
   "status": {
     "id": 2147483647,
@@ -11,16 +11,16 @@
     "abbrev": "string",
     "description": "string"
   },
-  "last_updated": "2026-04-03T17:39:58.677Z",
-  "net": "2026-04-03T17:39:58.677Z",
+  "last_updated": "2026-04-04T10:43:15.215Z",
+  "net": "2026-04-04T10:43:15.215Z",
   "net_precision": {
     "id": 2147483647,
     "name": "string",
     "abbrev": "string",
     "description": "string"
   },
-  "window_end": "2026-04-03T17:39:58.677Z",
-  "window_start": "2026-04-03T17:39:58.677Z",
+  "window_end": "2026-04-04T10:43:15.215Z",
+  "window_start": "2026-04-04T10:43:15.215Z",
   "image": {
     "id": 0,
     "name": "string",
@@ -482,7 +482,7 @@
           },
           "description": "string",
           "active": true,
-          "maiden_flight": "2026-04-03",
+          "maiden_flight": "2026-04-04",
           "total_launch_count": 2147483647,
           "consecutive_successful_launches": 2147483647,
           "successful_launches": 2147483647,
@@ -696,8 +696,8 @@
               }
             }
           ],
-          "start_date": "2026-04-03T17:39:58.677Z",
-          "end_date": "2026-04-03T17:39:58.677Z",
+          "start_date": "2026-04-04T10:43:15.215Z",
+          "end_date": "2026-04-04T10:43:15.215Z",
           "mission_patches": [
             {
               "id": 0,
@@ -757,7 +757,7 @@
       "max_stage": 2147483647,
       "length": 0,
       "diameter": 0,
-      "maiden_flight": "2026-04-03",
+      "maiden_flight": "2026-04-04",
       "launch_cost": 2147483647,
       "launch_mass": 0,
       "leo_capacity": 0,
@@ -822,11 +822,11 @@
           "successful_landings": 2147483647,
           "attempted_landings": 2147483647,
           "flights": 2147483647,
-          "last_launch_date": "2026-04-03T17:39:58.677Z",
-          "first_launch_date": "2026-04-03T17:39:58.677Z",
+          "last_launch_date": "2026-04-04T10:43:15.215Z",
+          "first_launch_date": "2026-04-04T10:43:15.215Z",
           "fastest_turnaround": "string"
         },
-        "previous_flight_date": "2026-04-03T17:39:58.677Z",
+        "previous_flight_date": "2026-04-04T10:43:15.215Z",
         "turn_around_time": "string",
         "landing": {
           "id": 0,
@@ -976,7 +976,7 @@
         "id": 0,
         "url": "string",
         "destination": "string",
-        "mission_end": "2026-04-03T17:39:58.677Z",
+        "mission_end": "2026-04-04T10:43:15.215Z",
         "spacecraft": {
           "response_mode": "normal",
           "id": 0,
@@ -1254,9 +1254,9 @@
                     "id": 0,
                     "name": "string"
                   },
-                  "maiden_flight": "2026-04-03"
+                  "maiden_flight": "2026-04-04"
                 },
-                "maiden_flight": "2026-04-03",
+                "maiden_flight": "2026-04-04",
                 "spacecraft_flown": 2147483647,
                 "total_launch_count": 2147483647,
                 "successful_launches": 2147483647,
@@ -1294,7 +1294,7 @@
             "capability": "string",
             "history": "string",
             "details": "string",
-            "maiden_flight": "2026-04-03",
+            "maiden_flight": "2026-04-04",
             "height": 0,
             "diameter": 0,
             "human_rated": true,
@@ -1514,8 +1514,8 @@
               "time_in_space": "string",
               "eva_time": "string",
               "age": 2147483647,
-              "date_of_birth": "2026-04-03",
-              "date_of_death": "2026-04-03",
+              "date_of_birth": "2026-04-04",
+              "date_of_death": "2026-04-04",
               "nationality": [
                 {
                   "id": 0,
@@ -1528,8 +1528,8 @@
               ],
               "bio": "string",
               "wiki": "string",
-              "last_flight": "2026-04-03T17:39:58.677Z",
-              "first_flight": "2026-04-03T17:39:58.677Z",
+              "last_flight": "2026-04-04T10:43:15.215Z",
+              "first_flight": "2026-04-04T10:43:15.215Z",
               "social_media_links": [
                 {
                   "id": 0,
@@ -1628,8 +1628,8 @@
               "time_in_space": "string",
               "eva_time": "string",
               "age": 2147483647,
-              "date_of_birth": "2026-04-03",
-              "date_of_death": "2026-04-03",
+              "date_of_birth": "2026-04-04",
+              "date_of_death": "2026-04-04",
               "nationality": [
                 {
                   "id": 0,
@@ -1642,8 +1642,8 @@
               ],
               "bio": "string",
               "wiki": "string",
-              "last_flight": "2026-04-03T17:39:58.677Z",
-              "first_flight": "2026-04-03T17:39:58.677Z",
+              "last_flight": "2026-04-04T10:43:15.215Z",
+              "first_flight": "2026-04-04T10:43:15.215Z",
               "social_media_links": [
                 {
                   "id": 0,
@@ -1742,8 +1742,8 @@
               "time_in_space": "string",
               "eva_time": "string",
               "age": 2147483647,
-              "date_of_birth": "2026-04-03",
-              "date_of_death": "2026-04-03",
+              "date_of_birth": "2026-04-04",
+              "date_of_death": "2026-04-04",
               "nationality": [
                 {
                   "id": 0,
@@ -1756,8 +1756,8 @@
               ],
               "bio": "string",
               "wiki": "string",
-              "last_flight": "2026-04-03T17:39:58.677Z",
-              "first_flight": "2026-04-03T17:39:58.677Z",
+              "last_flight": "2026-04-04T10:43:15.215Z",
+              "first_flight": "2026-04-04T10:43:15.215Z",
               "social_media_links": [
                 {
                   "id": 0,
@@ -1800,8 +1800,8 @@
           {
             "id": 0,
             "url": "string",
-            "docking": "2026-04-03T17:39:58.677Z",
-            "departure": "2026-04-03T17:39:58.677Z",
+            "docking": "2026-04-04T10:43:15.215Z",
+            "departure": "2026-04-04T10:43:15.216Z",
             "docking_location": {
               "id": 0,
               "name": "string",
@@ -1876,7 +1876,7 @@
                       "id": 0,
                       "name": "string"
                     },
-                    "maiden_flight": "2026-04-03"
+                    "maiden_flight": "2026-04-04"
                   }
                 ],
                 "in_use": true,
@@ -1993,8 +1993,8 @@
                 "id": 0,
                 "name": "string"
               },
-              "founded": "2026-04-03",
-              "deorbited": "2026-04-03",
+              "founded": "2026-04-04",
+              "deorbited": "2026-04-04",
               "description": "string",
               "orbit": "string",
               "type": {
@@ -2006,7 +2006,7 @@
               "id": 0,
               "url": "string",
               "destination": "string",
-              "mission_end": "2026-04-03T17:39:58.677Z",
+              "mission_end": "2026-04-04T10:43:15.216Z",
               "spacecraft": {
                 "response_mode": "normal",
                 "id": 0,
@@ -2090,7 +2090,7 @@
                         "id": 0,
                         "name": "string"
                       },
-                      "maiden_flight": "2026-04-03"
+                      "maiden_flight": "2026-04-04"
                     }
                   ],
                   "in_use": true,
@@ -2126,7 +2126,7 @@
                 "url": "string",
                 "name": "string",
                 "response_mode": "normal",
-                "slug": "Vi75Vvy6kh6y_MomYRlLSamyAaDbM_xWDbhUB0GF-lhlawYKQffoePs",
+                "slug": "8QdAFhAGXxDitWTplfzzg4xqId3R6orwfXMi_SyJWrjjspcF6RDjMtBraQihvprScIq0PknevZXCGMJSYa4fmxjSyx-LcXW0VzYL",
                 "launch_designator": "string",
                 "status": {
                   "id": 2147483647,
@@ -2134,16 +2134,16 @@
                   "abbrev": "string",
                   "description": "string"
                 },
-                "last_updated": "2026-04-03T17:39:58.677Z",
-                "net": "2026-04-03T17:39:58.677Z",
+                "last_updated": "2026-04-04T10:43:15.216Z",
+                "net": "2026-04-04T10:43:15.216Z",
                 "net_precision": {
                   "id": 2147483647,
                   "name": "string",
                   "abbrev": "string",
                   "description": "string"
                 },
-                "window_end": "2026-04-03T17:39:58.677Z",
-                "window_start": "2026-04-03T17:39:58.677Z",
+                "window_end": "2026-04-04T10:43:15.216Z",
+                "window_start": "2026-04-04T10:43:15.216Z",
                 "image": {
                   "id": 0,
                   "name": "string",
@@ -2432,8 +2432,8 @@
                         "name": "string",
                         "code": "string"
                       },
-                      "start_time": "2026-04-03T17:39:58.677Z",
-                      "end_time": "2026-04-03T17:39:58.677Z",
+                      "start_time": "2026-04-04T10:43:15.216Z",
+                      "end_time": "2026-04-04T10:43:15.216Z",
                       "live": true
                     }
                   ]
@@ -2727,8 +2727,8 @@
                         }
                       }
                     ],
-                    "start_date": "2026-04-03T17:39:58.678Z",
-                    "end_date": "2026-04-03T17:39:58.678Z",
+                    "start_date": "2026-04-04T10:43:15.216Z",
+                    "end_date": "2026-04-04T10:43:15.216Z",
                     "mission_patches": [
                       {
                         "id": 0,
@@ -3187,7 +3187,7 @@
                 "url": "string",
                 "name": "string",
                 "response_mode": "normal",
-                "slug": "kgvkZnswwp6oW2vfgxLZBcWhJrTYy6xchw",
+                "slug": "WF6vpHm5p1FwQGvkpBSCMtpusDB0P4qBFw8_MQEUumFg_blwyiI1FL81Nf4NOQlNIkX0XXyZFk-0L",
                 "launch_designator": "string",
                 "status": {
                   "id": 2147483647,
@@ -3195,16 +3195,16 @@
                   "abbrev": "string",
                   "description": "string"
                 },
-                "last_updated": "2026-04-03T17:39:58.678Z",
-                "net": "2026-04-03T17:39:58.678Z",
+                "last_updated": "2026-04-04T10:43:15.216Z",
+                "net": "2026-04-04T10:43:15.216Z",
                 "net_precision": {
                   "id": 2147483647,
                   "name": "string",
                   "abbrev": "string",
                   "description": "string"
                 },
-                "window_end": "2026-04-03T17:39:58.678Z",
-                "window_start": "2026-04-03T17:39:58.678Z",
+                "window_end": "2026-04-04T10:43:15.216Z",
+                "window_start": "2026-04-04T10:43:15.216Z",
                 "image": {
                   "id": 0,
                   "name": "string",
@@ -3493,8 +3493,8 @@
                         "name": "string",
                         "code": "string"
                       },
-                      "start_time": "2026-04-03T17:39:58.678Z",
-                      "end_time": "2026-04-03T17:39:58.678Z",
+                      "start_time": "2026-04-04T10:43:15.216Z",
+                      "end_time": "2026-04-04T10:43:15.216Z",
                       "live": true
                     }
                   ]
@@ -3788,8 +3788,8 @@
                         }
                       }
                     ],
-                    "start_date": "2026-04-03T17:39:58.678Z",
-                    "end_date": "2026-04-03T17:39:58.678Z",
+                    "start_date": "2026-04-04T10:43:15.216Z",
+                    "end_date": "2026-04-04T10:43:15.216Z",
                     "mission_patches": [
                       {
                         "id": 0,
@@ -4357,8 +4357,8 @@
                   }
                 }
               ],
-              "start_date": "2026-04-03T17:39:58.678Z",
-              "end_date": "2026-04-03T17:39:58.678Z",
+              "start_date": "2026-04-04T10:43:15.216Z",
+              "end_date": "2026-04-04T10:43:15.216Z",
               "mission_patches": [
                 {
                   "id": 0,
@@ -4529,8 +4529,8 @@
           {
             "id": 0,
             "url": "string",
-            "docking": "2026-04-03T17:39:58.678Z",
-            "departure": "2026-04-03T17:39:58.678Z",
+            "docking": "2026-04-04T10:43:15.216Z",
+            "departure": "2026-04-04T10:43:15.216Z",
             "docking_location": {
               "id": 0,
               "name": "string",
@@ -4605,7 +4605,7 @@
                       "id": 0,
                       "name": "string"
                     },
-                    "maiden_flight": "2026-04-03"
+                    "maiden_flight": "2026-04-04"
                   }
                 ],
                 "in_use": true,
@@ -4722,8 +4722,8 @@
                 "id": 0,
                 "name": "string"
               },
-              "founded": "2026-04-03",
-              "deorbited": "2026-04-03",
+              "founded": "2026-04-04",
+              "deorbited": "2026-04-04",
               "description": "string",
               "orbit": "string",
               "type": {
@@ -4735,7 +4735,7 @@
               "id": 0,
               "url": "string",
               "destination": "string",
-              "mission_end": "2026-04-03T17:39:58.678Z",
+              "mission_end": "2026-04-04T10:43:15.216Z",
               "spacecraft": {
                 "response_mode": "normal",
                 "id": 0,
@@ -4819,7 +4819,7 @@
                         "id": 0,
                         "name": "string"
                       },
-                      "maiden_flight": "2026-04-03"
+                      "maiden_flight": "2026-04-04"
                     }
                   ],
                   "in_use": true,
@@ -4855,7 +4855,7 @@
                 "url": "string",
                 "name": "string",
                 "response_mode": "normal",
-                "slug": "zHomHBz3zM",
+                "slug": "ND78Z9oOY",
                 "launch_designator": "string",
                 "status": {
                   "id": 2147483647,
@@ -4863,16 +4863,16 @@
                   "abbrev": "string",
                   "description": "string"
                 },
-                "last_updated": "2026-04-03T17:39:58.678Z",
-                "net": "2026-04-03T17:39:58.678Z",
+                "last_updated": "2026-04-04T10:43:15.216Z",
+                "net": "2026-04-04T10:43:15.216Z",
                 "net_precision": {
                   "id": 2147483647,
                   "name": "string",
                   "abbrev": "string",
                   "description": "string"
                 },
-                "window_end": "2026-04-03T17:39:58.678Z",
-                "window_start": "2026-04-03T17:39:58.678Z",
+                "window_end": "2026-04-04T10:43:15.216Z",
+                "window_start": "2026-04-04T10:43:15.216Z",
                 "image": {
                   "id": 0,
                   "name": "string",
@@ -5161,8 +5161,8 @@
                         "name": "string",
                         "code": "string"
                       },
-                      "start_time": "2026-04-03T17:39:58.678Z",
-                      "end_time": "2026-04-03T17:39:58.678Z",
+                      "start_time": "2026-04-04T10:43:15.217Z",
+                      "end_time": "2026-04-04T10:43:15.217Z",
                       "live": true
                     }
                   ]
@@ -5456,8 +5456,8 @@
                         }
                       }
                     ],
-                    "start_date": "2026-04-03T17:39:58.678Z",
-                    "end_date": "2026-04-03T17:39:58.678Z",
+                    "start_date": "2026-04-04T10:43:15.217Z",
+                    "end_date": "2026-04-04T10:43:15.217Z",
                     "mission_patches": [
                       {
                         "id": 0,
@@ -5916,7 +5916,7 @@
                 "url": "string",
                 "name": "string",
                 "response_mode": "normal",
-                "slug": "zIxRwYh0omL4QWaKjL_2ggv77URJxFidOPAsaaEtvxowcZ1mqgD-l7U-wCn_k12z9LhJ_HR8FIB",
+                "slug": "TSODJfaSaEJoOyGiUpFzhiL1_QqAMl_wRhMrSeCvK-YuUvDR235wVQlAgdCMpxa55om9LeWK0gIUFn8XoLfOwe-nkLNIf3B8x_",
                 "launch_designator": "string",
                 "status": {
                   "id": 2147483647,
@@ -5924,16 +5924,16 @@
                   "abbrev": "string",
                   "description": "string"
                 },
-                "last_updated": "2026-04-03T17:39:58.678Z",
-                "net": "2026-04-03T17:39:58.678Z",
+                "last_updated": "2026-04-04T10:43:15.217Z",
+                "net": "2026-04-04T10:43:15.217Z",
                 "net_precision": {
                   "id": 2147483647,
                   "name": "string",
                   "abbrev": "string",
                   "description": "string"
                 },
-                "window_end": "2026-04-03T17:39:58.678Z",
-                "window_start": "2026-04-03T17:39:58.678Z",
+                "window_end": "2026-04-04T10:43:15.217Z",
+                "window_start": "2026-04-04T10:43:15.217Z",
                 "image": {
                   "id": 0,
                   "name": "string",
@@ -6222,8 +6222,8 @@
                         "name": "string",
                         "code": "string"
                       },
-                      "start_time": "2026-04-03T17:39:58.678Z",
-                      "end_time": "2026-04-03T17:39:58.678Z",
+                      "start_time": "2026-04-04T10:43:15.217Z",
+                      "end_time": "2026-04-04T10:43:15.217Z",
                       "live": true
                     }
                   ]
@@ -6517,8 +6517,8 @@
                         }
                       }
                     ],
-                    "start_date": "2026-04-03T17:39:58.678Z",
-                    "end_date": "2026-04-03T17:39:58.678Z",
+                    "start_date": "2026-04-04T10:43:15.217Z",
+                    "end_date": "2026-04-04T10:43:15.217Z",
                     "mission_patches": [
                       {
                         "id": 0,
@@ -6926,8 +6926,8 @@
           "name": "string",
           "code": "string"
         },
-        "start_time": "2026-04-03T17:39:58.678Z",
-        "end_time": "2026-04-03T17:39:58.678Z",
+        "start_time": "2026-04-04T10:43:15.217Z",
+        "end_time": "2026-04-04T10:43:15.217Z",
         "live": true
       }
     ]
@@ -7221,8 +7221,8 @@
           }
         }
       ],
-      "start_date": "2026-04-03T17:39:58.678Z",
-      "end_date": "2026-04-03T17:39:58.678Z",
+      "start_date": "2026-04-04T10:43:15.217Z",
+      "end_date": "2026-04-04T10:43:15.217Z",
       "mission_patches": [
         {
           "id": 0,
@@ -7265,7 +7265,7 @@
       "comment": "string",
       "info_url": "string",
       "created_by": "string",
-      "created_on": "2026-04-03T17:39:58.678Z"
+      "created_on": "2026-04-04T10:43:15.217Z"
     }
   ],
   "info_urls": [
@@ -7305,8 +7305,8 @@
         "name": "string",
         "code": "string"
       },
-      "start_time": "2026-04-03T17:39:58.678Z",
-      "end_time": "2026-04-03T17:39:58.678Z",
+      "start_time": "2026-04-04T10:43:15.217Z",
+      "end_time": "2026-04-04T10:43:15.217Z",
       "live": true
     }
   ],

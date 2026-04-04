@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useHead({
-  title: 'System Settings - Orbitar'
+  title: 'System Settings - T-minus'
 })
 
 const notifications = ref(true)
@@ -11,7 +11,7 @@ const theme = ref('deep-space')
 </script>
 
 <template>
-  <main class="flex-1 flex flex-col overflow-x-hidden bg-surface min-h-[calc(100vh-64px)]">
+  <main class="flex-1 flex flex-col overflow-x-hidden bg-surface min-h-[calc(100vh-80px)]">
     <!-- Page Content: Settings Console -->
     <div class="p-8 md:p-12 max-w-6xl mx-auto w-full">
       <!-- Header Section -->

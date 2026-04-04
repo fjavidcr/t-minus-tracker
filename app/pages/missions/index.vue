@@ -4,8 +4,8 @@ import { ref, computed } from 'vue';
 
 // SEO Meta Data
 useSeoMeta({
-  title: 'Missions Archive - Orbitar App',
-  ogTitle: 'Missions Archive - Orbitar App',
+  title: 'Missions Archive - T-minus',
+  ogTitle: 'Missions Archive - T-minus',
   description: 'Explora el archivo completo de misiones espaciales próximas y recientes.',
 });
 
@@ -149,7 +149,7 @@ const padZero = (num: number) => num.toString().padStart(2, '0');
     <!-- Archival Footer Info -->
     <footer class="pt-8 border-t border-outline-variant/5 flex justify-between items-center text-[8px] font-bold uppercase tracking-widest text-on-surface-variant font-label opacity-40">
        <span>Propagated from LL.TheSpaceDevs.com</span>
-       <span>Orbitar Archive Index Rev: 2.3.0</span>
+       <span>T-minus Archive Index Rev: 2.3.0</span>
     </footer>
   </div>
 </template>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 useHead({
-  title: 'ORBITAR | Launch Calendar'
+  title: 'T-minus | Launch Calendar'
 })
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 </script>
 
 <template>
-  <main class="flex-1 flex flex-col md:flex-row overflow-hidden bg-surface min-h-[calc(100vh-64px)]">
+  <main class="flex-1 flex flex-col md:flex-row overflow-hidden bg-surface min-h-[calc(100vh-80px)]">
     <!-- Calendar View -->
     <section class="flex-1 p-8 overflow-y-auto custom-scrollbar">
       <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
