@@ -112,17 +112,37 @@ const generateCalendarLink = () => {
   return `https://www.google.com/calendar/render?action=TEMPLATE&text=${name}&details=${description}&location=${location}&dates=${startDate}/${endDate}`;
 };
 
-const shareStatus = ref('SHARE');
+const shareStatus = ref('COPY LINK');
+const isShareMenuOpen = ref(false);
+
+const socialLinks = computed(() => {
+  if (!mission.value) return {};
+  const url = typeof window !== 'undefined' ? window.location.href : '';
+  const text = encodeURIComponent(`Tracking the ${mission.value.name} launch on T-minus! 🚀`);
+  
+  return {
+    twitter: `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(url)}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    whatsapp: `https://api.whatsapp.com/send?text=${text}%20${encodeURIComponent(url)}`
+  };
+});
+
 const shareMission = () => {
   const url = window.location.href;
   navigator.clipboard.writeText(url).then(() => {
-    shareStatus.value = 'COPIED!';
+    shareStatus.value = 'COPIED';
     setTimeout(() => {
-      shareStatus.value = 'SHARE';
+      shareStatus.value = 'COPY LINK';
+      isShareMenuOpen.value = false;
     }, 2000);
   });
 };
+
+const toggleShareMenu = () => {
+  isShareMenuOpen.value = !isShareMenuOpen.value;
+};
 </script>
+
 
 
 <template>
@@ -183,10 +203,45 @@ const shareMission = () => {
                 <span class="material-symbols-outlined text-lg">calendar_add_on</span>
                 ADD TO CALENDAR
               </a>
-              <button @click="shareMission" class="group bg-surface-variant/10 hover:bg-surface-variant/30 border border-outline-variant/10 text-on-surface-variant hover:text-on-surface p-4 rounded-lg transition-all flex items-center gap-2 active:scale-95">
-                <span class="material-symbols-outlined text-lg transition-transform group-hover:rotate-12">{{ shareStatus === 'COPIED!' ? 'check_circle' : 'share' }}</span>
-                <span class="w-8">{{ shareStatus }}</span>
-              </button>
+              <div class="relative">
+                <button @click="toggleShareMenu" class="group bg-surface-variant/10 hover:bg-surface-variant/30 border border-outline-variant/10 text-on-surface-variant hover:text-on-surface px-8 py-4 rounded-lg transition-all flex items-center gap-2 active:scale-95">
+                  <span class="material-symbols-outlined text-lg transition-transform group-hover:rotate-12">share</span>
+                  <span class="uppercase">Share</span>
+                </button>
+
+                <!-- Social Share HUD Popover -->
+                <Transition
+                  enter-active-class="transition duration-200 ease-out"
+                  enter-from-class="transform scale-95 opacity-0 -translate-y-2"
+                  enter-to-class="transform scale-100 opacity-100 translate-y-0"
+                  leave-active-class="transition duration-150 ease-in"
+                  leave-from-class="transform scale-100 opacity-100 translate-y-0"
+                  leave-to-class="transform scale-95 opacity-0 -translate-y-2"
+                >
+                  <div v-if="isShareMenuOpen" class="absolute bottom-full left-0 mb-4 w-56 bg-surface/90 backdrop-blur-2xl border border-outline-variant/20 rounded-xl shadow-2xl p-2 z-[120]">
+                    <div class="space-y-1">
+                      <a :href="socialLinks.twitter" target="_blank" class="flex items-center gap-3 px-4 py-3 hover:bg-surface-variant/20 rounded-lg transition-colors group">
+                        <span class="material-symbols-outlined text-lg text-on-surface-variant group-hover:text-primary">rocket_launch</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-on-surface">Share on X</span>
+                      </a>
+                      <a :href="socialLinks.linkedin" target="_blank" class="flex items-center gap-3 px-4 py-3 hover:bg-surface-variant/20 rounded-lg transition-colors group">
+                        <span class="material-symbols-outlined text-lg text-on-surface-variant group-hover:text-primary">groups_2</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-on-surface">LinkedIn</span>
+                      </a>
+                      <a :href="socialLinks.whatsapp" target="_blank" class="flex items-center gap-3 px-4 py-3 hover:bg-surface-variant/20 rounded-lg transition-colors group">
+                        <span class="material-symbols-outlined text-lg text-on-surface-variant group-hover:text-[#25D366]">chat</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-on-surface">WhatsApp</span>
+                      </a>
+                      <div class="h-px bg-outline-variant/10 my-1 mx-2"></div>
+                      <button @click="shareMission" class="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-variant/20 rounded-lg transition-colors group">
+                        <span class="material-symbols-outlined text-lg text-on-surface-variant group-hover:text-secondary">content_copy</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-on-surface">{{ shareStatus }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </Transition>
+              </div>
+
             </div>
 
           </div>
