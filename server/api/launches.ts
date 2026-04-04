@@ -12,7 +12,7 @@ export default defineCachedEventHandler(async () => {
     return [];
   }
 }, {
-  maxAge: 60 * 60, // Cache for 1 hour
+  maxAge: import.meta.dev ? 3600 : 60 * 60, // 1 hour in both dev and prod
   swr: true, // Use stale-while-revalidate
   name: 'launches'
 });

@@ -23,7 +23,7 @@ export default defineCachedEventHandler(async (event) => {
     })
   }
 }, {
-  maxAge: 300, // 5 minutes
+  maxAge: import.meta.dev ? 3600 : 300, // 5 minutes in prod, 1 hour in dev
   swr: true,
   name: 'mission-detail'
 })

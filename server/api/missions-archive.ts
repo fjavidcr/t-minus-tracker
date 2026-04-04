@@ -15,7 +15,7 @@ export default defineCachedEventHandler(async (event) => {
     return { count: 0, next: null, previous: null, results: [] }
   }
 }, {
-  maxAge: 600, // 10 minutes
+  maxAge: import.meta.dev ? 3600 : 600, // 10 minutes in prod, 1 hour in dev
   swr: true,
   name: 'missions-archive',
   getKey: (event) => event.path
