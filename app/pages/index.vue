@@ -95,11 +95,13 @@ onUnmounted(() => {
               Mission</span>
           </div>
 
-          <h2
-            class="text-5xl font-black tracking-tighter text-on-surface leading-[0.95] mb-8 lg:text-7xl uppercase relative z-10 font-headline">
-            {{ heroMissionNameSegments[0] }}:<br v-if="heroMissionNameSegments[0]" />
-            <span class="mission-text-stroke line-clamp-1 break-all">{{ heroMissionNameSegments[1] }}</span>
-          </h2>
+          <NuxtLink :to="`/missions/${heroLaunch.id}`" class="group/title block">
+            <h2
+              class="text-5xl font-black tracking-tighter text-on-surface leading-[0.95] mb-8 lg:text-7xl uppercase relative z-10 font-headline group-hover/title:text-primary transition-colors">
+              {{ heroMissionNameSegments[0] }}:<br v-if="heroMissionNameSegments[0]" />
+              <span class="mission-text-stroke line-clamp-1 break-all">{{ heroMissionNameSegments[1] }}</span>
+            </h2>
+          </NuxtLink>
 
           <div class="flex flex-wrap gap-4 lg:gap-10 font-headline">
             <div>
@@ -121,6 +123,17 @@ onUnmounted(() => {
               <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-2 font-label">Seconds</p>
               <p class="font-black text-secondary text-4xl md:text-5xl tabular-nums">{{ padZero(seconds) }}</p>
             </div>
+          </div>
+          <div class="mt-12 flex flex-wrap gap-4 relative z-10">
+            <NuxtLink :to="`/missions/${heroLaunch.id}`"
+              class="bg-primary text-on-primary px-8 py-4 rounded-lg text-[10px] font-bold uppercase tracking-[0.2em] shadow-[0_8px_24px_-8px_rgba(11,61,145,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(11,61,145,0.7)] hover:brightness-110 hover:-translate-y-0.5 transition-all active:scale-[0.98] font-label inline-flex items-center gap-3">
+              View Mission Spec
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </NuxtLink>
+            <NuxtLink to="/calendar"
+              class="bg-surface-container-low border border-outline-variant/20 text-on-surface px-8 py-4 rounded-lg text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-surface-container hover:border-outline-variant/40 transition-all font-label">
+              Full Calendar
+            </NuxtLink>
           </div>
         </div>
 
