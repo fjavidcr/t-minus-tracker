@@ -5,14 +5,18 @@ export default defineCachedEventHandler(async (event) => {
 
   try {
     const response = await $fetch<{ count: number, next: string, previous: string, results: any[] }>(`https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=${limit}&offset=${offset}`, {
+      timeout: 5000,
       headers: {
         'Accept': 'application/json',
       }
     })
     return response
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching mission archive from SpaceDevs:', error)
-    return { count: 0, next: null, previous: null, results: [] }
+    throw createError({
+      statusCode: error.response?.status || 500,
+      statusMessage: 'Unable to retrieve mission records from orbital data nodes.'
+    });
   }
 }, {
   maxAge: import.meta.dev ? 3600 : 600, // 10 minutes in prod, 1 hour in dev

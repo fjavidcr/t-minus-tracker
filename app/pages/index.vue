@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { useSeoMeta } from '#imports';
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { useOrbitalLink } from '../composables/useOrbitalLink';
+
+const { setStatus } = useOrbitalLink();
 
 // SEO Meta Data
 useSeoMeta({
@@ -9,8 +11,16 @@ useSeoMeta({
   description: 'Descubre los próximos lanzamientos espaciales de NASA, SpaceX, y más. Mantente actualizado sobre exploración espacial, datos logísticos y rastreo orbital.',
 });
 
-// Fetch data from Nitro backend
-const { data: launches, pending, error } = await useFetch('/api/launches');
+// Fetch data from Nitro backend with lazy loading
+const { data: launches, pending, error, refresh } = useFetch('/api/launches', {
+  lazy: true,
+  server: false // Still fetch on server if possible, but don't block
+});
+
+// Sync status with global link
+watch([pending, error], () => {
+  setStatus(pending.value, error.value, refresh);
+}, { immediate: true });
 
 const futureLaunches = computed(() => {
   if (!launches.value) return [];
@@ -69,19 +79,8 @@ onUnmounted(() => {
 
 <template>
   <div class="p-4 md:p-8 lg:p-12 space-y-12">
-    <!-- Loading State -->
-    <div v-if="pending" class="h-96 flex items-center justify-center">
-      <span class="w-8 h-8 rounded-full bg-primary animate-ping"></span>
-    </div>
-
-    <!-- Error State -->
-    <div v-else-if="error"
-      class="bg-error-container text-on-error-container p-6 rounded-lg border border-error/20 font-mono">
-      Error of transmission. Unable to connect to orbital data nodes.
-    </div>
-
     <!-- Loaded State -->
-    <template v-else-if="heroLaunch">
+    <template v-if="heroLaunch">
       <!-- Hero Section: Central Countdown -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end relative">
         <!-- Light bleed glow behind hero (Artemis Orange for contrast) -->
@@ -196,7 +195,7 @@ onUnmounted(() => {
 
         <!-- View All link -->
         <div class="mt-8 flex justify-center">
-          <NuxtLink 
+          <NuxtLink
             to="/missions"
             class="group flex items-center gap-4 bg-surface-container-low px-8 py-4 rounded-xl border border-outline-variant/10 hover:border-secondary/30 transition-all font-label text-[10px] font-bold uppercase tracking-[0.4em] text-on-surface-variant hover:text-secondary group"
           >
@@ -291,5 +290,29 @@ onUnmounted(() => {
         </div>
       </section>
     </template>
+
+    <!-- Fallback State: No Upcoming Launches -->
+    <div v-else-if="!pending" class="min-h-[70vh] flex flex-col items-center justify-center text-center space-y-8 p-12">
+      <div class="relative">
+        <div class="absolute -inset-12 bg-secondary/5 blur-3xl rounded-full animate-pulse"></div>
+        <span class="material-symbols-outlined text-7xl text-secondary relative z-10" style="font-variation-settings: 'FILL' 0, 'wght' 200;">satellite_alt</span>
+      </div>
+
+      <div class="space-y-3 max-w-md relative z-10">
+        <h2 class="text-3xl font-black font-headline uppercase tracking-tighter text-on-surface">Orbital Standby</h2>
+        <p class="text-[10px] font-bold uppercase tracking-[0.3em] font-label text-on-surface-variant leading-relaxed">
+          No immediate deployments detected in the current window. <br/>
+          Mission control is monitoring deep space frequencies.
+        </p>
+      </div>
+
+      <NuxtLink
+        to="/missions"
+        class="group flex items-center gap-4 bg-surface-container-low px-8 py-4 rounded-xl border border-outline-variant/10 hover:border-primary/50 transition-all font-label text-[10px] font-bold uppercase tracking-[0.4em] text-on-surface-variant hover:text-primary"
+      >
+        Access Archival Logs
+        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </NuxtLink>
+    </div>
   </div>
 </template>

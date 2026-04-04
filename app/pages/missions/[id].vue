@@ -1,8 +1,19 @@
 <script setup lang="ts">
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { useOrbitalLink } from '../../composables/useOrbitalLink';
+
+const { setStatus } = useOrbitalLink();
 const route = useRoute()
 const missionId = route.params.id
 
-const { data: mission, pending, error } = await useFetch<any>(`/api/launch/${missionId}`)
+const { data: mission, pending, error, refresh } = useFetch<any>(`/api/launch/${missionId}`, {
+  lazy: true
+})
+
+// Sync status with global link
+watch([pending, error], () => {
+  setStatus(pending.value, error.value, refresh);
+}, { immediate: true });
 
 const getTimeUntil = (dateString: string) => {
   if (!dateString) return null;
@@ -147,21 +158,8 @@ const toggleShareMenu = () => {
 
 <template>
   <main class="flex-1 overflow-y-auto bg-surface min-h-[calc(100vh-64px)] pb-12">
-    <div v-if="pending" class="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
-      <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-      <p class="text-on-surface-variant font-label uppercase tracking-[0.2em] text-[10px] font-black">Syncing Telemetry...</p>
-    </div>
 
-    <div v-else-if="error" class="flex flex-col items-center justify-center min-h-[60vh] p-12 text-center">
-      <span class="material-symbols-outlined text-secondary text-5xl mb-6">error</span>
-      <h2 class="text-2xl font-black font-headline uppercase text-on-surface mb-2">Telemetry Lost</h2>
-      <p class="text-on-surface-variant max-w-md mb-8">Unable to establish connection with SpaceDevs API. Please verify the mission ID and try again.</p>
-      <NuxtLink to="/missions" class="bg-primary text-on-primary px-8 py-4 rounded-lg font-label uppercase text-[10px] font-black tracking-widest shadow-xl shadow-primary/20">
-        Return to Archive
-      </NuxtLink>
-    </div>
-
-    <template v-else-if="mission">
+    <template v-if="mission">
       <!-- Hero Mission Section -->
       <section class="relative h-[680px] flex items-center px-12 overflow-visible bg-surface-container-lowest">
         <!-- Background Image: Spectacular & Vibrant -->

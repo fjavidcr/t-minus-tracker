@@ -10,6 +10,7 @@ export default defineCachedEventHandler(async (event) => {
 
   try {
     const response = await $fetch(`https://ll.thespacedevs.com/2.3.0/launches/${id}/?mode=detailed`, {
+      timeout: 5000,
       headers: {
         'Accept': 'application/json'
       }

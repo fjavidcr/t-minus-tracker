@@ -1,4 +1,18 @@
 <script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
+import { useOrbitalLink } from './composables/useOrbitalLink';
+
+const { state, refresh } = useOrbitalLink();
+const route = useRoute();
+
+const isMounted = ref(false);
+onMounted(() => {
+  isMounted.value = true;
+});
+
+// Bypasses the global orbital check for settings (local logic)
+const isSettings = computed(() => route.path === '/settings');
+
 useHead({
   htmlAttrs: {
     class: 'dark'
@@ -21,6 +35,7 @@ useHead({
             font-family: 'Geist', sans-serif;
             background-color: #0f131c;
             color: #dfe2ee;
+            overflow-x: hidden;
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Space Grotesk', sans-serif;
@@ -49,7 +64,6 @@ useHead({
         }
     `}
   ]
-
 })
 </script>
 
@@ -69,74 +83,76 @@ body,
   flex: 1;
   width: 100%;
 }
+
+/* Page transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.3s ease;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(10px);
+}
+
+/* Global fade transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
 
 <template>
-  <div class="flex flex-col min-h-screen selection:bg-secondary selection:text-on-secondary bg-surface text-on-surface font-body antialiased w-full">
-    <!-- Top Global Navigation -->
-    <header class="w-full top-0 sticky bg-surface/80 backdrop-blur-xl z-[100] border-b border-outline-variant/10">
-      <div class="flex justify-between items-center h-20 px-4 md:px-12 max-w-[1440px] mx-auto w-full">
-        <!-- Logo & Brand -->
-        <NuxtLink to="/" class="flex flex-col items-start group">
-          <h1 class="text-2xl font-black text-on-surface tracking-tighter uppercase font-headline leading-none group-hover:text-primary transition-colors">T-minus</h1>
-          <p class="text-[0.6rem] font-bold uppercase tracking-[0.3em] text-primary/60 font-label">Deep Space Archive</p>
-        </NuxtLink>
-
-        <!-- Primary Navigation -->
-        <nav class="hidden lg:flex items-center gap-10 font-label text-[10px] uppercase tracking-[0.2em] font-black">
-          <NuxtLink to="/" class="text-on-surface-variant hover:text-primary transition-all py-2 border-b-2 border-transparent router-link-exact-active:border-primary router-link-exact-active:text-primary">Upcoming</NuxtLink>
-          <NuxtLink to="/missions" class="text-on-surface-variant hover:text-primary transition-all py-2 border-b-2 border-transparent router-link-active:border-primary router-link-active:text-primary">Missions</NuxtLink>
-          <NuxtLink to="/calendar" class="text-on-surface-variant hover:text-primary transition-all py-2 border-b-2 border-transparent router-link-active:border-primary router-link-active:text-primary">Calendar</NuxtLink>
-          <NuxtLink to="/fleet" class="text-on-surface-variant hover:text-primary transition-all py-2 border-b-2 border-transparent router-link-active:border-primary router-link-active:text-primary">Fleet</NuxtLink>
-          <NuxtLink to="/agencies" class="text-on-surface-variant hover:text-primary/60 transition-all py-2 opacity-50 cursor-help">Agencies</NuxtLink>
-        </nav>
-
-        <!-- Search & Control -->
-        <div class="flex items-center gap-6">
-          <div class="hidden md:flex bg-surface-container-low px-4 py-2.5 items-center gap-3 rounded-full border border-outline-variant/10 focus-within:border-primary/40 transition-all">
-            <span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
-            <input
-              class="bg-transparent border-none text-[10px] focus:ring-0 text-on-surface placeholder-on-surface-variant/40 w-48 font-label uppercase tracking-[0.2em] outline-none"
-              placeholder="Search Deep Space..." type="text" />
-          </div>
-          <div class="flex items-center gap-2">
-            <NuxtLink to="/settings" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant hover:text-primary">
-              <span class="material-symbols-outlined text-xl">settings</span>
-            </NuxtLink>
-            <!-- Mobile Menu Toggle -->
-            <button class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface">
-              <span class="material-symbols-outlined text-2xl">menu</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
+  <div 
+    v-if="isMounted"
+    class="flex flex-col min-h-screen selection:bg-secondary selection:text-on-secondary bg-surface text-on-surface font-body antialiased w-full overflow-x-hidden"
+  >
+    <!-- Header: Hidden on critical error to focus on Terminal -->
+    <AppHeader v-if="!state.error" />
 
     <!-- Main Content Area -->
-    <main class="flex-1 relative w-full pt-4 md:pt-8">
+    <main class="flex-1 relative w-full pt-4 md:pt-8 overflow-hidden">
       <NuxtRouteAnnouncer />
-      <NuxtPage />
+      
+      <!-- Global Mission Link Handling -->
+      <template v-if="!isSettings">
+        <!-- Dashboard Content: Fades out when loading, error, or connecting -->
+        <div 
+          class="transition-all duration-700 ease-in-out"
+          :class="{ 'opacity-0 scale-95 blur-sm pointer-events-none': state.pending || state.error || state.connecting }"
+        >
+          <NuxtPage />
+        </div>
+
+        <!-- Overlays (Loading/Error): Only on client to avoid hydration flicker -->
+        <ClientOnly>
+          <Transition name="fade">
+            <RocketLoading 
+              v-if="state.pending && !state.error" 
+              class="fixed inset-0 z-[100] bg-[#0f131c]"
+            />
+          </Transition>
+          
+          <Transition name="fade">
+            <OrbitalError 
+              v-if="state.error" 
+              :error="state.error" 
+              :retry="refresh" 
+              class="fixed inset-0 z-[110] bg-[#0f131c]"
+            />
+          </Transition>
+        </ClientOnly>
+      </template>
+
+      <!-- Settings page always bypasses orbital link checks -->
+      <NuxtPage v-else />
     </main>
 
-    <!-- Mobile Bottom Navigation (Optional fallback) -->
-    <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface-container-low/95 backdrop-blur-xl border-t border-outline-variant/10 flex justify-around items-center h-20 px-4 z-50">
-      <NuxtLink to="/" class="flex flex-col items-center gap-1.5 text-on-surface-variant router-link-exact-active:text-primary">
-        <span class="material-symbols-outlined text-xl">rocket_launch</span>
-        <span class="text-[0.6rem] font-bold uppercase tracking-widest font-label">Upcoming</span>
-      </NuxtLink>
-      <NuxtLink to="/missions" class="flex flex-col items-center gap-1.5 text-on-surface-variant router-link-active:text-primary">
-        <span class="material-symbols-outlined text-xl">database</span>
-        <span class="text-[0.6rem] font-bold uppercase tracking-widest font-label">Archive</span>
-      </NuxtLink>
-      <NuxtLink to="/calendar" class="flex flex-col items-center gap-1.5 text-on-surface-variant router-link-active:text-primary">
-        <span class="material-symbols-outlined text-xl">calendar_month</span>
-        <span class="text-[0.6rem] font-bold uppercase tracking-widest font-label">Calendar</span>
-      </NuxtLink>
-      <NuxtLink to="/settings" class="flex flex-col items-center gap-1.5 text-on-surface-variant router-link-active:text-primary">
-        <span class="material-symbols-outlined text-xl">settings</span>
-        <span class="text-[0.6rem] font-bold uppercase tracking-widest font-label">Settings</span>
-      </NuxtLink>
-    </nav>
+    <!-- Mobile Navigation: Hidden on critical error -->
+    <AppBottomNav v-if="!state.error" />
   </div>
 </template>
-

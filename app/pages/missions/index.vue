@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { useSeoMeta } from '#imports';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { useOrbitalLink } from '../../composables/useOrbitalLink';
+
+const { setStatus } = useOrbitalLink();
 
 // SEO Meta Data
 useSeoMeta({
@@ -13,14 +15,20 @@ useSeoMeta({
 const limit = ref(12);
 const offset = ref(0);
 
-// Fetch data from Nitro backend with reactive query parameters
-const { data: missions, pending, error } = await useFetch('/api/missions-archive', {
+// Fetch data from Nitro backend with reactive query parameters and lazy loading
+const { data: missions, pending, error, refresh } = useFetch('/api/missions-archive', {
+  lazy: true,
   query: { 
     limit, 
     offset 
   },
   watch: [offset] // Re-fetch when offset changes
 });
+
+// Sync status with global link
+watch([pending, error], () => {
+  setStatus(pending.value, error.value, refresh);
+}, { immediate: true });
 
 const searchQuery = ref('');
 
@@ -95,20 +103,8 @@ const padZero = (num: number) => num.toString().padStart(2, '0');
       </div>
     </header>
 
-    <!-- Loading State -->
-    <div v-if="pending" class="h-96 flex flex-col items-center justify-center gap-4">
-      <div class="w-12 h-12 border-t-2 border-primary rounded-full animate-spin"></div>
-      <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-primary animate-pulse">Establishing Data Link...</p>
-    </div>
-
-    <!-- Error State -->
-    <div v-else-if="error" class="bg-error-container text-on-error-container p-10 rounded-xl border border-error/20 font-mono text-center">
-      <span class="material-symbols-outlined text-4xl mb-4">error</span>
-      <p class="text-xs uppercase tracking-widest leading-relaxed">Error of transmission. Unable to connect to orbital data nodes. System restricted.</p>
-    </div>
-
     <!-- Loaded State -->
-    <template v-else>
+    <template v-if="!pending">
       <div v-if="filteredMissions.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <LaunchCard v-for="mission in filteredMissions" :key="mission.id" :launch="mission" />
       </div>

@@ -1,19 +1,101 @@
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+import { useOrbitalLink } from '../composables/useOrbitalLink';
+
+const { setStatus } = useOrbitalLink();
+
 useHead({
   title: 'T-minus | Launch Calendar'
 })
 
+// Fetch data from Nitro backend
+const { data: launches, pending, error, refresh } = useFetch<any[]>('/api/launches', {
+  lazy: true
+});
+
+// Sync status with global link
+watch([pending, error], () => {
+  setStatus(pending.value, error.value, refresh);
+}, { immediate: true });
+
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+// Calendar Logic
+const now = new Date();
+const currentMonthName = now.toLocaleString('en-US', { month: 'long' });
+const currentYear = now.getFullYear();
+const firstDayOfMonth = new Date(currentYear, now.getMonth(), 1).getDay();
+const totalDays = new Date(currentYear, now.getMonth() + 1, 0).getDate();
+
+// Array of 42 cells (6 weeks) to cover any month
+const calendarCells = computed(() => {
+  const cells = [];
+  const prevMonthLastDay = new Date(currentYear, now.getMonth(), 0).getDate();
+  
+  // Padding from previous month
+  for (let i = firstDayOfMonth - 1; i >= 0; i--) {
+    cells.push({
+      day: prevMonthLastDay - i,
+      month: 'prev',
+      fullDate: new Date(currentYear, now.getMonth() - 1, prevMonthLastDay - i)
+    });
+  }
+  
+  // Days of current month
+  for (let i = 1; i <= totalDays; i++) {
+    cells.push({
+      day: i,
+      month: 'current',
+      fullDate: new Date(currentYear, now.getMonth(), i)
+    });
+  }
+  
+  // Padding for next month
+  const remaining = 42 - cells.length;
+  for (let i = 1; i <= remaining; i++) {
+    cells.push({
+      day: i,
+      month: 'next',
+      fullDate: new Date(currentYear, now.getMonth() + 1, i)
+    });
+  }
+  
+  return cells;
+});
+
+const getEventsForDate = (date: Date) => {
+  if (!launches.value) return [];
+  return launches.value.filter(l => {
+    const launchDate = new Date(l.net);
+    return launchDate.getDate() === date.getDate() &&
+           launchDate.getMonth() === date.getMonth() &&
+           launchDate.getFullYear() === date.getFullYear();
+  });
+};
+
+const getAgencyColor = (agency: string) => {
+  if (agency?.includes('NASA')) return 'bg-primary';
+  if (agency?.includes('SpaceX')) return 'bg-tertiary';
+  if (agency?.includes('ESA')) return 'bg-secondary';
+  return 'bg-secondary';
+};
+
+const getAgencyBadge = (agency: string) => {
+  if (agency?.includes('NASA')) return 'NASA';
+  if (agency?.includes('SpaceX')) return 'SPX';
+  if (agency?.includes('ESA')) return 'ESA';
+  return 'GEN';
+};
 </script>
 
 <template>
   <main class="flex-1 flex flex-col md:flex-row overflow-hidden bg-surface min-h-[calc(100vh-80px)]">
     <!-- Calendar View -->
-    <section class="flex-1 p-8 overflow-y-auto custom-scrollbar">
-      <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <section class="flex-1 p-4 md:p-8 overflow-y-auto custom-scrollbar">
+      <div v-if="!pending" class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <div class="font-label text-on-surface-variant uppercase tracking-[0.3em] font-medium text-[10px] mb-2">Classification: Schedule-Alpha</div>
-          <h1 class="text-4xl font-black tracking-tighter text-on-surface font-headline uppercase leading-none">September 2024</h1>
+          <h1 class="text-4xl font-black tracking-tighter text-on-surface font-headline uppercase leading-none">{{ currentMonthName }} {{ currentYear }}</h1>
         </div>
         <div class="flex items-center gap-2 bg-surface-container p-1 rounded-lg font-label">
           <button class="px-6 py-2 text-[10px] font-bold uppercase tracking-wider bg-primary text-on-primary rounded-lg shadow-sm transition-all focus:outline-none">Month</button>
@@ -22,7 +104,7 @@ const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
       </div>
 
       <!-- Filter Bar -->
-      <div class="flex flex-wrap gap-4 mb-8 font-label">
+      <div v-if="!pending" class="flex flex-wrap gap-4 mb-8 font-label">
         <div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low rounded-lg border border-outline-variant/10">
           <span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(11,61,145,0.6)]"></span>
           <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">NASA</span>
@@ -42,28 +124,33 @@ const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
       </div>
 
       <!-- Calendar Grid -->
-      <div class="grid grid-cols-7 gap-px bg-outline-variant/10 border border-outline-variant/10 overflow-hidden rounded-xl">
+      <div v-if="!pending" class="grid grid-cols-7 gap-px bg-outline-variant/10 border border-outline-variant/10 overflow-hidden rounded-xl">
         <!-- Days Header -->
         <div v-for="day in days" :key="day" class="bg-surface-container-low py-3 text-center border-b border-outline-variant/10">
           <span class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant font-label">{{ day }}</span>
         </div>
 
-        <!-- Calendar Days (Mockup for Sep 2024) -->
-        <div v-for="i in 35" :key="i" 
+        <!-- Calendar Days -->
+        <div v-for="(cell, idx) in calendarCells" :key="idx" 
           :class="[
             'min-h-[140px] bg-surface p-3 flex flex-col gap-2 transition-colors hover:bg-surface-container/30 group',
-            i < 6 || i > 30 ? 'opacity-30' : ''
+            cell.month !== 'current' ? 'opacity-20' : ''
           ]">
-          <span class="text-[11px] font-bold font-label" :class="i === 11 ? 'text-secondary' : 'text-on-surface-variant'">
-            {{ i <= 5 ? 26 + i : (i <= 30 ? i - 5 : i - 30) }}
+          <span class="text-[11px] font-bold font-label" :class="cell.fullDate.toDateString() === now.toDateString() ? 'text-secondary' : 'text-on-surface-variant'">
+            {{ cell.day }}
           </span>
           
-          <!-- Events -->
-          <div v-if="i === 10" class="p-1.5 bg-primary/10 border-l-2 border-primary rounded-r-sm text-[9px] font-bold uppercase tracking-tighter text-primary truncate font-label">Artemis II Prep</div>
-          <div v-if="i === 11" class="p-2 bg-secondary text-on-secondary rounded-sm text-[9px] font-black uppercase tracking-tighter truncate shadow-lg font-label">STARLINK v6.2</div>
-          <div v-if="i === 11" class="p-1.5 bg-tertiary/10 border-l-2 border-tertiary rounded-r-sm text-[9px] font-bold uppercase tracking-tighter text-tertiary truncate font-label">Cargo Drag.</div>
-          <div v-if="i === 15" class="p-1.5 bg-secondary/10 border-l-2 border-secondary rounded-r-sm text-[9px] font-bold uppercase tracking-tighter text-secondary truncate font-label">Ariane 6 Payload</div>
-          <div v-if="i === 20" class="p-1.5 bg-error/10 border-l-2 border-error rounded-r-sm text-[9px] font-bold uppercase tracking-tighter text-error truncate font-label">H3-F4 Launch</div>
+          <!-- Dynamic Events -->
+          <template v-for="event in getEventsForDate(cell.fullDate)" :key="event.id">
+            <NuxtLink :to="`/missions/${event.id}`" 
+              class="p-1.5 rounded-sm text-[8px] font-bold uppercase tracking-tighter truncate font-label transition-all hover:scale-[1.02] shadow-sm"
+              :class="[
+                getAgencyColor(event.launch_service_provider?.name),
+                'text-white'
+              ]">
+              {{ event.name.split('|')[1] || event.name }}
+            </NuxtLink>
+          </template>
         </div>
       </div>
     </section>
@@ -72,41 +159,24 @@ const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     <aside class="w-full md:w-80 lg:w-96 bg-surface-container-low border-l border-outline-variant/5 p-8 flex flex-col gap-8 overflow-y-auto custom-scrollbar">
       <div>
         <div class="flex items-center justify-between mb-8">
-          <h2 class="text-sm font-black tracking-tight text-on-surface uppercase font-headline">Upcoming Milestones</h2>
+          <h2 class="text-sm font-black tracking-tight text-on-surface uppercase font-headline">Telemetry Log</h2>
           <span class="material-symbols-outlined text-secondary text-lg">priority_high</span>
         </div>
-        <div class="space-y-8">
-          <!-- Milestone 1 -->
-          <div class="relative group cursor-pointer">
-            <div class="flex items-start gap-4">
+        <div v-if="!pending" class="space-y-6">
+          <div v-for="launch in launches?.slice(0, 5)" :key="launch.id" class="relative group cursor-pointer">
+            <NuxtLink :to="`/missions/${launch.id}`" class="flex items-start gap-4">
               <div class="h-10 w-10 shrink-0 bg-surface-container rounded-lg flex items-center justify-center ring-1 ring-outline-variant/10 group-hover:ring-primary/50 transition-all">
                 <span class="material-symbols-outlined text-primary text-lg">rocket</span>
               </div>
               <div class="flex-1">
                 <div class="flex justify-between items-start mb-1 font-label">
-                  <span class="text-[9px] font-black text-primary uppercase tracking-widest">NASA</span>
-                  <span class="text-[9px] font-bold text-on-surface-variant">T-04D 12H</span>
+                  <span class="text-[9px] font-black uppercase tracking-widest" :class="getAgencyColor(launch.launch_service_provider?.name).replace('bg-', 'text-')">{{ getAgencyBadge(launch.launch_service_provider?.name) }}</span>
+                  <span class="text-[9px] font-bold text-on-surface-variant">{{ new Date(launch.net).toLocaleDateString('en-US', { month: 'short', day: 'numeric'}) }}</span>
                 </div>
-                <h3 class="text-xs font-bold text-on-surface mb-1 font-headline uppercase tracking-tight">Artemis II Orion Integration</h3>
-                <p class="text-[11px] text-on-surface-variant leading-relaxed font-body">Final assembly of the crew module with the service module at Kennedy Space Center.</p>
+                <h3 class="text-[11px] font-bold text-on-surface mb-1 font-headline uppercase tracking-tight line-clamp-1">{{ launch.name }}</h3>
+                <p class="text-[10px] text-on-surface-variant leading-relaxed font-body line-clamp-2">{{ launch.mission?.description || 'Orbital deployment sequence initiated.' }}</p>
               </div>
-            </div>
-          </div>
-          <!-- Milestone 2 -->
-          <div class="relative group cursor-pointer">
-            <div class="flex items-start gap-4">
-              <div class="h-10 w-10 shrink-0 bg-surface-container rounded-lg flex items-center justify-center ring-1 ring-outline-variant/10 group-hover:ring-secondary/50 transition-all">
-                <span class="material-symbols-outlined text-secondary text-lg">satellite_alt</span>
-              </div>
-              <div class="flex-1">
-                <div class="flex justify-between items-start mb-1 font-label">
-                  <span class="text-[9px] font-black text-secondary uppercase tracking-widest">ESA</span>
-                  <span class="text-[9px] font-bold text-on-surface-variant">T-09D 04H</span>
-                </div>
-                <h3 class="text-xs font-bold text-on-surface mb-1 font-headline uppercase tracking-tight">JUICE Probe Correction</h3>
-                <p class="text-[11px] text-on-surface-variant leading-relaxed font-body">Deep space maneuver to optimize the trajectory for the Jovian system injection.</p>
-              </div>
-            </div>
+            </NuxtLink>
           </div>
         </div>
       </div>
