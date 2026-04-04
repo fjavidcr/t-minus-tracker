@@ -67,8 +67,8 @@ const program = computed(() => mission.value?.program?.[0]);
 
 // Robust Celestial Data Source
 const celestialBody = computed(() => {
-  return mission.value?.mission?.orbit?.celestial_body?.mass 
-    ? mission.value.mission.orbit.celestial_body 
+  return mission.value?.mission?.orbit?.celestial_body?.mass
+    ? mission.value.mission.orbit.celestial_body
     : mission.value?.pad?.location?.celestial_body;
 });
 
@@ -98,7 +98,32 @@ const formatNumber = (value: number, unit: string = '') => {
   if (!value) return 'TBD';
   return new Intl.NumberFormat('en-US').format(value) + (unit ? ` ${unit}` : '');
 };
+
+// Action Helpers
+const generateCalendarLink = () => {
+  if (!mission.value?.net) return '#';
+  const name = encodeURIComponent(`T-minus: ${mission.value.name}`);
+  const description = encodeURIComponent(mission.value.mission?.description || '');
+  const location = encodeURIComponent(mission.value.pad?.name || '');
+
+  const startDate = new Date(mission.value.net).toISOString().replace(/-|:|\.\d+/g, '');
+  const endDate = new Date(new Date(mission.value.net).getTime() + 3600000).toISOString().replace(/-|:|\.\d+/g, '');
+
+  return `https://www.google.com/calendar/render?action=TEMPLATE&text=${name}&details=${description}&location=${location}&dates=${startDate}/${endDate}`;
+};
+
+const shareStatus = ref('SHARE');
+const shareMission = () => {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    shareStatus.value = 'COPIED!';
+    setTimeout(() => {
+      shareStatus.value = 'SHARE';
+    }, 2000);
+  });
+};
 </script>
+
 
 <template>
   <main class="flex-1 overflow-y-auto bg-surface min-h-[calc(100vh-64px)] pb-12">
@@ -125,7 +150,7 @@ const formatNumber = (value: number, unit: string = '') => {
         <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
 
         <!-- Mission Patch: Floating safely below Navigation -->
-        <div v-if="missionPatch" class="absolute right-12 top-28 z-[110] hidden lg:block transition-all duration-1000 pointer-events-none">
+        <div v-if="missionPatch" class="absolute right-12 top-14 z-[110] hidden lg:block transition-all duration-1000 pointer-events-none">
           <img :src="missionPatch" class="w-52 h-52 object-contain animate-float drop-shadow-[0_20px_50px_rgba(0,0,0,0.4)]" alt="Mission Patch" />
         </div>
 
@@ -149,15 +174,21 @@ const formatNumber = (value: number, unit: string = '') => {
               {{ mission.mission?.description || mission.status?.description || 'No mission description available.' }}
             </p>
 
-            <div class="flex flex-wrap items-center gap-6 font-label uppercase text-[10px] font-black tracking-widest">
+            <div class="flex flex-wrap items-center gap-4 font-label uppercase text-[10px] font-black tracking-widest">
               <a v-if="mission.vid_urls?.length" :href="mission.vid_urls[0].url" target="_blank" class="bg-primary text-on-primary px-8 py-4 rounded-lg flex items-center gap-3 active:scale-95 transition-all shadow-xl shadow-primary/20 cursor-pointer">
                 <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">play_circle</span>
                 LIVE STREAM
               </a>
-              <button class="bg-surface-variant/20 hover:bg-surface-variant/40 border border-outline-variant/20 text-on-surface px-8 py-4 rounded-lg transition-colors">
-                DOWNLOAD MANIFEST
+              <a :href="generateCalendarLink()" target="_blank" class="bg-surface-variant/20 hover:bg-surface-variant/40 border border-outline-variant/20 text-on-surface px-8 py-4 rounded-lg transition-colors flex items-center gap-3 active:scale-95">
+                <span class="material-symbols-outlined text-lg">calendar_add_on</span>
+                ADD TO CALENDAR
+              </a>
+              <button @click="shareMission" class="group bg-surface-variant/10 hover:bg-surface-variant/30 border border-outline-variant/10 text-on-surface-variant hover:text-on-surface p-4 rounded-lg transition-all flex items-center gap-2 active:scale-95">
+                <span class="material-symbols-outlined text-lg transition-transform group-hover:rotate-12">{{ shareStatus === 'COPIED!' ? 'check_circle' : 'share' }}</span>
+                <span class="w-8">{{ shareStatus }}</span>
               </button>
             </div>
+
           </div>
 
           <!-- Countdown & Critical Window -->
@@ -385,7 +416,7 @@ const formatNumber = (value: number, unit: string = '') => {
                  </div>
                  <img v-if="mission.launch_service_provider?.logo" :src="mission.launch_service_provider.logo.image_url" class="h-12 object-contain grayscale opacity-50" />
               </div>
-              
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                  <div class="space-y-6">
                     <p class="text-sm font-body text-on-surface-variant leading-relaxed">{{ mission.launch_service_provider?.description }}</p>
@@ -398,7 +429,7 @@ const formatNumber = (value: number, unit: string = '') => {
                        </a>
                     </div>
                  </div>
-                 
+
                  <div class="bg-surface-container/30 rounded-xl p-6 border border-outline-variant/5 space-y-6">
                     <h4 class="text-[10px] font-black text-on-surface uppercase tracking-[0.2em] font-label">Operational Record</h4>
                     <div class="space-y-4">
@@ -424,7 +455,7 @@ const formatNumber = (value: number, unit: string = '') => {
               <!-- Celestial Body: Academic Context -->
               <div v-if="celestialBody" class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 flex-1 relative overflow-hidden group">
                  <div class="absolute -right-10 -top-10 w-48 h-48 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
-                 
+
                  <p class="text-[10px] font-black tracking-widest text-secondary uppercase mb-4 font-label">Celestial Mechanics</p>
                  <div class="flex items-center gap-4 mb-6">
                     <img v-if="celestialBody.image?.image_url" :src="celestialBody.image.image_url" class="w-16 h-16 rounded-full object-cover shadow-2xl animate-float" />
@@ -433,7 +464,7 @@ const formatNumber = (value: number, unit: string = '') => {
                        <p class="text-[9px] font-bold text-on-surface-variant uppercase font-label">Target Gravitational Well</p>
                     </div>
                  </div>
-                 
+
                  <div class="space-y-4 font-label text-[10px]">
                     <div class="flex justify-between border-b border-outline-variant/10 pb-2">
                        <span class="text-on-surface-variant uppercase">Mass Index</span>
@@ -450,7 +481,7 @@ const formatNumber = (value: number, unit: string = '') => {
                        <span class="text-on-surface font-black uppercase">{{ celestialBody.atmosphere ? 'DETECTED' : 'VACUUM' }}</span>
                     </div>
                  </div>
-                 
+
                  <p class="mt-6 text-[10px] text-on-surface-variant font-body leading-relaxed line-clamp-3 opacity-60">
                     {{ celestialBody.description }}
                  </p>
@@ -491,7 +522,7 @@ const formatNumber = (value: number, unit: string = '') => {
                  <h3 class="text-2xl font-black font-headline uppercase text-on-surface tracking-tight">Mission Broadcasts & Resources</h3>
               </div>
            </div>
-           
+
            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div v-for="vid in mission.vid_urls" :key="vid.url" class="bg-surface-container/50 rounded-xl p-6 border border-outline-variant/10 flex flex-col group">
                  <div class="aspect-video bg-surface-container rounded-lg overflow-hidden mb-4 relative">
@@ -510,7 +541,7 @@ const formatNumber = (value: number, unit: string = '') => {
                     </a>
                  </div>
               </div>
-              
+
               <!-- Info Links as smaller cards -->
               <div v-for="info in mission.info_urls" :key="info.url" class="bg-surface-container/50 rounded-xl p-6 border border-outline-variant/10 flex flex-col items-center justify-center text-center group border-dashed hover:border-solid transition-all">
                  <span class="material-symbols-outlined text-primary text-3xl mb-4 group-hover:rotate-12 transition-transform">article</span>
@@ -524,14 +555,14 @@ const formatNumber = (value: number, unit: string = '') => {
         </div>
       </section>
       <!-- Sticky Information Bar (Dashboard HUD) -->
-      <nav 
+      <nav
         class="fixed top-20 left-0 w-full z-[90] bg-surface/95 backdrop-blur-2xl border-b border-outline-variant/10 px-12 h-16 flex items-center justify-between transition-all duration-500 ease-in-out transform"
         :class="isSticky ? 'translate-y-0 opacity-100 shadow-xl' : '-translate-y-full opacity-0 pointer-events-none'"
       >
         <div class="flex items-center gap-6">
           <!-- Mini Mission Patch -->
           <img v-if="missionPatch" :src="missionPatch" class="w-10 h-10 object-contain drop-shadow-md" />
-          
+
           <div class="flex flex-col">
             <h1 class="text-lg font-black font-headline tracking-tighter text-on-surface uppercase leading-none">
               {{ mission.name.split('|')[0] }}
@@ -561,7 +592,7 @@ const formatNumber = (value: number, unit: string = '') => {
                <span class="text-secondary opacity-60">SEC</span>
              </div>
           </div>
-          
+
           <div class="hidden md:flex items-center gap-3 border-l border-outline-variant/20 pl-12">
              <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
              <span class="text-on-surface-variant font-black">Live Telemetry</span>
