@@ -29,7 +29,14 @@ const getTimeUntil = (dateString: string) => {
 const countdown = ref({ days: '00', hours: '00', minutes: '00', seconds: '00', total: 0 });
 let timer: any;
 
+const isSticky = ref(false);
+
+const handleScroll = () => {
+  isSticky.value = window.scrollY > 480;
+};
+
 onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
   if (mission.value?.net) {
     countdown.value = getTimeUntil(mission.value.net) as any;
     timer = setInterval(() => {
@@ -39,8 +46,10 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
   if (timer) clearInterval(timer);
 });
+
 
 useHead({
   title: `Mission Specs | ${mission.value?.name || 'Loading...'}`
@@ -514,9 +523,55 @@ const formatNumber = (value: number, unit: string = '') => {
            </div>
         </div>
       </section>
+      <!-- Sticky Information Bar (Dashboard HUD) -->
+      <nav 
+        class="fixed top-20 left-0 w-full z-[90] bg-surface/95 backdrop-blur-2xl border-b border-outline-variant/10 px-12 h-16 flex items-center justify-between transition-all duration-500 ease-in-out transform"
+        :class="isSticky ? 'translate-y-0 opacity-100 shadow-xl' : '-translate-y-full opacity-0 pointer-events-none'"
+      >
+        <div class="flex items-center gap-6">
+          <!-- Mini Mission Patch -->
+          <img v-if="missionPatch" :src="missionPatch" class="w-10 h-10 object-contain drop-shadow-md" />
+          
+          <div class="flex flex-col">
+            <h1 class="text-lg font-black font-headline tracking-tighter text-on-surface uppercase leading-none">
+              {{ mission.name.split('|')[0] }}
+            </h1>
+            <p class="text-[9px] font-black uppercase tracking-widest mission-text-stroke">
+               {{ mission.name.split('|')[1] || 'Primary Operation' }}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-12 font-label uppercase text-[9px] font-black tracking-[0.2em]">
+          <div class="flex items-center gap-6 tabular-nums">
+             <div class="flex items-center gap-1.5">
+               <span class="text-on-surface">{{ countdown.days }}</span>
+               <span class="text-secondary opacity-60">DAYS</span>
+             </div>
+             <div class="flex items-center gap-1.5">
+               <span class="text-on-surface">{{ countdown.hours }}</span>
+               <span class="text-secondary opacity-60">HRS</span>
+             </div>
+             <div class="flex items-center gap-1.5">
+               <span class="text-on-surface">{{ countdown.minutes }}</span>
+               <span class="text-secondary opacity-60">MIN</span>
+             </div>
+             <div class="flex items-center gap-1.5">
+               <span class="text-secondary drop-shadow-[0_0_8px_rgba(252,61,33,0.5)]">{{ countdown.seconds }}</span>
+               <span class="text-secondary opacity-60">SEC</span>
+             </div>
+          </div>
+          
+          <div class="hidden md:flex items-center gap-3 border-l border-outline-variant/20 pl-12">
+             <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+             <span class="text-on-surface-variant font-black">Live Telemetry</span>
+          </div>
+        </div>
+      </nav>
     </template>
   </main>
 </template>
+
 
 <style scoped>
 .mission-text-stroke {
