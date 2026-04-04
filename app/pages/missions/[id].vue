@@ -109,16 +109,17 @@ const formatNumber = (value: number, unit: string = '') => {
 
     <template v-else-if="mission">
       <!-- Hero Mission Section -->
-      <section class="relative h-[640px] flex items-center px-12 overflow-hidden bg-surface-container-lowest">
+      <section class="relative h-[680px] flex items-center px-12 overflow-visible bg-surface-container-lowest">
         <!-- Background Image: Spectacular & Vibrant -->
-        <img class="absolute inset-0 w-full h-full object-cover opacity-90 transition-opacity duration-1000" :src="mission.image?.image_url || defaultImage"/>
-        <div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/40 to-transparent"></div>
+        <img class="absolute inset-0 w-full h-full object-cover opacity-90 transition-opacity duration-1000" :src="mission.image?.image_url || defaultImage" />
+        <div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/20 to-transparent"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
 
-        <!-- Mission Patch: Full Color & Floating above Countdown -->
-        <div v-if="missionPatch" class="absolute right-[10%] top-[15%] z-50 hidden lg:block transition-all duration-1000">
-          <img :src="missionPatch" class="w-56 h-56 object-contain animate-float drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)]" alt="Mission Patch" />
+        <!-- Mission Patch: Floating safely below Navigation -->
+        <div v-if="missionPatch" class="absolute right-12 top-28 z-[110] hidden lg:block transition-all duration-1000 pointer-events-none">
+          <img :src="missionPatch" class="w-52 h-52 object-contain animate-float drop-shadow-[0_20px_50px_rgba(0,0,0,0.4)]" alt="Mission Patch" />
         </div>
+
 
         <div class="relative z-10 grid grid-cols-12 w-full gap-8">
           <div class="col-span-12 lg:col-span-7">
@@ -151,8 +152,11 @@ const formatNumber = (value: number, unit: string = '') => {
           </div>
 
           <!-- Countdown & Critical Window -->
-          <div class="col-span-12 lg:col-span-5 flex flex-col justify-center">
+          <div class="col-span-12 lg:col-span-5 flex flex-col justify-center relative">
+
+
             <div class="bg-surface-variant/10 backdrop-blur-xl p-8 rounded-xl border border-outline-variant/10 shadow-2xl relative overflow-hidden">
+
               <!-- Glow corner -->
               <div class="absolute -top-10 -right-10 w-32 h-32 bg-secondary/10 blur-3xl"></div>
 
