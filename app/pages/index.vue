@@ -13,7 +13,7 @@ useSeoMeta({
 });
 
 // Fetch data from Nitro backend with lazy loading
-const { data: launchesRaw, pending, error, refresh } = useFetch<any>('/api/launches', {
+const { data: launchesRaw, pending, error, refresh } = useSecureFetch<any>('/api/launches', {
   lazy: true
 });
 
@@ -119,7 +119,8 @@ onUnmounted(() => {
             v-if="heroLaunch.image?.image_url"
             :src="heroLaunch.image.image_url"
             class="w-full h-full object-cover transition-opacity duration-1000"
-            alt="Mission Background"
+            :alt="`Cinematic view of ${heroLaunch.name} mission`"
+            fetchpriority="high"
           />
           <div v-else class="w-full h-full bg-surface-container-low"></div>
 
@@ -201,7 +202,7 @@ onUnmounted(() => {
               <img
                 :src="heroMissionPatch"
                 class="w-full h-full object-contain relative z-10 animate-float drop-shadow-[0_25px_50px_rgba(0,0,0,0.6)]"
-                alt="Mission Patch"
+                :alt="`Official Mission Patch for ${heroLaunch.name}`"
               />
             </div>
           </div>

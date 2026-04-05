@@ -35,7 +35,7 @@ const queryParams = computed(() => {
   return q;
 });
 
-const { data: missionsRaw, pending, error, refresh } = useFetch<any>('/api/missions-archive', {
+const { data: missionsRaw, pending, error, refresh } = useSecureFetch<any>('/api/missions-archive', {
   lazy: true,
   query: queryParams,
   watch: [offset, selectedAgency] // Re-fetch when offset or filter changes

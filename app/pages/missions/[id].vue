@@ -7,7 +7,7 @@ const { setStatus } = useOrbitalLink();
 const route = useRoute()
 const missionId = route.params.id
 
-const { data: missionRaw, pending, error, refresh } = useFetch<any>(`/api/launch/${missionId}`, {
+const { data: missionRaw, pending, error, refresh } = useSecureFetch<any>(`/api/launch/${missionId}`, {
   lazy: true
 })
 
@@ -156,6 +156,41 @@ const shareMission = () => {
 const toggleShareMenu = () => {
   isShareMenuOpen.value = !isShareMenuOpen.value;
 };
+
+// Structured Data for SEO (Rich Snippets)
+const structuredData = computed(() => {
+  if (!mission.value) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    'name': mission.value.name,
+    'description': mission.value.mission?.description || mission.value.status?.description,
+    'startDate': mission.value.net,
+    'location': {
+      '@type': 'Place',
+      'name': mission.value.pad?.name,
+      'address': {
+        '@type': 'PostalAddress',
+        'addressLocality': mission.value.pad?.location?.name
+      }
+    },
+    'image': mission.value.image?.image_url || defaultImage,
+    'organizer': {
+      '@type': 'Organization',
+      'name': mission.value.launch_service_provider?.name,
+      'logo': mission.value.launch_service_provider?.logo?.image_url
+    }
+  };
+});
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: computed(() => JSON.stringify(structuredData.value))
+    }
+  ]
+});
 </script>
 
 
@@ -167,13 +202,13 @@ const toggleShareMenu = () => {
       <!-- Hero Mission Section -->
       <section class="relative h-[680px] flex items-center px-12 overflow-visible bg-surface-container-lowest">
         <!-- Background Image: Spectacular & Vibrant -->
-        <img class="absolute inset-0 w-full h-full object-cover opacity-90 transition-opacity duration-1000" :src="mission.image?.image_url || defaultImage" />
+        <img class="absolute inset-0 w-full h-full object-cover opacity-90 transition-opacity duration-1000" :src="mission.image?.image_url || defaultImage" :alt="`Cinematic view of ${mission.name} mission`" />
         <div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/20 to-transparent"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
 
         <!-- Mission Patch: Floating safely below Navigation -->
         <div v-if="missionPatch" class="absolute right-12 top-14 z-[110] hidden lg:block transition-all duration-1000 pointer-events-none">
-          <img :src="missionPatch" class="w-52 h-52 object-contain animate-float drop-shadow-[0_20px_50px_rgba(0,0,0,0.4)]" alt="Mission Patch" />
+          <img :src="missionPatch" class="w-52 h-52 object-contain animate-float drop-shadow-[0_20px_50px_rgba(0,0,0,0.4)]" :alt="`Official Mission Patch for ${mission.name}`" />
         </div>
 
 

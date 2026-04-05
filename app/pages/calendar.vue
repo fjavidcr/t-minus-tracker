@@ -22,7 +22,7 @@ interface Launch {
 }
 
 // Fetch data from Nitro backend
-const { data: launchesRaw, pending, error, refresh } = useFetch<{ data: Launch[], cachedAt: number }>('/api/launches', {
+const { data: launchesRaw, pending, error, refresh } = useSecureFetch<{ data: Launch[], cachedAt: number }>('/api/launches', {
   lazy: true
 });
 

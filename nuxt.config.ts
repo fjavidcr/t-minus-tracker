@@ -12,6 +12,14 @@ export default defineNuxtConfig({
       pathPrefix: false
     }
   ],
+  runtimeConfig: {
+    // Shared private secret (only server-side)
+    apiSecretKey: process.env.NUXT_API_SECRET_KEY,
+    public: {
+      // Custom header name for client identification
+      orbitalClientHeader: 'x-orbital-client'
+    }
+  },
   googleFonts: {
     families: {
       'Space Grotesk': [300, 400, 500, 600, 700],
