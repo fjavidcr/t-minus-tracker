@@ -10,7 +10,7 @@ const handler = defineEventHandler(async () => {
   }
 
   try {
-    const response = await $fetch<{ results: any[] }>('https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=10', {
+    const response = await $fetch<{ results: any[] }>('https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=10&mode=detailed', {
       timeout: 5000,
       headers: {
         'Accept': 'application/json',

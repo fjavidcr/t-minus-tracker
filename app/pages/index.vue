@@ -36,13 +36,40 @@ const heroLaunch = computed(() => {
 });
 
 const activeDeployments = computed(() => {
-  return futureLaunches.value.length > 1 ? futureLaunches.value.slice(1, 4) : [];
+  return futureLaunches.value.length > 1 ? futureLaunches.value.slice(1, 10) : [];
 });
+
+const scrollContainer = ref<HTMLElement | null>(null);
+
+const scrollNext = () => {
+  if (scrollContainer.value) {
+    scrollContainer.value.scrollBy({ left: 400, behavior: 'smooth' });
+  }
+};
+
+const scrollPrev = () => {
+  if (scrollContainer.value) {
+    scrollContainer.value.scrollBy({ left: -400, behavior: 'smooth' });
+  }
+};
 
 const heroMissionNameSegments = computed(() => {
   if (!heroLaunch.value) return ['', ''];
   const parts = heroLaunch.value.name.split('|');
   return [parts[0]?.trim() || 'Mission', parts[1]?.trim() || heroLaunch.value.name];
+});
+
+const heroMissionPatch = computed(() => {
+  if (!heroLaunch.value) return null;
+  // Look in root mission_patches
+  if (heroLaunch.value.mission_patches?.[0]?.image_url) {
+    return heroLaunch.value.mission_patches[0].image_url;
+  }
+  // Fallback to program mission_patches
+  if (heroLaunch.value.program?.[0]?.mission_patches?.[0]?.image_url) {
+    return heroLaunch.value.program[0].mission_patches[0].image_url;
+  }
+  return null;
 });
 
 // Countdown logic for the Hero Section
@@ -85,30 +112,47 @@ onUnmounted(() => {
     <!-- Loaded State -->
     <template v-if="heroLaunch">
       <!-- Hero Section: Central Countdown -->
-      <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end relative">
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end relative overflow-hidden p-8 md:p-12 rounded-2xl min-h-[500px]">
+        <!-- Cinematic Background Image -->
+        <div class="absolute inset-0 z-0">
+          <img
+            v-if="heroLaunch.image?.image_url"
+            :src="heroLaunch.image.image_url"
+            class="w-full h-full object-cover transition-opacity duration-1000"
+            alt="Mission Background"
+          />
+          <div v-else class="w-full h-full bg-surface-container-low"></div>
+          
+          <!-- Gradient Masks for Premium Readability -->
+          <div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/60 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+          <!-- Darken more for clarity -->
+          <div class="absolute inset-0 bg-black/30"></div>
+        </div>
+
         <!-- Light bleed glow behind hero (Artemis Orange for contrast) -->
         <div
-          class="absolute -top-20 left-0 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(252,61,33,0.08)_0%,transparent_70%)] pointer-events-none">
+          class="absolute -top-20 left-0 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(252,61,33,0.12)_0%,transparent_70%)] pointer-events-none z-[1]">
         </div>
-        <div class="lg:col-span-8 hero-glow">
+        <div class="lg:col-span-8 hero-glow relative min-h-[460px] flex flex-col justify-center z-10">
           <div class="flex flex-col md:flex-row md:items-center gap-4 mb-4 relative z-10">
             <div class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-secondary animate-pulse shadow-[0_0_10px_#Fc3d21]"></span>
               <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary font-label">Live Telemetry: Active Mission</span>
             </div>
-            
+
             <!-- Cache Freshness Component -->
-            <TelemetryStatus 
-              v-if="cachedAt" 
-              :cached-at="cachedAt" 
-              :max-age="CACHE_POLICY.MAX_AGE.LAUCHES" 
+            <TelemetryStatus
+              v-if="cachedAt"
+              :cached-at="cachedAt"
+              :max-age="CACHE_POLICY.MAX_AGE.LAUCHES"
               class="md:ml-4"
             />
           </div>
 
           <NuxtLink :to="`/missions/${heroLaunch.id}`" class="group/title block">
             <h2
-              class="text-5xl font-black tracking-tighter text-on-surface leading-[0.95] mb-8 lg:text-7xl uppercase relative z-10 font-headline group-hover/title:text-primary transition-colors">
+              class="text-5xl font-black tracking-tighter text-on-surface leading-[0.95] mb-8 lg:text-7xl uppercase relative z-10 font-headline group-hover/title:text-primary transition-all duration-500 drop-shadow-2xl">
               {{ heroMissionNameSegments[0] }}:<br v-if="heroMissionNameSegments[0]" />
               <span class="mission-text-stroke line-clamp-1 break-all">{{ heroMissionNameSegments[1] }}</span>
             </h2>
@@ -148,12 +192,24 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <div
-          class="lg:col-span-4 bg-surface-variant/60 backdrop-blur-xl p-8 rounded-lg relative overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.4)]">
-          <div class="absolute top-0 right-0 p-4 opacity-5">
-            <span class="material-symbols-outlined text-8xl line-clamp-1">rocket</span>
+        <div class="lg:col-span-4 flex flex-col items-end gap-6 z-10">
+          <!-- Premium Mission Patch: Positioned exactly in the black space ABOVE the card -->
+          <div v-if="heroMissionPatch" class="w-40 h-40 lg:w-56 lg:h-56 flex items-center justify-center p-2 z-[20] pointer-events-none self-end">
+            <div class="relative group/patch">
+              <!-- Glow Effect -->
+              <div class="absolute inset-0 bg-primary/30 blur-[80px] rounded-full group-hover/patch:bg-primary/40 transition-all duration-1000 animate-pulse"></div>
+              <img
+                :src="heroMissionPatch"
+                class="w-full h-full object-contain relative z-10 animate-float drop-shadow-[0_25px_50px_rgba(0,0,0,0.6)]"
+                alt="Mission Patch"
+              />
+            </div>
           </div>
-          <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-6">Environment Status</p>
+
+          <div
+            class="w-full bg-surface-variant/70 backdrop-blur-3xl p-8 rounded-lg relative overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.5)] group border border-outline-variant/10">
+            <!-- Mission Patch / Feature Image (Removed from here as it's now in the hero column) -->
+            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-6">Environment Status</p>
           <div class="space-y-6">
             <div>
               <div class="flex justify-between items-end mb-2">
@@ -179,6 +235,7 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
+        </div>
       </section>
 
       <!-- Upcoming Launches with Filter -->
@@ -201,8 +258,35 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <LaunchCard v-for="launch in activeDeployments" :key="launch.id" :launch="launch" />
+        <!-- Mission Carousel -->
+        <div class="relative group/carousel">
+          <div
+            ref="scrollContainer"
+            class="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar scroll-smooth"
+          >
+            <div v-for="launch in activeDeployments" :key="launch.id" class="snap-start shrink-0 w-full md:w-[400px]">
+              <LaunchCard :launch="launch" />
+            </div>
+          </div>
+
+          <!-- Carousel Controls -->
+          <button
+            @click="scrollPrev"
+            class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-surface-container/80 backdrop-blur p-3 rounded-full border border-outline-variant/30 text-on-surface opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-primary hover:text-on-primary z-20 hidden md:block"
+          >
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
+          <button
+            @click="scrollNext"
+            class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-surface-container/80 backdrop-blur p-3 rounded-full border border-outline-variant/30 text-on-surface opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-primary hover:text-on-primary z-20 hidden md:block"
+          >
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+
+          <!-- Custom scroll indicator -->
+          <div class="h-1 w-full bg-surface-container rounded-full overflow-hidden mt-4 opacity-30">
+            <div class="h-full bg-primary/50 w-1/4 rounded-full"></div>
+          </div>
         </div>
 
         <!-- View All link -->
@@ -328,3 +412,50 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.mission-text-stroke {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  color: transparent;
+}
+
+.hero-glow {
+  position: relative;
+}
+
+.hero-glow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(11, 61, 145, 0.05) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+</style>
