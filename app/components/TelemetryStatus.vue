@@ -10,24 +10,37 @@ const props = defineProps<{
 const remainingSeconds = ref(0);
 let timer: any = null;
 
-const calculateRemaining = () => {
-  if (!props.cachedAt) return;
-  const expiry = props.cachedAt + (props.maxAge * 1000);
+const calculateRemainingValue = () => {
+  if (!props.cachedAt) return 0;
+  // Ensure we are working with numbers to prevent string concatenation bugs
+  const timestamp = Number(props.cachedAt);
+  const expiry = timestamp + (Number(props.maxAge) * 1000);
   const diff = expiry - Date.now();
-  remainingSeconds.value = Math.max(0, Math.floor(diff / 1000));
+  return Math.max(0, Math.floor(diff / 1000));
+};
+
+const updateRemaining = () => {
+  remainingSeconds.value = calculateRemainingValue();
 };
 
 const formattedTime = computed(() => {
   const m = Math.floor(remainingSeconds.value / 60);
-  const s = remainingSeconds.value % 60;
+  const s = Math.floor(remainingSeconds.value % 60);
   return `${m}m ${s.toString().padStart(2, '0')}s`;
 });
 
 const isExpiring = computed(() => remainingSeconds.value < 60);
 
+// Update immediately on setup to prevent "0" flicker during hydration
+updateRemaining();
+
+// Watch for prop changes (e.g. after a data refresh)
+watch(() => props.cachedAt, updateRemaining);
+
 onMounted(() => {
-  calculateRemaining();
-  timer = setInterval(calculateRemaining, 1000);
+  // Ensure we have the latest value on mount
+  updateRemaining();
+  timer = setInterval(updateRemaining, 1000);
 });
 
 onUnmounted(() => {
