@@ -17,13 +17,28 @@ const limit = ref(12);
 const offset = ref(0);
 
 // Fetch data from Nitro backend with reactive query parameters and lazy loading
+const route = useRoute();
+const selectedAgency = ref((route.query.lsp__name as string) || (route.query.lsp__id ? 'Others' : ''));
+const queryParams = computed(() => {
+  const q: any = {
+    limit: limit.value,
+    offset: offset.value
+  };
+  
+  if (selectedAgency.value === 'Others') {
+    // Other major agencies: Roscosmos (63), JAXA (37), ISRO (31), CASC (17), Blue Origin (141), Rocket Lab (147), ULA (124), etc.
+    q.lsp__id = '63,37,31,17,141,147,124';
+  } else if (selectedAgency.value !== '') {
+    q.lsp__abbrev = selectedAgency.value;
+  }
+  
+  return q;
+});
+
 const { data: missionsRaw, pending, error, refresh } = useFetch<any>('/api/missions-archive', {
   lazy: true,
-  query: { 
-    limit, 
-    offset 
-  },
-  watch: [offset] // Re-fetch when offset changes
+  query: queryParams,
+  watch: [offset, selectedAgency] // Re-fetch when offset or filter changes
 });
 
 const missions = computed(() => missionsRaw.value?.data);
@@ -33,6 +48,12 @@ const cachedAt = computed(() => missionsRaw.value?.cachedAt);
 watch([pending, error], () => {
   setStatus(pending.value, error.value, refresh);
 }, { immediate: true });
+
+// Page Actions
+const setAgency = (agency: string) => {
+  selectedAgency.value = agency;
+  offset.value = 0; // Reset pagination
+};
 
 const searchQuery = ref('');
 
@@ -99,15 +120,55 @@ const padZero = (num: number) => num.toString().padStart(2, '0');
         </div>
       </div>
 
-      <!-- Search Bar -->
-      <div class="relative max-w-2xl group z-10 font-label">
-        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline group-focus-within:text-secondary transition-colors">search</span>
-        <input 
-          v-model="searchQuery"
-          type="text" 
-          placeholder="SEARCH ARCHIVE (ID, AGENCY, ROCKET)..."
-          class="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl py-4 pl-12 pr-6 text-xs font-bold uppercase tracking-widest text-on-surface focus:outline-none focus:border-secondary/50 focus:ring-1 focus:ring-secondary/20 transition-all placeholder:text-outline-variant/50"
-        />
+      <!-- Search Bar & Filters -->
+      <div class="flex flex-col lg:flex-row lg:items-center gap-6 relative z-10">
+        <div class="relative max-w-2xl flex-1 group font-label">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline group-focus-within:text-secondary transition-colors">search</span>
+          <input 
+            v-model="searchQuery"
+            type="text" 
+            placeholder="SEARCH ARCHIVE (ID, AGENCY, ROCKET)..."
+            class="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl py-4 pl-12 pr-6 text-xs font-bold uppercase tracking-widest text-on-surface focus:outline-none focus:border-secondary/50 focus:ring-1 focus:ring-secondary/20 transition-all placeholder:text-outline-variant/50"
+          />
+        </div>
+
+        <div class="flex gap-1 p-1 bg-surface-container-low rounded-lg font-label border border-outline-variant/5">
+          <button
+            @click="setAgency('')"
+            :class="[
+              'px-5 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] rounded-md transition-all focus:outline-none',
+              selectedAgency === '' ? 'bg-primary text-on-primary shadow-lg shadow-primary/20 bg-glow' : 'text-on-surface-variant hover:text-primary hover:bg-surface-container'
+            ]"
+          >All</button>
+          <button
+            @click="setAgency('NASA')"
+            :class="[
+              'px-5 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] rounded-md transition-all focus:outline-none',
+              selectedAgency === 'NASA' ? 'bg-primary text-on-primary shadow-lg shadow-primary/20 bg-glow' : 'text-on-surface-variant hover:text-primary hover:bg-surface-container'
+            ]"
+          >NASA</button>
+          <button
+            @click="setAgency('SpaceX')"
+            :class="[
+              'px-5 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] rounded-md transition-all focus:outline-none',
+              selectedAgency === 'SpaceX' ? 'bg-primary text-on-primary shadow-lg shadow-primary/20 bg-glow' : 'text-on-surface-variant hover:text-primary hover:bg-surface-container'
+            ]"
+          >SpaceX</button>
+          <button
+            @click="setAgency('ESA')"
+            :class="[
+              'px-5 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] rounded-md transition-all focus:outline-none',
+              selectedAgency === 'ESA' ? 'bg-primary text-on-primary shadow-lg shadow-primary/20 bg-glow' : 'text-on-surface-variant hover:text-primary hover:bg-surface-container'
+            ]"
+          >ESA</button>
+          <button
+            @click="setAgency('Others')"
+            :class="[
+              'px-5 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] rounded-md transition-all focus:outline-none',
+              selectedAgency === 'Others' ? 'bg-primary text-on-primary shadow-lg shadow-primary/20 bg-glow' : 'text-on-surface-variant hover:text-primary hover:bg-surface-container'
+            ]"
+          >Others</button>
+        </div>
       </div>
     </header>
 

@@ -246,16 +246,6 @@ onUnmounted(() => {
               Schedule</p>
             <h3 class="text-3xl font-black text-on-surface font-headline uppercase tracking-tight">Upcoming Deployments</h3>
           </div>
-          <div class="flex gap-1 p-1 bg-surface-container-low rounded-lg font-label">
-            <button
-              class="px-5 py-2 text-[10px] font-bold uppercase tracking-widest bg-primary text-on-primary rounded-md shadow-sm transition-all focus:outline-none">All</button>
-            <button
-              class="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors focus:outline-none">NASA</button>
-            <button
-              class="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors focus:outline-none">SpaceX</button>
-            <button
-              class="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors focus:outline-none">ESA</button>
-          </div>
         </div>
 
         <!-- Mission Carousel -->

@@ -6,7 +6,14 @@ export default defineCachedEventHandler(async (event) => {
   const offset = query.offset || 0
 
   try {
-    const response = await $fetch<{ count: number, next: string, previous: string, results: any[] }>(`https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=${limit}&offset=${offset}`, {
+    const params = new URLSearchParams()
+    Object.entries(query).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        params.append(key, String(value))
+      }
+    })
+
+    const response = await $fetch<{ count: number, next: string, previous: string, results: any[] }>(`https://ll.thespacedevs.com/2.3.0/launches/upcoming/?${params.toString()}`, {
       timeout: 5000,
       headers: {
         'Accept': 'application/json',
