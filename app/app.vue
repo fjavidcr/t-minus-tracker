@@ -70,7 +70,7 @@ useHead({
     <AppHeader v-if="!state.error" />
 
     <!-- Main Content Area -->
-    <main class="flex-1 relative w-full pt-4 md:pt-8 overflow-hidden">
+    <main class="flex-1 relative w-full pt-20 md:pt-24 overflow-hidden">
       <NuxtRouteAnnouncer />
 
       <!-- Global Mission Link Handling -->
@@ -108,9 +108,6 @@ useHead({
         <NuxtPage />
       </div>
     </main>
-
-    <!-- Mobile Navigation: Hidden on critical error -->
-    <AppBottomNav v-if="!state.error" />
   </div>
 </template>
 

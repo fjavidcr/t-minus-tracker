@@ -122,7 +122,7 @@ onUnmounted(() => {
             alt="Mission Background"
           />
           <div v-else class="w-full h-full bg-surface-container-low"></div>
-          
+
           <!-- Gradient Masks for Premium Readability -->
           <div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/60 to-transparent"></div>
           <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
@@ -301,6 +301,7 @@ onUnmounted(() => {
         </div>
       </section>
 
+      <!-- TODO: Implement News Feed & Archival Logs -->
       <!-- Bottom Dashboard Row: News Feed & Archival Logs -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-16 mt-8">
         <!-- News Feed -->
