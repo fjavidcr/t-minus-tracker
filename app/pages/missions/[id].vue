@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { useOrbitalLink } from '../../composables/useOrbitalLink';
+import { useOrbitalLink } from '~/composables/useOrbitalLink';
+import { UI_CONFIG } from '~/lib/constants';
 
 const { setStatus } = useOrbitalLink();
 const route = useRoute()
@@ -43,7 +44,7 @@ let timer: any;
 const isSticky = ref(false);
 
 const handleScroll = () => {
-  isSticky.value = window.scrollY > 480;
+  isSticky.value = window.scrollY > UI_CONFIG.THRESHOLDS.STICKY_HEADER;
 };
 
 onMounted(() => {
@@ -52,7 +53,7 @@ onMounted(() => {
     countdown.value = getTimeUntil(mission.value.net) as any;
     timer = setInterval(() => {
       countdown.value = getTimeUntil(mission.value?.net) as any;
-    }, 1000);
+    }, UI_CONFIG.INTERVALS.COUNTDOWN);
   }
 });
 
@@ -66,8 +67,8 @@ useHead({
   title: `Mission Specs | ${mission.value?.name || 'Loading...'}`
 })
 
-const defaultImage = 'https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?auto=format&fit=crop&q=80'
-const rocketDefaultImage = 'https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80'
+const defaultImage = UI_CONFIG.ASSETS.DEFAULT_MISSION_IMAGE;
+const rocketDefaultImage = UI_CONFIG.ASSETS.DEFAULT_ROCKET_IMAGE;
 
 // Advanced Data Parsing
 const launcherStage = computed(() => mission.value?.rocket?.launcher_stage?.[0]);

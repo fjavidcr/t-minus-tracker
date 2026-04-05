@@ -1,5 +1,6 @@
 import { useState } from '#app'
 import { ref } from 'vue'
+import { ORBITAL_LINK_CONFIG } from '../lib/constants'
 
 interface OrbitalLinkState {
   pending: boolean    // Visual: Should show the rocket (after 500ms)
@@ -12,12 +13,14 @@ const _refreshCallback = ref<(() => any) | null>(null)
 let _pendingTimer: any = null
 
 export const useOrbitalLink = () => {
-  // Serialized state (data only)
   const state = useState<OrbitalLinkState>('orbital-link-state', () => ({
-    pending: false,
-    connecting: false,
+    pending: true, // Start as pending for the cinematic load
+    connecting: true,
     error: null
   }))
+  
+  // Track if we have already performed the initial client-side link
+  const isInitialLink = ref(true)
 
   /**
    * Sets the status of the orbital link.
@@ -34,7 +37,7 @@ export const useOrbitalLink = () => {
         _pendingTimer = setTimeout(() => {
           state.value.pending = true
           _pendingTimer = null
-        }, 500)
+        }, ORBITAL_LINK_CONFIG.PENDING_TRANSITION_DELAY)
       } else if (!import.meta.client) {
         state.value.pending = true
       }
@@ -63,9 +66,21 @@ export const useOrbitalLink = () => {
       clearTimeout(_pendingTimer)
       _pendingTimer = null
     }
-    state.value.pending = false
-    state.value.connecting = false
-    state.value.error = null
+
+    // On the very first client-side "ready", we might want to delay it slightly 
+    // to ensure the Rocket Loading has enough time to show its cinematic animation.
+    if (import.meta.client && isInitialLink.value) {
+      isInitialLink.value = false
+      setTimeout(() => {
+        state.value.pending = false
+        state.value.connecting = false
+        state.value.error = null
+      }, ORBITAL_LINK_CONFIG.INITIAL_CINEMATIC_DELAY)
+    } else {
+      state.value.pending = false
+      state.value.connecting = false
+      state.value.error = null
+    }
     
     // Update refresh callback if provided
     if (import.meta.client && refresh) {

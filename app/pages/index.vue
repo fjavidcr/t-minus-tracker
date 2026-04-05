@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-import { useOrbitalLink } from '../composables/useOrbitalLink';
+import { useOrbitalLink } from '~/composables/useOrbitalLink';
+import { UI_CONFIG } from '~/lib/constants';
 
 const { setStatus } = useOrbitalLink();
 
@@ -13,8 +14,7 @@ useSeoMeta({
 
 // Fetch data from Nitro backend with lazy loading
 const { data: launches, pending, error, refresh } = useFetch('/api/launches', {
-  lazy: true,
-  server: false // Still fetch on server if possible, but don't block
+  lazy: true
 });
 
 // Sync status with global link
@@ -69,7 +69,7 @@ const padZero = (num: number) => num.toString().padStart(2, '0');
 
 onMounted(() => {
   updateHeroCountdown();
-  intervalId = setInterval(updateHeroCountdown, 1000);
+  intervalId = setInterval(updateHeroCountdown, UI_CONFIG.INTERVALS.COUNTDOWN);
 });
 
 onUnmounted(() => {

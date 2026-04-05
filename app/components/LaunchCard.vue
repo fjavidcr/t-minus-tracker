@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { UI_CONFIG } from '~/lib/constants';
 
 const props = defineProps<{
   launch: any;
@@ -16,7 +17,7 @@ const getTimeUntil = (dateString: string) => {
   const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
 
-  const isUrgent = days <= 3;
+  const isUrgent = days <= UI_CONFIG.THRESHOLDS.MISSION_URGENCY_DAYS;
 
   return {
     label: `T-Minus ${days}d`,
@@ -31,14 +32,14 @@ onMounted(() => {
   tMinusData.value = getTimeUntil(props.launch.net) as any;
   interval = setInterval(() => {
     tMinusData.value = getTimeUntil(props.launch.net) as any;
-  }, 60000); // UI update every minute
+  }, UI_CONFIG.INTERVALS.UI_REFRESH); // UI update every minute
 });
 
 onUnmounted(() => {
   if (interval) clearInterval(interval);
 });
 
-const defaultImage = 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&q=80';
+const defaultImage = UI_CONFIG.ASSETS.DEFAULT_LAUNCH_IMAGE;
 </script>
 
 <template>
