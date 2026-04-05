@@ -1,3 +1,5 @@
+import { CACHE_POLICY } from '~/lib/constants';
+
 export default defineCachedEventHandler(async (event) => {
   const query = getQuery(event)
   const limit = query.limit || 12
@@ -10,7 +12,10 @@ export default defineCachedEventHandler(async (event) => {
         'Accept': 'application/json',
       }
     })
-    return response
+    return {
+      data: response,
+      cachedAt: Date.now()
+    };
   } catch (error: any) {
     console.error('Error fetching mission archive from SpaceDevs:', error)
     throw createError({
@@ -19,7 +24,7 @@ export default defineCachedEventHandler(async (event) => {
     });
   }
 }, {
-  maxAge: import.meta.dev ? 3600 : 600, // 10 minutes in prod, 1 hour in dev
+  maxAge: CACHE_POLICY.MAX_AGE.MISSIONS,
   swr: true,
   name: 'missions-archive',
   getKey: (event) => event.path

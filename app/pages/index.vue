@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useOrbitalLink } from '~/composables/useOrbitalLink';
-import { UI_CONFIG } from '~/lib/constants';
+import { UI_CONFIG, CACHE_POLICY } from '~/lib/constants';
 
 const { setStatus } = useOrbitalLink();
 
@@ -13,9 +13,12 @@ useSeoMeta({
 });
 
 // Fetch data from Nitro backend with lazy loading
-const { data: launches, pending, error, refresh } = useFetch('/api/launches', {
+const { data: launchesRaw, pending, error, refresh } = useFetch<any>('/api/launches', {
   lazy: true
 });
+
+const launches = computed(() => launchesRaw.value?.data || []);
+const cachedAt = computed(() => launchesRaw.value?.cachedAt);
 
 // Sync status with global link
 watch([pending, error], () => {
@@ -88,10 +91,19 @@ onUnmounted(() => {
           class="absolute -top-20 left-0 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(252,61,33,0.08)_0%,transparent_70%)] pointer-events-none">
         </div>
         <div class="lg:col-span-8 hero-glow">
-          <div class="flex items-center gap-2 mb-4 relative z-10">
-            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse shadow-[0_0_10px_#Fc3d21]"></span>
-            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary font-label">Live Telemetry: Active
-              Mission</span>
+          <div class="flex flex-col md:flex-row md:items-center gap-4 mb-4 relative z-10">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-secondary animate-pulse shadow-[0_0_10px_#Fc3d21]"></span>
+              <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary font-label">Live Telemetry: Active Mission</span>
+            </div>
+            
+            <!-- Cache Freshness Component -->
+            <TelemetryStatus 
+              v-if="cachedAt" 
+              :cached-at="cachedAt" 
+              :max-age="CACHE_POLICY.MAX_AGE.LAUCHES" 
+              class="md:ml-4"
+            />
           </div>
 
           <NuxtLink :to="`/missions/${heroLaunch.id}`" class="group/title block">

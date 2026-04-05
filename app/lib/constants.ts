@@ -43,3 +43,15 @@ export const ORBITAL_LINK_CONFIG = {
   INITIAL_CINEMATIC_DELAY: 1500,
 } as const;
 
+export const CACHE_POLICY = {
+  /**
+   * Cache duration in seconds.
+   */
+  MAX_AGE: {
+    DEFAULT: import.meta.dev ? 3600 : 3600, // 1 hour
+    LAUCHES: import.meta.dev ? 3600 : 600,   // 10 minutes
+    MISSIONS: import.meta.dev ? 3600 : 1800, // 30 minutes
+    DETAIL: import.meta.dev ? 3600 : 300,    // 5 minutes
+  }
+} as const;
+

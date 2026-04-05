@@ -1,3 +1,5 @@
+import { CACHE_POLICY } from '~/lib/constants';
+
 const USE_CACHE = true; // Cambia a true para activar la caché de Nitro
 
 const handler = defineEventHandler(async () => {
@@ -14,7 +16,10 @@ const handler = defineEventHandler(async () => {
         'Accept': 'application/json',
       }
     });
-    return response.results;
+    return {
+      data: response.results,
+      cachedAt: Date.now()
+    };
   } catch (error: any) {
     console.error('Error fetching launches from SpaceDevs:', error);
     throw createError({
@@ -26,7 +31,7 @@ const handler = defineEventHandler(async () => {
 
 export default USE_CACHE
   ? defineCachedEventHandler(handler, {
-      maxAge: import.meta.dev ? 3600 : 60 * 60,
+      maxAge: CACHE_POLICY.MAX_AGE.LAUCHES,
       swr: true,
       name: 'launches'
     })

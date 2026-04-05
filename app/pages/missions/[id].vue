@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useOrbitalLink } from '~/composables/useOrbitalLink';
-import { UI_CONFIG } from '~/lib/constants';
+import { UI_CONFIG, CACHE_POLICY } from '~/lib/constants';
 
 const { setStatus } = useOrbitalLink();
 const route = useRoute()
 const missionId = route.params.id
 
-const { data: mission, pending, error, refresh } = useFetch<any>(`/api/launch/${missionId}`, {
+const { data: missionRaw, pending, error, refresh } = useFetch<any>(`/api/launch/${missionId}`, {
   lazy: true
 })
+
+const mission = computed(() => missionRaw.value?.data);
+const cachedAt = computed(() => missionRaw.value?.cachedAt);
 
 // Sync status with global link
 watch([pending, error], () => {
@@ -182,6 +185,15 @@ const toggleShareMenu = () => {
               <span v-if="program" class="bg-primary/80 backdrop-blur-md text-on-primary border border-primary/30 px-3 py-1 rounded-full shadow-lg shadow-primary/20">{{ program.name }}</span>
               <span v-if="mission.probability" class="bg-surface/60 backdrop-blur-sm text-on-surface border border-outline-variant/30 px-3 py-1 rounded-full">WX PROB: {{ mission.probability }}%</span>
               <span class="text-on-surface font-bold bg-surface/40 backdrop-blur-sm px-3 py-1 rounded-full">NODE_ID: {{ mission.id?.slice(0, 8).toUpperCase() }}</span>
+              
+              <!-- Telemetry Link -->
+              <TelemetryStatus 
+                v-if="cachedAt" 
+                :cached-at="cachedAt" 
+                :max-age="CACHE_POLICY.MAX_AGE.DETAIL" 
+                label="Orbital Sync"
+                class="ml-2"
+              />
             </div>
 
             <h1 class="text-6xl lg:text-8xl font-black font-headline tracking-tighter text-on-surface mb-4 uppercase leading-[0.85] group drop-shadow-2xl">

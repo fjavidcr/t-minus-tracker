@@ -1,3 +1,5 @@
+import { CACHE_POLICY } from '~/lib/constants';
+
 export default defineCachedEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
 
@@ -10,12 +12,15 @@ export default defineCachedEventHandler(async (event) => {
 
   try {
     const response = await $fetch(`https://ll.thespacedevs.com/2.3.0/launches/${id}/?mode=detailed`, {
-      timeout: 5000,
+      timeout: 15000,
       headers: {
         'Accept': 'application/json'
       }
     })
-    return response
+    return {
+      data: response,
+      cachedAt: Date.now()
+    };
   } catch (error: any) {
     console.error('Error fetching launch details:', error)
     throw createError({
@@ -24,7 +29,7 @@ export default defineCachedEventHandler(async (event) => {
     })
   }
 }, {
-  maxAge: import.meta.dev ? 3600 : 300, // 5 minutes in prod, 1 hour in dev
+  maxAge: CACHE_POLICY.MAX_AGE.DETAIL,
   swr: true,
   name: 'mission-detail'
 })

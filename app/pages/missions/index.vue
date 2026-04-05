@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { useOrbitalLink } from '../../composables/useOrbitalLink';
+import { useOrbitalLink } from '~/composables/useOrbitalLink';
+import { CACHE_POLICY } from '~/lib/constants';
 
 const { setStatus } = useOrbitalLink();
 
@@ -16,7 +17,7 @@ const limit = ref(12);
 const offset = ref(0);
 
 // Fetch data from Nitro backend with reactive query parameters and lazy loading
-const { data: missions, pending, error, refresh } = useFetch('/api/missions-archive', {
+const { data: missionsRaw, pending, error, refresh } = useFetch<any>('/api/missions-archive', {
   lazy: true,
   query: { 
     limit, 
@@ -24,6 +25,9 @@ const { data: missions, pending, error, refresh } = useFetch('/api/missions-arch
   },
   watch: [offset] // Re-fetch when offset changes
 });
+
+const missions = computed(() => missionsRaw.value?.data);
+const cachedAt = computed(() => missionsRaw.value?.cachedAt);
 
 // Sync status with global link
 watch([pending, error], () => {
@@ -85,9 +89,13 @@ const padZero = (num: number) => num.toString().padStart(2, '0');
         </div>
         
         <div class="flex items-center gap-4 text-on-surface-variant font-label text-[10px] uppercase tracking-widest bg-surface-container-low px-4 py-2 rounded border border-outline-variant/5">
-          <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-secondary"></span> {{ totalRecords }} Records Found</span>
-          <span class="w-px h-3 bg-outline-variant/30"></span>
-          <span>Status: Verified</span>
+          <span class="flex items-center gap-2 pr-4 border-r border-outline-variant/20"><span class="w-2 h-2 rounded-full bg-secondary"></span> {{ totalRecords }} Records Found</span>
+          <TelemetryStatus 
+            v-if="cachedAt" 
+            :cached-at="cachedAt" 
+            :max-age="CACHE_POLICY.MAX_AGE.MISSIONS" 
+            class="scale-90"
+          />
         </div>
       </div>
 

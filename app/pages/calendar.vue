@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { useOrbitalLink } from '../composables/useOrbitalLink';
+import { useOrbitalLink } from '~/composables/useOrbitalLink';
+import { CACHE_POLICY } from '~/lib/constants';
 
 const { setStatus } = useOrbitalLink();
 
@@ -8,10 +9,25 @@ useHead({
   title: 'T-minus | Launch Calendar'
 })
 
+interface Launch {
+  id: string;
+  net: string;
+  name: string;
+  launch_service_provider?: {
+    name: string;
+  };
+  mission?: {
+    description: string;
+  };
+}
+
 // Fetch data from Nitro backend
-const { data: launches, pending, error, refresh } = useFetch<any[]>('/api/launches', {
+const { data: launchesRaw, pending, error, refresh } = useFetch<{ data: Launch[], cachedAt: number }>('/api/launches', {
   lazy: true
 });
+
+const launches = computed(() => launchesRaw.value?.data || []);
+const cachedAt = computed(() => launchesRaw.value?.cachedAt);
 
 // Sync status with global link
 watch([pending, error], () => {
@@ -73,14 +89,14 @@ const getEventsForDate = (date: Date) => {
   });
 };
 
-const getAgencyColor = (agency: string) => {
+const getAgencyColor = (agency: string | undefined) => {
   if (agency?.includes('NASA')) return 'bg-primary';
   if (agency?.includes('SpaceX')) return 'bg-tertiary';
   if (agency?.includes('ESA')) return 'bg-secondary';
   return 'bg-secondary';
 };
 
-const getAgencyBadge = (agency: string) => {
+const getAgencyBadge = (agency: string | undefined) => {
   if (agency?.includes('NASA')) return 'NASA';
   if (agency?.includes('SpaceX')) return 'SPX';
   if (agency?.includes('ESA')) return 'ESA';
@@ -159,7 +175,15 @@ const getAgencyBadge = (agency: string) => {
     <aside class="w-full md:w-80 lg:w-96 bg-surface-container-low border-l border-outline-variant/5 p-8 flex flex-col gap-8 overflow-y-auto custom-scrollbar">
       <div>
         <div class="flex items-center justify-between mb-8">
-          <h2 class="text-sm font-black tracking-tight text-on-surface uppercase font-headline">Telemetry Log</h2>
+          <div>
+            <h2 class="text-sm font-black tracking-tight text-on-surface uppercase font-headline">Telemetry Log</h2>
+            <TelemetryStatus 
+              v-if="cachedAt" 
+              :cached-at="cachedAt" 
+              :max-age="CACHE_POLICY.MAX_AGE.LAUCHES" 
+              class="mt-1"
+            />
+          </div>
           <span class="material-symbols-outlined text-secondary text-lg">priority_high</span>
         </div>
         <div v-if="!pending" class="space-y-6">
