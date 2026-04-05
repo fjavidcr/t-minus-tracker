@@ -2,8 +2,21 @@ import { CACHE_POLICY } from '~/lib/constants';
 
 export default defineCachedEventHandler(async (event) => {
   const query = getQuery(event)
-  const limit = query.limit || 12
-  const offset = query.offset || 0
+  
+  // 1. Strict Input Validation
+  const limit = parseInt(query.limit as string) || 12
+  const offset = parseInt(query.offset as string) || 0
+  const agency = query.agency ? String(query.agency) : undefined
+
+  if (limit < 1 || limit > 50 || isNaN(limit)) {
+    throw createError({ statusCode: 400, message: 'Orbital limit must be between 1 and 50 nodes.' })
+  }
+  if (offset < 0 || isNaN(offset)) {
+    throw createError({ statusCode: 400, message: 'Invalid temporal offset detected.' })
+  }
+  if (agency && !/^\d+$/.test(agency)) {
+    throw createError({ statusCode: 400, message: 'Invalid agency identifier format.' })
+  }
 
   try {
     const params = new URLSearchParams()

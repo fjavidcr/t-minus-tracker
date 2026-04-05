@@ -2,7 +2,20 @@ import { CACHE_POLICY } from '~/lib/constants';
 
 const USE_CACHE = true; // Cambia a true para activar la caché de Nitro
 
-const handler = defineEventHandler(async () => {
+const handler = defineEventHandler(async (event) => {
+  // 1. Input Validation
+  const query = getQuery(event);
+  const limit = parseInt(query.limit as string) || 10;
+  const offset = parseInt(query.offset as string) || 0;
+
+  // Sanity checks
+  if (limit < 1 || limit > 50 || isNaN(limit)) {
+    throw createError({ statusCode: 400, message: 'Invalid limit parameter. Range: 1-50.' });
+  }
+  if (offset < 0 || isNaN(offset)) {
+    throw createError({ statusCode: 400, message: 'Invalid offset parameter.' });
+  }
+
   // Artificial delay to test loading states (RocketLoading)
   // Solo se ejecutará si USE_CACHE es false o si la caché ha expirado
   if (import.meta.dev) {
@@ -10,7 +23,7 @@ const handler = defineEventHandler(async () => {
   }
 
   try {
-    const response = await $fetch<{ results: any[] }>('https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=10&mode=detailed', {
+    const response = await $fetch<{ results: any[] }>(`https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=${limit}&offset=${offset}&mode=detailed`, {
       timeout: 5000,
       headers: {
         'Accept': 'application/json',

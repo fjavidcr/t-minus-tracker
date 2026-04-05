@@ -7,9 +7,11 @@ export default defineEventHandler((event) => {
   const headers: Record<string, string> = {
     'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
     'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
-    'Permissions-Policy': 'geolocation=(), camera=(), microphone=(), display-capture=()'
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+    'Expect-CT': 'max-age=86400, enforce'
   };
 
   // Content Security Policy (CSP)
