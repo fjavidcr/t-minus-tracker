@@ -1,34 +1,35 @@
 {
-  "name": "t-minus",
-  "type": "module",
+  "name": "t-minus-tracker",
   "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "typecheck": "nuxi typecheck"
+  "description": "T-Minus Orbital Link: Real-time mission tracking and space telemetry monorepo.",
+  "author": "F. Javier del Castillo Ramírez",
+  "license": "CC-BY-NC-4.0",
+  "packageManager": "npm@11.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fjavidcr/t-minus-tracker.git"
   },
-  "dependencies": {
-    "@nuxtjs/tailwindcss": "^6.14.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-vue-next": "^1.0.0",
-    "nuxt": "^4.4.2",
-    "reka-ui": "^2.9.3",
-    "tailwind-merge": "^3.5.0",
-    "tailwindcss-animate": "^1.0.7",
-    "vue": "^3.5.31",
-    "vue-router": "^5.0.4"
+  "bugs": {
+    "url": "https://github.com/fjavidcr/t-minus-tracker/issues"
+  },
+  "homepage": "https://t-minus.fjdcr.dev",
+  "engines": {
+    "node": ">=22.11.0",
+    "npm": ">=10.9.2"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "turbo format",
+    "typecheck": "turbo typecheck",
+    "clean": "turbo clean && rm -rf node_modules"
   },
   "devDependencies": {
-    "@nuxtjs/google-fonts": "^3.2.0",
-    "@tailwindcss/container-queries": "^0.1.1",
-    "@tailwindcss/forms": "^0.5.11",
-    "@types/node": "^25.5.1",
-    "autoprefixer": "^10.4.27",
-    "postcss": "^8.5.8",
-    "tailwindcss": "^3.4.19"
+    "oxlint": "^1.58.0",
+    "turbo": "^2.1.2"
   }
 }

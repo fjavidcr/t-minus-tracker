@@ -1,4 +1,4 @@
-import { defineEventHandler, setResponseHeaders, getHeader } from 'h3';
+import { defineEventHandler, setResponseHeaders } from 'h3';
 
 export default defineEventHandler((event) => {
   // Only apply to HTML responses or all responses? 

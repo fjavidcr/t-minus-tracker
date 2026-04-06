@@ -1,75 +1,41 @@
-# Nuxt Minimal Starter
+# T-Minus Tracker 🚀
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A high-performance, space-themed mission monitoring platform with real-time orbital links and cinematic telemetry.
 
-## Setup
+## 📦 Monorepo Structure
 
-Make sure to install dependencies:
+- **[`apps/webapp`](./apps/webapp)**: The main Nuxt application for mission tracking and orbital link (Deployed to Vercel).
+- **[`apps/landing`](./apps/landing)**: The Astro-based landing page optimized for SEO and CWV (Deployed to Cloudflare Pages).
+- **[`docs`](./docs)**: Detailed architecture, API, and project documentation.
+
+## 🏗 Quick Start
+
+This project uses [Turborepo](https://turbo.build/) to manage tasks and build processes.
 
 ```bash
-# npm
+# Install dependencies
 npm install
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
+# Start development for all apps
 npm run dev
 
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
+# Build for production
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+## 📖 In-Depth Docs
 
-```bash
-# npm
-npm run preview
+Find more technical details in the [**Full Monorepo Documentation**](./docs/MONOREPO.md).
 
-# pnpm
-pnpm preview
+---
+*Exploración espacial con telemetría de vanguardia.*
 
-# yarn
-yarn preview
+## 📄 Licencia
 
-# bun
-bun run preview
-```
+Este proyecto está bajo la licencia **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**. 
+- Permite el uso personal y educativo.
+- **Prohíbe estrictamente el uso comercial** sin autorización previa.
+- Requiere atribución al autor original.
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Consulta el archivo [LICENSE](./LICENSE) para más detalles.
+
