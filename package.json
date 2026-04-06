@@ -4,7 +4,7 @@
   "description": "T-Minus Orbital Link: Real-time mission tracking and space telemetry monorepo.",
   "author": "F. Javier del Castillo Ramírez",
   "license": "CC-BY-NC-4.0",
-  "packageManager": "npm@11.1.0",
+  "packageManager": "pnpm@10.33.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fjavidcr/t-minus-tracker.git"
@@ -14,12 +14,9 @@
   },
   "homepage": "https://t-minus.fjdcr.dev",
   "engines": {
-    "node": ">=22.11.0",
-    "npm": ">=10.9.2"
+    "node": ">=24.14.1",
+    "pnpm": ">=10.0.0"
   },
-  "workspaces": [
-    "apps/*"
-  ],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",

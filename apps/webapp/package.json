@@ -12,6 +12,9 @@
     "directory": "apps/webapp"
   },
   "homepage": "https://app.t-minus.fjdcr.dev",
+  "engines": {
+    "node": ">=24.14.1"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
