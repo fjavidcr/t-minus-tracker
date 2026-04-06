@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-surface": "#dfe2ee",
+              "on-primary-container": "#8dadff",
+              "outline": "#8e909d",
+              "on-secondary-fixed": "#341100",
+              "surface-container": "#1c2028",
+              "surface": "#0f131c",
+              "surface-variant": "#31353e",
+              "on-tertiary": "#163440",
+              "surface-dim": "#0f131c",
+              "primary": "#0B3D91",
+              "secondary-fixed-dim": "#ffb692",
+              "on-primary-fixed-variant": "#144296",
+              "error-container": "#93000a",
+              "on-secondary-fixed-variant": "#7a3000",
+              "surface-container-lowest": "#0a0e16",
+              "on-secondary-container": "#562000",
+              "secondary-fixed": "#ffdbcb",
+              "inverse-on-surface": "#2c3039",
+              "on-primary": "#ffffff",
+              "secondary": "#ffb692",
+              "surface-container-low": "#181c24",
+              "inverse-primary": "#345baf",
+              "surface-bright": "#353942",
+              "on-tertiary-fixed": "#001f2a",
+              "error": "#ffb4ab",
+              "on-primary-fixed": "#001947",
+              "primary-container": "#0b3d91",
+              "on-secondary": "#562000",
+              "on-error-container": "#ffdad6",
+              "tertiary": "#adcbda",
+              "primary-fixed": "#dae2ff",
+              "secondary-container": "#fd6c00",
+              "primary-fixed-dim": "#b1c5ff",
+              "on-tertiary-fixed-variant": "#2e4b57",
+              "tertiary-fixed-dim": "#adcbda",
+              "on-tertiary-container": "#96b3c2",
+              "background": "#0f131c",
+              "tertiary-container": "#294653",
+              "on-surface-variant": "#c4c6d3",
+              "surface-container-high": "#262a33",
+              "surface-container-highest": "#31353e",
+              "on-background": "#dfe2ee",
+              "outline-variant": "#434652",
+              "tertiary-fixed": "#c9e7f7",
+              "on-surface": "#dfe2ee",
+              "on-error": "#690005",
+              "surface-tint": "#0B3D91"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Space Grotesk"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0f131c;
+            color: #dfe2ee;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-screen w-64 left-0 sticky bg-[#181c24] dark:bg-[#181c24] py-8 shadow-xl">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-bold text-[#dfe2ee] tracking-tighter">ORBITAR</h1>
+<p class="font-label label-md uppercase tracking-widest text-[#0B3D91] text-[10px] mt-1 font-semibold">Deep Space Archive</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 text-[#c4c6d3] px-6 py-3 hover:bg-[#1c2028] hover:text-[#b1c5ff] transition-all rounded-r-full mr-4" href="#">
+<span class="material-symbols-outlined text-xl">rocket_launch</span>
+<span class="font-label text-xs font-medium uppercase tracking-wider">Upcoming</span>
+</a>
+<a class="flex items-center gap-4 text-[#c4c6d3] px-6 py-3 hover:bg-[#1c2028] hover:text-[#b1c5ff] transition-all rounded-r-full mr-4" href="#">
+<span class="material-symbols-outlined text-xl">database</span>
+<span class="font-label text-xs font-medium uppercase tracking-wider">Fleet</span>
+</a>
+<a class="flex items-center gap-4 text-[#c4c6d3] px-6 py-3 hover:bg-[#1c2028] hover:text-[#b1c5ff] transition-all rounded-r-full mr-4" href="#">
+<span class="material-symbols-outlined text-xl">history</span>
+<span class="font-label text-xs font-medium uppercase tracking-wider">Historical</span>
+</a>
+</nav>
+<div class="mt-auto px-4">
+<a class="flex items-center gap-4 bg-primary/10 text-primary px-6 py-3 rounded-xl transition-all hover:bg-primary/20 active:scale-95" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label text-xs font-semibold uppercase tracking-wider">Preferences</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center h-16 px-8 w-full bg-[#0f131c] dark:bg-[#0f131c] top-0 sticky z-50 border-b border-outline-variant/10">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#dfe2ee] md:hidden">ORBITAR</span>
+<nav class="hidden md:flex gap-8 font-label text-sm font-medium">
+<a class="text-[#c4c6d3] hover:text-[#b1c5ff] transition-colors" href="#">Missions</a>
+<a class="text-[#c4c6d3] hover:text-[#b1c5ff] transition-colors" href="#">Calendar</a>
+<a class="text-[#c4c6d3] hover:text-[#b1c5ff] transition-colors" href="#">Agencies</a>
+<a class="text-[#c4c6d3] hover:text-[#b1c5ff] transition-colors" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-surface-container px-4 py-2 rounded-lg border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs text-on-surface w-40 placeholder:text-outline" placeholder="Search archive..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-[#b1c5ff] cursor-pointer hover:bg-surface-container-high p-2 rounded-full transition-colors">info</span>
+</div>
+</header>
+<!-- Page Content: Settings Console -->
+<div class="p-8 md:p-12 max-w-6xl mx-auto w-full">
+<!-- Header Section -->
+<div class="mb-12">
+<span class="font-label label-md uppercase tracking-widest text-primary text-xs font-bold">Local Environment</span>
+<h2 class="text-5xl font-bold tracking-tight text-on-surface mt-2 mb-4">Orbitar Preferences</h2>
+<p class="text-on-surface-variant max-w-2xl leading-relaxed text-lg font-light">Configure your local browser environment. These parameters are stored locally and do not affect mission telemetry.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Notification Presets (Large Card) -->
+<div class="md:col-span-8 bg-surface-container-low p-8 rounded-xl border border-outline-variant/10 relative overflow-hidden group">
+<div class="relative z-10">
+<h3 class="text-xl font-bold mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">sensors</span>
+                        Browser Alerts
+                    </h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-5 bg-surface-container rounded-lg border border-outline-variant/5">
+<div>
+<p class="font-bold text-on-surface">Window Notifications</p>
+<p class="text-xs text-on-surface-variant mt-1">Enable desktop notifications for significant mission updates.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-5 bg-surface-container rounded-lg border border-outline-variant/5">
+<div>
+<p class="font-bold text-on-surface">Telemetry Sounds</p>
+<p class="text-xs text-on-surface-variant mt-1">Play interface audio feedback during state changes.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-5 bg-surface-container rounded-lg border border-outline-variant/5">
+<div>
+<p class="font-bold text-on-surface">Auto-Refresh</p>
+<p class="text-xs text-on-surface-variant mt-1">Keep data streams active when tab is in background.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Agency Subscriptions (Side Card) -->
+<div class="md:col-span-4 bg-surface-container-low p-8 rounded-xl border border-outline-variant/10 flex flex-col">
+<h3 class="text-xl font-bold mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">hub</span>
+                    Display Nodes
+                </h3>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-between p-4 bg-primary/10 rounded-lg border border-primary/30 text-left hover:bg-primary/20 transition-all group">
+<span class="text-sm font-semibold text-primary">NASA Deep Space</span>
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container rounded-lg border border-outline-variant/10 text-left hover:border-primary/50 transition-all group">
+<span class="text-sm font-medium text-on-surface-variant group-hover:text-on-surface">SpaceX Network</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm group-hover:text-primary">add_circle</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-primary/10 rounded-lg border border-primary/30 text-left hover:bg-primary/20 transition-all group">
+<span class="text-sm font-semibold text-primary">ESA Observation</span>
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container rounded-lg border border-outline-variant/10 text-left hover:border-primary/50 transition-all group">
+<span class="text-sm font-medium text-on-surface-variant group-hover:text-on-surface">Commercial Feeds</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm group-hover:text-primary">add_circle</span>
+</button>
+</div>
+<div class="mt-auto pt-8">
+<div class="h-32 rounded-lg bg-surface-container-highest relative overflow-hidden border border-outline-variant/10">
+<img alt="Global Network" class="absolute inset-0 w-full h-full object-cover opacity-20 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFpqQ0gBzCOOEy_D7_RN0S7tdmqW7xkH8f2GFn83EA8Ze4V3MO507SZmCJbSY73keXhNxlv0_hkLE_sUFUiiiuOM3383LtU-oKVWufij3k9iNgJTNe8qWbH8BwBzJfwDqQPLuhNUy558Gn7ok6T3QgtH_-5LuCR426frkYnYIX-SqKXyalCwpjsQdNBWQH_L1pfrzDIgYo7ay6J50T6WgrSi74vh-4nrRQ1IwLg8E7z4pwL2Ei2tC6ZGBsRptQzRZC1staoFChNn0"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center p-4">
+<p class="text-[10px] uppercase tracking-widest text-center text-primary font-bold mb-1">Coverage Status</p>
+<p class="text-xs font-bold text-center tracking-tight">ENCRYPTED TUNNEL ACTIVE</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Metrics & Units (Lower Card) -->
+<div class="md:col-span-6 bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
+<h3 class="text-xl font-bold mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">straighten</span>
+                    Data Localization
+                </h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-primary p-6 rounded-lg border border-primary flex flex-col items-center justify-center text-center cursor-pointer shadow-lg shadow-primary/20">
+<p class="text-2xl font-bold text-white">METRIC</p>
+<p class="text-[10px] uppercase tracking-widest mt-2 text-white/70 font-semibold">Standard Orbit</p>
+</div>
+<div class="bg-surface-container-highest p-6 rounded-lg border border-transparent flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary/50 transition-all group">
+<p class="text-2xl font-bold text-on-surface-variant group-hover:text-on-surface">IMPERIAL</p>
+<p class="text-[10px] uppercase tracking-widest mt-2 text-on-surface-variant font-semibold">Historic Unit</p>
+</div>
+</div>
+</div>
+<!-- Visual Mode (Lower Card) -->
+<div class="md:col-span-6 bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
+<h3 class="text-xl font-bold mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">visibility</span>
+                    Interface Theme
+                </h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest p-6 rounded-lg border-2 border-primary flex flex-col items-center justify-center text-center group cursor-pointer">
+<div class="w-12 h-2 bg-[#0f131c] rounded-full mb-3 border border-outline-variant/20"></div>
+<p class="text-sm font-bold text-on-surface">DEEP SPACE</p>
+<p class="text-[10px] uppercase tracking-widest mt-1 text-primary font-bold">Current</p>
+</div>
+<div class="bg-surface-container-highest p-6 rounded-lg border border-transparent flex flex-col items-center justify-center text-center group cursor-pointer hover:border-primary/50 transition-all">
+<div class="w-12 h-2 bg-primary rounded-full mb-3 shadow-[0_0_10px_rgba(11,61,145,0.4)]"></div>
+<p class="text-sm font-bold text-on-surface-variant group-hover:text-on-surface">NEBULA</p>
+<p class="text-[10px] uppercase tracking-widest mt-1 text-on-surface-variant">Luminescent</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="mt-16 pt-8 border-t border-outline-variant/10 flex flex-col sm:flex-row justify-end gap-6 items-center">
+<button class="text-sm font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Clear Browser Cache</button>
+<button class="w-full sm:w-auto px-12 py-4 text-sm font-bold uppercase tracking-widest bg-primary text-white rounded-lg shadow-xl shadow-primary/30 hover:brightness-110 active:scale-[0.98] transition-all">Apply Preferences</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-[#181c24] border-t border-outline-variant/10 flex justify-around items-center h-20 z-50 px-4">
+<a class="flex flex-col items-center text-[#c4c6d3] gap-1" href="#">
+<span class="material-symbols-outlined text-2xl">rocket_launch</span>
+<span class="text-[9px] font-bold uppercase tracking-widest">Missions</span>
+</a>
+<a class="flex flex-col items-center text-[#c4c6d3] gap-1" href="#">
+<span class="material-symbols-outlined text-2xl">database</span>
+<span class="text-[9px] font-bold uppercase tracking-widest">Fleet</span>
+</a>
+<div class="bg-primary w-14 h-14 rounded-2xl -mt-10 flex items-center justify-center shadow-2xl shadow-primary/50 border-4 border-[#0f131c]">
+<span class="material-symbols-outlined text-white font-bold text-3xl">add</span>
+</div>
+<a class="flex flex-col items-center text-[#c4c6d3] gap-1" href="#">
+<span class="material-symbols-outlined text-2xl">history</span>
+<span class="text-[9px] font-bold uppercase tracking-widest">Archive</span>
+</a>
+<a class="flex flex-col items-center text-primary gap-1" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-[9px] font-bold uppercase tracking-widest">Setup</span>
+</a>
+</nav>
+</body></html>
