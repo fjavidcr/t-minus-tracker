@@ -19,9 +19,14 @@ const toggleMenu = () => {
   <header class="w-full top-0 fixed bg-surface/95 backdrop-blur-2xl z-[100] border-b border-outline-variant/10 transition-all duration-300">
     <div class="flex justify-between items-center h-20 px-4 md:px-12 max-w-[1440px] mx-auto w-full">
       <!-- Logo & Brand -->
-      <NuxtLink to="/" class="flex flex-col items-start group">
-        <h1 class="text-2xl font-black text-on-surface tracking-tighter uppercase font-headline leading-none group-hover:text-primary transition-colors">T-minus</h1>
-        <p class="text-[0.6rem] font-bold uppercase tracking-[0.3em] text-on-surface-variant font-label">Deep Space Archive</p>
+      <NuxtLink to="/" class="flex items-center gap-4 group">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-outline-variant/10 shadow-lg transition-transform group-hover:scale-105 active:scale-95">
+          <img src="/logo.webp" alt="T-Minus Logo" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex flex-col items-start leading-none">
+          <h1 class="text-2xl font-black text-on-surface tracking-tighter uppercase font-headline group-hover:text-primary transition-colors">T-minus</h1>
+          <p class="text-[0.6rem] font-bold uppercase tracking-[0.3em] text-on-surface-variant font-label mt-1">Deep Space Archive</p>
+        </div>
       </NuxtLink>
 
       <!-- Primary Navigation -->
@@ -44,7 +49,7 @@ const toggleMenu = () => {
             <span class="material-symbols-outlined text-xl">settings</span>
           </NuxtLink>
           <!-- Mobile Menu Toggle -->
-          <button 
+          <button
             @click="toggleMenu"
             class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface"
             aria-label="Toggle Menu"
@@ -60,7 +65,7 @@ const toggleMenu = () => {
     <!-- Mobile Navigation Overlay: Using Teleport to ensure it's on top of everything and truly opaque -->
     <Teleport to="body">
       <Transition name="slide-down">
-        <div v-if="isMenuOpen" 
+        <div v-if="isMenuOpen"
           class="lg:hidden fixed inset-0 top-20 bg-[#0f131c] z-[999] flex flex-col p-8 space-y-8 overflow-y-auto"
         >
           <div class="flex flex-col space-y-4">

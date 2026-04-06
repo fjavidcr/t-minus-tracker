@@ -1,7 +1,7 @@
 import { defineNuxtPlugin, useState, useRuntimeConfig } from '#app';
 import { generateSecureToken } from '../../server/utils/security';
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(() => {
   // Only run this on the server
   if (import.meta.server) {
     const config = useRuntimeConfig();

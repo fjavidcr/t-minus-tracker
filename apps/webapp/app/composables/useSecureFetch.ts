@@ -1,9 +1,8 @@
-import { useFetch, useState, useRuntimeConfig } from '#app';
+import { useFetch, useState } from '#app';
 import type { UseFetchOptions } from '#app';
 
 export function useSecureFetch<T>(url: string | (() => string), options: UseFetchOptions<T> = {}) {
   const secureToken = useState<string | null>('secureToken');
-  const config = useRuntimeConfig();
 
   // Create headers if not provided
   const headers = (options.headers || {}) as Record<string, string>;
