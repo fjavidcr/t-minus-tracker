@@ -1,0 +1,16 @@
+{
+  "name": "@t-minus/ui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shared Vue 3 components for T-Minus tracker.",
+  "main": "./index.ts",
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "dependencies": {
+    "@t-minus/utils": "workspace:*",
+    "class-variance-authority": "^0.7.1",
+    "lucide-vue-next": "^0.477.0",
+    "reka-ui": "^2.9.4"
+  }
+}

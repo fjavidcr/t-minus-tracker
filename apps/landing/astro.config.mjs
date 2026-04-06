@@ -1,16 +1,21 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
-
-import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import vue from '@astrojs/vue';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://t-minus.fjdcr.dev',
-  output: 'static',
+  integrations: [
+    sitemap(),
+    vue()
+  ],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    server: {
+      fs: {
+        allow: ['../../packages']
+      }
+    }
   },
-
-  integrations: [sitemap()]
 });

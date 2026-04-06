@@ -13,52 +13,8 @@ useHead({
     class: 'dark'
   },
   bodyAttrs: {
-    class: 'bg-[#0f131c] text-[#dfe2ee]'
-  },
-  link: [
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Geist:wght@100..900&family=Lexend:wght@100..900&display=swap' },
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap' }
-  ],
-  style: [
-    {
-      innerHTML: `
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        body {
-            font-family: 'Geist', sans-serif;
-            background-color: #0f131c;
-            color: #dfe2ee;
-            overflow-x: hidden;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        .font-label {
-            font-family: 'Lexend', sans-serif;
-        }
-        .mission-text-stroke {
-            color: transparent;
-            -webkit-text-stroke: 1px #Fc3d21;
-        }
-        .hero-glow {
-            position: relative;
-        }
-        .hero-glow::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 30%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 300px;
-            background: radial-gradient(ellipse, rgba(11, 61, 145, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-    `}
-  ]
+    class: 'selection:bg-artemis-orange/30'
+  }
 })
 </script>
 
