@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatCountdown } from '@t-minus/utils'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 import StatusIndicator from './StatusIndicator.vue'
 

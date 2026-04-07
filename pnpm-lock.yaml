@@ -11,6 +11,9 @@ importers:
 
   .:
     devDependencies:
+      '@types/node':
+        specifier: ^25.5.2
+        version: 25.5.2
       eslint:
         specifier: ^9.21.0
         version: 9.39.4(jiti@2.6.1)

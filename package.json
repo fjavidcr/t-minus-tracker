@@ -27,6 +27,7 @@
     "clean": "turbo clean && rm -rf node_modules .turbo .nuxt .output dist"
   },
   "devDependencies": {
+    "@types/node": "^25.5.2",
     "eslint": "^9.21.0",
     "jiti": "^2.6.1",
     "prettier": "^3.5.0",

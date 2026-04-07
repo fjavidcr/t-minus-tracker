@@ -2,10 +2,12 @@
   "extends": "@t-minus/typescript-config/vue.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "outDir": "dist",
+    "noEmit": true,
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["**/*"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.vue", "**/*.js"],
   "exclude": ["node_modules", "dist"]
 }

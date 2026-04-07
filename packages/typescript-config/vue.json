@@ -6,7 +6,6 @@
     "moduleResolution": "Bundler",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "types": ["node"]
+    "jsxImportSource": "vue"
   }
 }

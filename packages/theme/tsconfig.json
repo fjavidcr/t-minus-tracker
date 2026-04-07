@@ -1,8 +1,10 @@
 {
   "extends": "@t-minus/typescript-config/base.json",
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "outDir": "dist",
+    "noEmit": true
   },
-  "include": ["**/*"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.vue", "**/*.js"],
   "exclude": ["node_modules", "dist"]
 }
