@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@source "../../apps/*/app/**/*.{vue,ts,js}";
+@source "../../apps/*/src/**/*.{vue,ts,js,astro}";
+@source "../ui/components/**/*.{vue,ts,js}";
+
 @theme {
   --color-background: #0f131c;
   --color-foreground: #dfe2ee;
@@ -9,6 +13,7 @@
   --color-artemis-orange: #fc3d21;
 
   --color-primary: var(--color-nasa-blue);
+  --color-on-primary: var(--color-primary-foreground);
   --color-primary-foreground: #ffffff;
   --color-primary-fixed: #dae2ff;
   --color-primary-fixed-dim: #b1c5ff;
@@ -17,6 +22,7 @@
   --color-on-primary-fixed-variant: #144296;
 
   --color-secondary: var(--color-artemis-orange);
+  --color-on-secondary: var(--color-secondary-foreground);
   --color-secondary-foreground: #ffffff;
   --color-secondary-fixed: #ffdbcb;
   --color-secondary-fixed-dim: #ffb692;

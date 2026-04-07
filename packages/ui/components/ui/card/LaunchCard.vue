@@ -153,7 +153,7 @@ const getLinkProps = (launch: Launch) =>
         <component
           :is="LinkComp"
           v-bind="getLinkProps(launch)"
-          class="bg-primary text-on-primary font-label inline-block w-full cursor-pointer rounded-lg py-3.5 text-center text-[0.65rem] font-bold uppercase tracking-[0.2em] shadow-[0_8px_20px_-8px_rgba(11,61,145,0.6)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_24px_-8px_rgba(11,61,145,0.7)] hover:brightness-110 active:scale-[0.98]"
+          class="bg-primary text-on-primary font-label block w-full cursor-pointer rounded-lg py-3.5 text-center text-[0.65rem] font-bold uppercase tracking-[0.2em] shadow-[0_8px_20px_-8px_rgba(11,61,145,0.6)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_24px_-8px_rgba(11,61,145,0.7)] hover:brightness-110 active:scale-[0.98]"
         >
           MISSION SPECS
         </component>
