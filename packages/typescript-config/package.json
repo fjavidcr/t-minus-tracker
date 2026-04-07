@@ -1,0 +1,19 @@
+{
+  "name": "@t-minus/typescript-config",
+  "version": "1.0.0",
+  "private": true,
+  "license": "CC-BY-NC-4.0",
+  "files": [
+    "base.json",
+    "astro.json",
+    "vue.json"
+  ],
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-perfectionist": "^4.15.1",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.4.0",
+    "typescript-eslint": "^8.58.0"
+  }
+}

@@ -1,73 +1,53 @@
 ---
-import '../styles/global.css';
+import '../styles/global.css'
 
 interface Props {
-	title: string;
-	description: string;
-	image?: string;
+  description: string
+  image?: string
+  title: string
 }
 
-const { title, description, image = '/og-image.png' } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, 'https://t-minus.fjdcr.dev');
+const { description, image = '/og-image.png', title } = Astro.props
+const canonicalURL = new URL(Astro.url.pathname, 'https://t-minus.fjdcr.dev')
 ---
 
-<!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/webp" href="/favicon.webp" />
-		<meta name="generator" content={Astro.generator} />
+<!doctype html>
+<html class="dark scroll-smooth" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link href="/favicon.webp" rel="icon" type="image/webp" />
+    <meta content={Astro.generator} name="generator" />
 
-		<!-- Primary Meta Tags -->
-		<title>{title}</title>
-		<meta name="title" content={title} />
-		<meta name="description" content={description} />
-		<link rel="canonical" href={canonicalURL} />
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta content={title} name="title" />
+    <meta content={description} name="description" />
+    <link href={canonicalURL} rel="canonical" />
 
-		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content={Astro.url} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={new URL(image, Astro.url)} />
+    <!-- Open Graph / Facebook -->
+    <meta content="website" property="og:type" />
+    <meta content={Astro.url} property="og:url" />
+    <meta content={title} property="og:title" />
+    <meta content={description} property="og:description" />
+    <meta content={new URL(image, Astro.url)} property="og:image" />
 
-		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={Astro.url} />
-		<meta property="twitter:title" content={title} />
-		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <!-- Twitter -->
+    <meta content="summary_large_image" property="twitter:card" />
+    <meta content={Astro.url} property="twitter:url" />
+    <meta content={title} property="twitter:title" />
+    <meta content={description} property="twitter:description" />
+    <meta content={new URL(image, Astro.url)} property="twitter:image" />
 
-		<!-- Google Fonts: Inter & Space Grotesk -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-		<!-- Critical Core Web Vitals optimization -->
-		<style is:inline>
-			:root {
-				--accent: 136, 58, 234;
-				--accent-light: 224, 204, 250;
-				--accent-dark: 49, 10, 101;
-				--accent-gradient: linear-gradient(
-					45deg,
-					rgb(var(--accent)),
-					rgb(var(--accent-light)) 30%,
-					white 60%
-				);
-			}
-			html {
-				font-family: 'Inter', system-ui, sans-serif;
-				background: #020617;
-				color: #f8fafc;
-			}
-			body {
-				margin: 0;
-			}
-		</style>
-	</head>
-	<body class="bg-slate-950 text-slate-50 selection:bg-indigo-500/30">
-		<slot />
-	</body>
+    <!-- Google Fonts: Inter & Space Grotesk -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Geist:wght@100..900&family=Lexend:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-background text-foreground selection:bg-secondary/30">
+    <slot />
+  </body>
 </html>

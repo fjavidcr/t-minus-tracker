@@ -1,18 +1,18 @@
-import { defineEventHandler, setResponseHeaders } from 'h3';
+import { defineEventHandler, setResponseHeaders } from 'h3'
 
 export default defineEventHandler((event) => {
-  // Only apply to HTML responses or all responses? 
+  // Only apply to HTML responses or all responses?
   // OWASP recommends these for all responses, but CSP and HSTS are most critical for HTML.
-  
+
   const headers: Record<string, string> = {
-    'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
-    'X-Frame-Options': 'DENY',
-    'X-XSS-Protection': '1; mode=block',
-    'X-Content-Type-Options': 'nosniff',
-    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Expect-CT': 'max-age=86400, enforce',
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
-    'Expect-CT': 'max-age=86400, enforce'
-  };
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block'
+  }
 
   // Content Security Policy (CSP)
   // In a real app, we'd use a nonce. For now, we'll set a base policy.
@@ -24,12 +24,13 @@ export default defineEventHandler((event) => {
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
     "connect-src 'self' https://ll.thespacedevs.com",
+    "worker-src 'self' blob:",
     "base-uri 'self'",
     "form-action 'self'",
     "frame-ancestors 'none'"
-  ].join('; ');
+  ].join('; ')
 
-  headers['Content-Security-Policy'] = cspBase;
+  headers['Content-Security-Policy'] = cspBase
 
-  setResponseHeaders(event, headers);
-});
+  setResponseHeaders(event, headers)
+})

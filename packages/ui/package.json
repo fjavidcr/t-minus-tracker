@@ -1,0 +1,30 @@
+{
+  "name": "@t-minus/ui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shared Vue 3 components for T-Minus tracker.",
+  "type": "module",
+  "main": "./index.ts",
+  "module": "./index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "dependencies": {
+    "@t-minus/utils": "workspace:*",
+    "class-variance-authority": "^0.7.1",
+    "lucide-vue-next": "^0.477.0",
+    "reka-ui": "^2.9.4"
+  },
+  "devDependencies": {
+    "@t-minus/eslint-config": "workspace:*",
+    "@t-minus/typescript-config": "workspace:*",
+    "eslint": "^9.21.0",
+    "prettier": "^3.5.0",
+    "typescript": "^5.9.3"
+  }
+}

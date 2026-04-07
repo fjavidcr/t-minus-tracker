@@ -1,0 +1,26 @@
+{
+  "name": "@t-minus/utils",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shared JS/TS utilities for T-Minus tracker.",
+  "type": "module",
+  "main": "./index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@t-minus/eslint-config": "workspace:*",
+    "@t-minus/typescript-config": "workspace:*",
+    "eslint": "^9.21.0",
+    "globals": "^17.4.0",
+    "prettier": "^3.5.0",
+    "typescript": "^5.9.3"
+  }
+}
