@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import { Button } from '@t-minus/ui';
-import type { PrimitiveProps } from 'reka-ui';
-import type { HTMLAttributes } from 'vue';
+import type { PrimitiveProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+
+import { Button } from '@t-minus/ui'
 
 interface Props extends PrimitiveProps {
-  variant?: any;
-  size?: any;
-  class?: HTMLAttributes['class'];
+  class?: HTMLAttributes['class']
+  size?: 'default' | 'icon' | 'lg' | 'sm'
+  variant?: 'default' | 'destructive' | 'ghost' | 'link' | 'outline' | 'secondary'
 }
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  as: 'button',
+  class: '',
+  size: 'default',
+  variant: 'default'
+})
 </script>
 
 <template>

@@ -1,24 +1,32 @@
 import { useState } from '#app'
 import { ref } from 'vue'
+
 import { ORBITAL_LINK_CONFIG } from '../lib/constants'
 
+export interface OrbitalError {
+  cause?: unknown
+  statusCode?: number
+  statusMessage?: string
+  url?: string
+}
+
 interface OrbitalLinkState {
-  pending: boolean    // Visual: Should show the rocket (after 500ms)
   connecting: boolean // Immediate: Fetch is in progress (keeps UI dark)
-  error: any | null
+  error: null | OrbitalError
+  pending: boolean // Visual: Should show the rocket (after 500ms)
 }
 
 // Global (singletons) for timer and refresh callback
-const _refreshCallback = ref<(() => any) | null>(null)
-let _pendingTimer: any = null
+const _refreshCallback = ref<(() => Promise<void> | void) | null>(null)
+let _pendingTimer: null | ReturnType<typeof setTimeout> = null
 
 export const useOrbitalLink = () => {
   const state = useState<OrbitalLinkState>('orbital-link-state', () => ({
-    pending: true, // Start as pending for the cinematic load
     connecting: true,
-    error: null
+    error: null,
+    pending: true // Start as pending for the cinematic load
   }))
-  
+
   // Track if we have already performed the initial client-side link
   const isInitialLink = ref(true)
 
@@ -28,7 +36,11 @@ export const useOrbitalLink = () => {
    * @param error - Any error caught during the fetch.
    * @param refresh - The refresh function (client-side only).
    */
-  const setStatus = (pending: boolean, error: any = null, refresh: any = null) => {
+  const setStatus = (
+    pending: boolean,
+    error: null | OrbitalError = null,
+    refresh: (() => Promise<void> | void) | null = null
+  ) => {
     // If we are pending, we ignore any existing error (it's from a previous attempt)
     if (pending) {
       if (_pendingTimer) {
@@ -67,7 +79,7 @@ export const useOrbitalLink = () => {
       _pendingTimer = null
     }
 
-    // On the very first client-side "ready", we might want to delay it slightly 
+    // On the very first client-side "ready", we might want to delay it slightly
     // to ensure the Rocket Loading has enough time to show its cinematic animation.
     if (import.meta.client && isInitialLink.value) {
       isInitialLink.value = false
@@ -81,7 +93,7 @@ export const useOrbitalLink = () => {
       state.value.connecting = false
       state.value.error = null
     }
-    
+
     // Update refresh callback if provided
     if (import.meta.client && refresh) {
       _refreshCallback.value = refresh
@@ -100,9 +112,9 @@ export const useOrbitalLink = () => {
   }
 
   return {
-    state,
+    clearError,
     refresh: _refreshCallback,
     setStatus,
-    clearError
+    state
   }
 }

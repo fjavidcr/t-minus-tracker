@@ -1,4 +1,4 @@
-@import "@t-minus/theme";
+@import '@t-minus/theme';
 
 @layer utilities {
   /* Nuxt specific transition utilities */

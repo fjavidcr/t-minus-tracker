@@ -1,1 +1,1 @@
-export { cn } from '@t-minus/utils';
+export { cn } from '@t-minus/utils'

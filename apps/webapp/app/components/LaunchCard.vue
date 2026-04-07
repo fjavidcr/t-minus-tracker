@@ -1,29 +1,35 @@
 <script setup lang="ts">
-import { LaunchCard } from '@t-minus/ui';
-import { resolveComponent } from 'vue';
-import { UI_CONFIG } from '~/lib/constants';
+import { LaunchCard } from '@t-minus/ui'
+import { resolveComponent } from 'vue'
 
-const NuxtLink = resolveComponent('NuxtLink');
+import { UI_CONFIG } from '~/lib/constants'
+
+const NuxtLink = resolveComponent('NuxtLink')
+
+interface Launch {
+  id: string
+  net: string
+}
 
 defineProps<{
-  launch: any;
-}>();
+  launch: Launch
+}>()
 
 const config = {
-  thresholds: { missionUrgencyDays: UI_CONFIG.THRESHOLDS.MISSION_URGENCY_DAYS },
+  assets: { defaultLaunchImage: UI_CONFIG.ASSETS.DEFAULT_LAUNCH_IMAGE },
   intervals: { uiRefresh: UI_CONFIG.INTERVALS.UI_REFRESH },
-  assets: { defaultLaunchImage: UI_CONFIG.ASSETS.DEFAULT_LAUNCH_IMAGE }
-};
+  thresholds: { missionUrgencyDays: UI_CONFIG.THRESHOLDS.MISSION_URGENCY_DAYS }
+}
 
-const linkProps = (launch: any) => ({
+const linkProps = (launch: Launch) => ({
   to: `/missions/${launch.id}`
-});
+})
 </script>
 
 <template>
-  <LaunchCard 
-    :launch="launch" 
-    :link-component="NuxtLink" 
+  <LaunchCard
+    :launch="launch"
+    :link-component="NuxtLink"
     :link-props="linkProps"
     :config="config"
   />

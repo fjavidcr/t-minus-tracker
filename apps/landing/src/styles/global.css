@@ -1,4 +1,4 @@
-@import "./theme.css";
+@import '@t-minus/theme';
 
 /* Landing specific overrides */
 @layer base {

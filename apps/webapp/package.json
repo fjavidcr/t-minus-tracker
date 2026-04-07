@@ -22,8 +22,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "typecheck": "nuxi typecheck",
-    "lint": "oxlint .",
-    "format": "oxlint . --fix"
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@t-minus/theme": "workspace:*",
@@ -40,8 +40,12 @@
   },
   "devDependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
+    "@t-minus/eslint-config": "workspace:*",
+    "@t-minus/typescript-config": "workspace:*",
     "@tailwindcss/vite": "^4.0.0",
     "@types/node": "^25.5.1",
+    "eslint": "^9.21.0",
+    "prettier": "^3.5.0",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.9.3"
   }

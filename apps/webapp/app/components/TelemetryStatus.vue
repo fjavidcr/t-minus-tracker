@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { TelemetryStatus } from '@t-minus/ui';
+import { TelemetryStatus } from '@t-minus/ui'
 
 defineProps<{
-  cachedAt?: number;
-  maxAge: number;
-  label?: string;
-}>();
+  cachedAt?: number
+  label?: string
+  maxAge: number
+}>()
 </script>
 
 <template>

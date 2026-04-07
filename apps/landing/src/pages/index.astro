@@ -1,139 +1,256 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { Button, StatusIndicator, TelemetryStatus } from '@t-minus/ui';
+import { Button, StatusIndicator, TelemetryStatus } from '@t-minus/ui'
+
+import Layout from '../layouts/Layout.astro'
 
 // Mock data for the landing page demonstration
 const missionStatus = {
   cachedAt: Date.now(),
-  maxAge: 3600,
-  label: 'Orbital Link Status'
-};
+  label: 'Orbital Link Status',
+  maxAge: 3600
+}
 
 const stats = [
   { label: 'Agencies', value: '150+' },
   { label: 'Live Data', value: '24/7' },
-  { label: 'Accuracy', value: '99.9%' },
-];
+  { label: 'Accuracy', value: '99.9%' }
+]
 ---
 
 <Layout
-	title="T-Minus | Your Landing in Deep Space"
-	description="Bienvenido al centro de mando orbital. No es solo una landing page, es tu punto de entrada (landing) a la telemetría espacial en tiempo real."
+  description="Bienvenido al centro de mando orbital. No es solo una landing page, es tu punto de entrada (landing) a la telemetría espacial en tiempo real."
+  title="T-Minus | Your Landing in Deep Space"
 >
-	<main class="relative min-h-screen overflow-hidden selection:bg-artemis-orange/30">
-		<!-- Background Glows (Shared Cinematic Style) -->
-		<div class="fixed top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-nasa-blue/10 blur-[120px] rounded-full -z-10"></div>
-		<div class="fixed bottom-0 right-0 w-[400px] h-[400px] bg-artemis-orange/5 blur-[100px] rounded-full -z-10"></div>
+  <main class="selection:bg-artemis-orange/30 relative min-h-screen overflow-hidden">
+    <!-- Background Glows (Shared Cinematic Style) -->
+    <div
+      class="bg-nasa-blue/10 fixed left-1/2 top-0 -z-10 h-[600px] w-full -translate-x-1/2 rounded-full blur-[120px]"
+    >
+    </div>
+    <div
+      class="bg-artemis-orange/5 fixed bottom-0 right-0 -z-10 h-[400px] w-[400px] rounded-full blur-[100px]"
+    >
+    </div>
 
-		<!-- Nav -->
-		<nav class="sticky top-0 z-50 border-b border-outline-variant/10 bg-surface/80 backdrop-blur-2xl">
-			<div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-				<div class="flex items-center gap-4 group cursor-pointer">
-					<div class="w-10 h-10 rounded-xl overflow-hidden border border-outline-variant/10 transition-transform group-hover:scale-105 shadow-lg">
-						<img src="/logo.webp" alt="T-Minus Logo" class="w-full h-full object-cover" />
-					</div>
-					<div class="flex flex-col leading-none">
-						<span class="font-black text-2xl tracking-tighter text-foreground uppercase font-headline">T-Minus</span>
-						<span class="text-[0.6rem] font-bold uppercase tracking-[0.3em] text-on-surface-variant font-label mt-1">Orbital Command</span>
-					</div>
-				</div>
-				
-				<div class="hidden md:block">
-					<TelemetryStatus client:load {...missionStatus} />
-				</div>
+    <!-- Nav -->
+    <nav
+      class="border-outline-variant/10 bg-surface/80 sticky top-0 z-50 border-b backdrop-blur-2xl"
+    >
+      <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
+        <div class="group flex cursor-pointer items-center gap-4">
+          <div
+            class="border-outline-variant/10 h-10 w-10 overflow-hidden rounded-xl border shadow-lg transition-transform group-hover:scale-105"
+          >
+            <img alt="T-Minus Logo" class="h-full w-full object-cover" src="/logo.webp" />
+          </div>
+          <div class="flex flex-col leading-none">
+            <span
+              class="text-foreground font-headline text-2xl font-black uppercase tracking-tighter"
+              >T-Minus</span
+            >
+            <span
+              class="text-on-surface-variant font-label mt-1 text-[0.6rem] font-bold uppercase tracking-[0.3em]"
+              >Orbital Command</span
+            >
+          </div>
+        </div>
 
-				<Button variant="outline" class="rounded-full px-6 font-label text-[10px] uppercase tracking-widest border-outline-variant/20 hover:border-nasa-blue/40" as="a" href="https://app.t-minus.fjdcr.dev">
-					Deep Space App
-				</Button>
-			</div>
-		</nav>
+        <div class="hidden md:block">
+          <TelemetryStatus client:load {...missionStatus} />
+        </div>
 
-		<!-- Hero Section -->
-		<section class="max-w-7xl mx-auto px-4 pt-24 pb-16 md:pt-40 md:pb-32 text-center relative">
-			<!-- Play on words: The Landing -->
-			<div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-surface-container border border-outline-variant/10 text-[10px] font-black tracking-[0.2em] text-artemis-orange mb-12 animate-fade-in shadow-xl">
-				<StatusIndicator client:load status="active" class="h-1.5 w-1.5" />
-				SISTEMA DE ATERRIZAJE (LANDING) PREPARADO
-			</div>
+        <Button
+          as="a"
+          class="font-label border-outline-variant/20 hover:border-nasa-blue/40 rounded-full px-6 text-[10px] uppercase tracking-widest"
+          href="https://app.t-minus.fjdcr.dev"
+          variant="outline"
+        >
+          Deep Space App
+        </Button>
+      </div>
+    </nav>
 
-			<h1 class="text-6xl md:text-8xl lg:text-9xl font-black mb-8 leading-[0.9] tracking-tighter font-headline uppercase italic">
-				<span class="text-foreground">Prepara tu</span><br />
-				<span class="mission-text-stroke">Aterrizaje.</span>
-			</h1>
+    <!-- Hero Section -->
+    <section class="relative mx-auto max-w-7xl px-4 pb-16 pt-24 text-center md:pb-32 md:pt-40">
+      <!-- Play on words: The Landing -->
+      <div
+        class="bg-surface-container border-outline-variant/10 text-artemis-orange animate-fade-in mb-12 inline-flex items-center gap-3 rounded-full border px-4 py-2 text-[10px] font-black tracking-[0.2em] shadow-xl"
+      >
+        <StatusIndicator class="h-1.5 w-1.5" client:load status="active" />
+        SISTEMA DE ATERRIZAJE (LANDING) PREPARADO
+      </div>
 
-			<p class="max-w-2xl mx-auto text-lg md:text-2xl text-on-surface-variant mb-12 font-body leading-relaxed">
-				No es solo una <span class="text-foreground font-bold">Landing Page</span>. Es el punto de re-entrada a la telemetría orbital más precisa del sistema solar. 
-			</p>
+      <h1
+        class="font-headline mb-8 text-6xl font-black uppercase italic leading-[0.9] tracking-tighter md:text-8xl lg:text-9xl"
+      >
+        <span class="text-foreground">Prepara tu</span><br />
+        <span class="mission-text-stroke">Aterrizaje.</span>
+      </h1>
 
-			<div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-				<Button size="lg" class="w-full sm:w-auto h-14 px-10 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(11,61,145,0.3)] hover:shadow-nasa-blue/50" as="a" href="https://app.t-minus.fjdcr.dev">
-					Iniciar Propulsión
-				</Button>
-				<Button variant="ghost" size="lg" class="w-full sm:w-auto h-14 px-10 rounded-2xl font-black text-xs uppercase tracking-[0.2em] text-on-surface-variant hover:text-foreground" as="a" href="#features">
-					Ver Telemetría
-				</Button>
-			</div>
+      <p
+        class="text-on-surface-variant font-body mx-auto mb-12 max-w-2xl text-lg leading-relaxed md:text-2xl"
+      >
+        No es solo una <span class="text-foreground font-bold">Landing Page</span>. Es el punto de
+        re-entrada a la telemetría orbital más precisa del sistema solar.
+      </p>
 
-			<!-- Stats -->
-			<div class="grid grid-cols-3 gap-8 max-w-3xl mx-auto mt-32 border border-outline-variant/10 bg-surface-container/30 backdrop-blur-md p-8 rounded-[40px] shadow-2xl relative overflow-hidden group">
-				<div class="absolute inset-0 bg-nasa-blue/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-				{stats.map(stat => (
-					<div class="text-center relative z-10">
-						<div class="text-3xl md:text-4xl font-black text-foreground font-headline tracking-tighter">{stat.value}</div>
-						<div class="text-[9px] text-on-surface-variant/60 uppercase tracking-[0.3em] font-black mt-2 font-label italic">{stat.label}</div>
-					</div>
-				))}
-			</div>
-		</section>
+      <div class="flex flex-col items-center justify-center gap-6 sm:flex-row">
+        <Button
+          as="a"
+          class="hover:shadow-nasa-blue/50 h-14 w-full rounded-2xl px-10 text-xs font-black uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(11,61,145,0.3)] sm:w-auto"
+          href="https://app.t-minus.fjdcr.dev"
+          size="lg"
+        >
+          Iniciar Propulsión
+        </Button>
+        <Button
+          as="a"
+          class="text-on-surface-variant hover:text-foreground h-14 w-full rounded-2xl px-10 text-xs font-black uppercase tracking-[0.2em] sm:w-auto"
+          href="#features"
+          size="lg"
+          variant="ghost"
+        >
+          Ver Telemetría
+        </Button>
+      </div>
 
-		<!-- Features Grid (Cinematic) -->
-		<section id="features" class="max-w-7xl mx-auto px-4 py-32 border-t border-outline-variant/5">
-			<div class="grid md:grid-cols-3 gap-12">
-				<div class="group p-10 rounded-[40px] bg-surface-container-low border border-outline-variant/5 transition-all hover:border-nasa-blue/20 hover:scale-[1.02]">
-					<div class="w-14 h-14 bg-nasa-blue/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-nasa-blue/20 transition-colors">
-						<svg class="w-7 h-7 text-nasa-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-						</svg>
-					</div>
-					<h3 class="text-2xl font-black text-foreground mb-4 font-headline uppercase tracking-tight italic">Propulsión en Vivo</h3>
-					<p class="text-on-surface-variant font-body leading-relaxed text-sm">Telemetría de misiones activas con latencia reducida. Siente cada etapa del lanzamiento desde tu navegador.</p>
-				</div>
+      <!-- Stats -->
+      <div
+        class="border-outline-variant/10 bg-surface-container/30 group relative mx-auto mt-32 grid max-w-3xl grid-cols-3 gap-8 overflow-hidden rounded-[40px] border p-8 shadow-2xl backdrop-blur-md"
+      >
+        <div
+          class="bg-nasa-blue/5 absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
+        >
+        </div>
+        {
+          stats.map((stat) => (
+            <div class="relative z-10 text-center">
+              <div class="text-foreground font-headline text-3xl font-black tracking-tighter md:text-4xl">
+                {stat.value}
+              </div>
+              <div class="text-on-surface-variant/60 font-label mt-2 text-[9px] font-black uppercase italic tracking-[0.3em]">
+                {stat.label}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
 
-				<div class="group p-10 rounded-[40px] bg-surface-container-low border border-outline-variant/5 transition-all hover:border-artemis-orange/20 hover:scale-[1.02]">
-					<div class="w-14 h-14 bg-artemis-orange/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-artemis-orange/20 transition-colors">
-						<svg class="w-7 h-7 text-artemis-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-4.44-5.126c.303.47.605.941.905 1.411A13.91 13.91 0 013.844 12c0-2.484.646-4.755 1.776-6.713m4.441 12.37A14.01 14.01 0 0113.844 14c0-2.264-.492-4.417-1.378-6.354m1.378 12.067A14.01 14.01 0 0019.556 12a14.01 14.01 0 00-5.712-11.378" />
-						</svg>
-					</div>
-					<h3 class="text-2xl font-black text-foreground mb-4 font-headline uppercase tracking-tight italic">Protocolos HMAC</h3>
-					<p class="text-on-surface-variant font-body leading-relaxed text-sm">Seguridad de grado orbital. Tus consultas de datos están protegidas por enlaces criptográficos seguros.</p>
-				</div>
+    <!-- Features Grid (Cinematic) -->
+    <section class="border-outline-variant/5 mx-auto max-w-7xl border-t px-4 py-32" id="features">
+      <div class="grid gap-12 md:grid-cols-3">
+        <div
+          class="bg-surface-container-low border-outline-variant/5 hover:border-nasa-blue/20 group rounded-[40px] border p-10 transition-all hover:scale-[1.02]"
+        >
+          <div
+            class="bg-nasa-blue/10 group-hover:bg-nasa-blue/20 mb-8 flex h-14 w-14 items-center justify-center rounded-2xl transition-colors"
+          >
+            <svg
+              class="text-nasa-blue h-7 w-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"></path>
+            </svg>
+          </div>
+          <h3
+            class="text-foreground font-headline mb-4 text-2xl font-black uppercase italic tracking-tight"
+          >
+            Propulsión en Vivo
+          </h3>
+          <p class="text-on-surface-variant font-body text-sm leading-relaxed">
+            Telemetría de misiones activas con latencia reducida. Siente cada etapa del lanzamiento
+            desde tu navegador.
+          </p>
+        </div>
 
-				<div class="group p-10 rounded-[40px] bg-surface-container-low border border-outline-variant/5 transition-all hover:border-nasa-blue/20 hover:scale-[1.02]">
-					<div class="w-14 h-14 bg-nasa-blue/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-nasa-blue/20 transition-colors">
-						<svg class="w-7 h-7 text-nasa-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-						</svg>
-					</div>
-					<h3 class="text-2xl font-black text-foreground mb-4 font-headline uppercase tracking-tight italic">Landing Log</h3>
-					<p class="text-on-surface-variant font-body leading-relaxed text-sm">Historial completo de aterrizajes y despliegues. Analiza el éxito de cada misión histórica.</p>
-				</div>
-			</div>
-		</section>
+        <div
+          class="bg-surface-container-low border-outline-variant/5 hover:border-artemis-orange/20 group rounded-[40px] border p-10 transition-all hover:scale-[1.02]"
+        >
+          <div
+            class="bg-artemis-orange/10 group-hover:bg-artemis-orange/20 mb-8 flex h-14 w-14 items-center justify-center rounded-2xl transition-colors"
+          >
+            <svg
+              class="text-artemis-orange h-7 w-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-4.44-5.126c.303.47.605.941.905 1.411A13.91 13.91 0 013.844 12c0-2.484.646-4.755 1.776-6.713m4.441 12.37A14.01 14.01 0 0113.844 14c0-2.264-.492-4.417-1.378-6.354m1.378 12.067A14.01 14.01 0 0019.556 12a14.01 14.01 0 00-5.712-11.378"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"></path>
+            </svg>
+          </div>
+          <h3
+            class="text-foreground font-headline mb-4 text-2xl font-black uppercase italic tracking-tight"
+          >
+            Protocolos HMAC
+          </h3>
+          <p class="text-on-surface-variant font-body text-sm leading-relaxed">
+            Seguridad de grado orbital. Tus consultas de datos están protegidas por enlaces
+            criptográficos seguros.
+          </p>
+        </div>
 
-		<!-- Footer -->
-		<footer class="max-w-7xl mx-auto px-4 py-20 border-t border-outline-variant/10 text-center">
-			<div class="inline-block p-4 rounded-3xl bg-surface-container-low border border-outline-variant/5 mb-8">
-				<img src="/logo.webp" alt="T-Minus Logo" class="w-8 h-8 opacity-50 grayscale" />
-			</div>
-			<p class="text-on-surface-variant text-xs uppercase tracking-[0.4em] font-black mb-8 italic">
-				T-Minus Orbital Command Centre
-			</p>
-			<div class="flex justify-center gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant/40">
-				<a href="#" class="hover:text-primary transition-colors">© {new Date().getFullYear()} Archive</a>
-				<a href="#" class="hover:text-primary transition-colors">Privacy Link</a>
-				<a href="#" class="hover:text-primary transition-colors">Secure API</a>
-			</div>
-		</footer>
-	</main>
+        <div
+          class="bg-surface-container-low border-outline-variant/5 hover:border-nasa-blue/20 group rounded-[40px] border p-10 transition-all hover:scale-[1.02]"
+        >
+          <div
+            class="bg-nasa-blue/10 group-hover:bg-nasa-blue/20 mb-8 flex h-14 w-14 items-center justify-center rounded-2xl transition-colors"
+          >
+            <svg
+              class="text-nasa-blue h-7 w-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"></path>
+            </svg>
+          </div>
+          <h3
+            class="text-foreground font-headline mb-4 text-2xl font-black uppercase italic tracking-tight"
+          >
+            Landing Log
+          </h3>
+          <p class="text-on-surface-variant font-body text-sm leading-relaxed">
+            Historial completo de aterrizajes y despliegues. Analiza el éxito de cada misión
+            histórica.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-outline-variant/10 mx-auto max-w-7xl border-t px-4 py-20 text-center">
+      <div
+        class="bg-surface-container-low border-outline-variant/5 mb-8 inline-block rounded-3xl border p-4"
+      >
+        <img alt="T-Minus Logo" class="h-8 w-8 opacity-50 grayscale" src="/logo.webp" />
+      </div>
+      <p class="text-on-surface-variant mb-8 text-xs font-black uppercase italic tracking-[0.4em]">
+        T-Minus Orbital Command Centre
+      </p>
+      <div
+        class="text-on-surface-variant/40 flex justify-center gap-8 text-[10px] font-bold uppercase tracking-[0.2em]"
+      >
+        <a class="hover:text-primary transition-colors" href="#"
+          >© {new Date().getFullYear()} Archive</a
+        >
+        <a class="hover:text-primary transition-colors" href="#">Privacy Link</a>
+        <a class="hover:text-primary transition-colors" href="#">Secure API</a>
+      </div>
+    </footer>
+  </main>
 </Layout>
