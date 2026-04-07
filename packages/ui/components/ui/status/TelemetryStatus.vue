@@ -10,40 +10,31 @@ const props = defineProps<{
   maxAge: number
 }>()
 
-const remainingSeconds = ref(0)
+const now = ref(Date.now())
 const mounted = ref(false)
-let timer: null | ReturnType<typeof setInterval> = null
 
-const calculateRemainingValue = () => {
+const remainingSeconds = computed(() => {
   if (!props.cachedAt) return 0
   const timestamp = Number(props.cachedAt)
   const expiry = timestamp + Number(props.maxAge) * 1000
-  const diff = expiry - Date.now()
+  const diff = expiry - now.value
   return Math.max(0, Math.floor(diff / 1000))
-}
+})
 
-const updateRemaining = () => {
-  remainingSeconds.value = calculateRemainingValue()
-}
+const isExpiring = computed(() => remainingSeconds.value < 60)
 
 const formattedTime = computed(() => {
   if (!mounted.value) return '--m --s'
   return formatCountdown(remainingSeconds.value)
 })
 
-const isExpiring = computed(() => mounted.value && remainingSeconds.value < 60)
-
-watch(
-  () => props.cachedAt,
-  () => {
-    if (mounted.value) updateRemaining()
-  }
-)
+let timer: null | ReturnType<typeof setInterval> = null
 
 onMounted(() => {
   mounted.value = true
-  updateRemaining()
-  timer = setInterval(updateRemaining, 1000)
+  timer = setInterval(() => {
+    now.value = Date.now()
+  }, 1000)
 })
 
 onUnmounted(() => {

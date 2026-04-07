@@ -256,7 +256,7 @@ const getAgencyBadge = (agency: string | undefined) => {
             <TelemetryStatus
               v-if="cachedAt"
               :cached-at="cachedAt"
-              :max-age="CACHE_POLICY.MAX_AGE.LAUCHES"
+              :max-age="CACHE_POLICY.MAX_AGE.LAUNCHES"
               class="mt-1"
             />
           </div>

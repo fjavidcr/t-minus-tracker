@@ -48,7 +48,7 @@ const handler = defineEventHandler(async (event) => {
 
 export default USE_CACHE
   ? defineCachedEventHandler(handler, {
-      maxAge: CACHE_POLICY.MAX_AGE.LAUCHES,
+      maxAge: CACHE_POLICY.MAX_AGE.LAUNCHES,
       name: 'launches',
       swr: true
     })

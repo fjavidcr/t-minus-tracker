@@ -53,7 +53,7 @@ export const CACHE_POLICY = {
   MAX_AGE: {
     DEFAULT: import.meta.dev ? 3600 : 3600, // 1 hour
     DETAIL: import.meta.dev ? 3600 : 300, // 5 minutes
-    LAUCHES: import.meta.dev ? 3600 : 600, // 10 minutes
+    LAUNCHES: import.meta.dev ? 3600 : 600, // 10 minutes
     MISSIONS: import.meta.dev ? 3600 : 1800 // 30 minutes
   }
 } as const
