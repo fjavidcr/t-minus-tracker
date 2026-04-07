@@ -39,6 +39,9 @@ export default defineNuxtConfig({
     }
   },
   vite: {
+    build: {
+      sourcemap: false
+    },
     optimizeDeps: {
       include: ['class-variance-authority', 'clsx', 'tailwind-merge']
     },
