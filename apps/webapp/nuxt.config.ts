@@ -29,7 +29,7 @@ export default defineNuxtConfig({
       'Space Grotesk': [300, 400, 500, 600, 700]
     }
   },
-  modules: ['@nuxtjs/google-fonts'],
+  modules: ['@nuxtjs/google-fonts', '@vercel/analytics'],
   runtimeConfig: {
     // Shared private secret (only server-side)
     apiSecretKey: process.env.NUXT_API_SECRET_KEY,

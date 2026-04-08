@@ -24,7 +24,10 @@
     "lint:fix": "turbo lint -- --fix",
     "format": "turbo format",
     "typecheck": "turbo typecheck",
-    "clean": "turbo clean && rm -rf node_modules .turbo .nuxt .output dist"
+    "clean": "turbo clean && rm -rf node_modules .turbo .nuxt .output dist",
+    "deploy:webapp": "vercel --prod",
+    "deploy:landing": "pnpm run build --filter=@t-minus/landing && wrangler pages deploy apps/landing/dist --project-name=t-minus-landing",
+    "deploy:all": "pnpm run deploy:webapp && pnpm run deploy:landing"
   },
   "devDependencies": {
     "@types/node": "^25.5.2",
@@ -34,7 +37,9 @@
     "prettier-plugin-astro": "^0.14.0",
     "prettier-plugin-tailwindcss": "^0.6.0",
     "turbo": "^2.1.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vercel": "^41.7.8",
+    "wrangler": "^3.114.17"
   },
   "pnpm": {
     "overrides": {

@@ -1,0 +1,9 @@
+node_modules
+.turbo
+dist
+apps/landing
+packages/theme/node_modules
+packages/ui/node_modules
+packages/utils/node_modules
+packages/eslint-config/node_modules
+packages/typescript-config/node_modules
