@@ -19,11 +19,11 @@ export default defineEventHandler((event) => {
   // We allow the SpaceDevs API and image domains.
   const cspBase = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Nuxt needs unsafe-inline/eval in dev, better to use nonces in prod
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com", // Vercel Analytics
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
-    "connect-src 'self' https://ll.thespacedevs.com",
+    "connect-src 'self' https://ll.thespacedevs.com https://va.vercel-scripts.com", // Vercel Analytics
     "worker-src 'self' blob:",
     "base-uri 'self'",
     "form-action 'self'",
