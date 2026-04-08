@@ -1,3 +1,11 @@
 {
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "@t-minus/typescript-config/vue.json",
+  "compilerOptions": {
+    "paths": {
+      "~/*": ["./*"],
+      "@t-minus/theme": ["../../packages/theme/theme.css"],
+      "@t-minus/ui": ["../../packages/ui"],
+      "@t-minus/utils": ["../../packages/utils"]
+    }
+  }
 }
