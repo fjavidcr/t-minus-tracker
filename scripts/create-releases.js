@@ -13,7 +13,7 @@
  * 4. Creates Git tags and GitHub releases
  */
 
-import { execSync } from 'child_process'
+import { execFileSync } from 'child_process'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -46,12 +46,17 @@ function createGitHubRelease(tagName, title, notes) {
     const bodyFile = path.join(process.env.RUNNER_TEMP || '/tmp', `release-${tagName}.md`)
     fs.writeFileSync(bodyFile, notes)
 
-    const command = `gh release create "${tagName}" \
-      --title "${title}" \
-      --notes-file "${bodyFile}" \
-      --repo "${GITHUB_REPOSITORY}"`
-
-    exec(command)
+    exec('gh', [
+      'release',
+      'create',
+      tagName,
+      '--title',
+      title,
+      '--notes-file',
+      bodyFile,
+      '--repo',
+      GITHUB_REPOSITORY
+    ])
     log.success(`Created GitHub release: ${tagName}`)
 
     // Clean up temp file
@@ -73,7 +78,7 @@ function createGitHubRelease(tagName, title, notes) {
  */
 function createTag(tagName, message = '') {
   try {
-    exec(`git tag -a "${tagName}" -m "${message || tagName}"`)
+    exec('git', ['tag', '-a', tagName, '-m', message || tagName])
     log.success(`Created tag: ${tagName}`)
     return true
   } catch (error) {
@@ -85,9 +90,9 @@ function createTag(tagName, message = '') {
 /**
  * Execute shell command and return output
  */
-function exec(command, options = {}) {
+function exec(file, args = [], options = {}) {
   try {
-    return execSync(command, {
+    return execFileSync(file, args, {
       encoding: 'utf-8',
       stdio: ['pipe', 'pipe', 'pipe'],
       ...options
