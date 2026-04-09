@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
+import { defineNuxtConfig } from 'nuxt/config'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -29,10 +30,10 @@ export default defineNuxtConfig({
       'Space Grotesk': [300, 400, 500, 600, 700]
     }
   },
-  modules: ['@nuxtjs/google-fonts'],
+  modules: ['@nuxtjs/google-fonts', '@vercel/analytics'],
   runtimeConfig: {
     // Shared private secret (only server-side)
-    apiSecretKey: process.env.NUXT_API_SECRET_KEY,
+    apiSecretKey: process.env['NUXT_API_SECRET_KEY'],
     public: {
       // Custom header name for client identification
       orbitalClientHeader: 'x-orbital-client'

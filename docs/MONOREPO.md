@@ -1,76 +1,78 @@
-# T-Minus Tracker: Monorepo Documentation
+# T-Minus Tracker: Monorepo Architecture
 
-Welcome to the **T-Minus Tracker** repository. This project is a space-themed mission monitoring platform, structured as a monorepo to separate the landing experience from the core application logic.
+Welcome to the **T-Minus Tracker** workspace. This repository is structured as a modern monorepo, designed for real-time mission tracking and telemetry monitoring.
 
-## 🏗 Repository Architecture
+## 🏗 Repository Structure
 
-Managed by [Turborepo](https://turbo.build/), this monorepo uses `npm workspaces` for efficient dependency management and task execution.
+Managed by [Turborepo](https://turbo.build/), this monorepo uses **pnpm workspaces** for granular dependency management and ultra-fast task execution.
 
-### Project Structure
+### Organization
 
 ```text
 t-minus-tracker/
-├── apps/
-│   ├── landing/    # Astro SSG (Landing Page)
-│   └── webapp/     # Nuxt SSR (Main Tracker App)
-├── docs/           # Technical documentation and plans
-├── package.json    # Monorepo root
-└── turbo.json      # Turborepo configuration
+├── apps/               # Main Applications
+│   ├── webapp/         # Nuxt 4 (SSR) Mission Dashboard (Vercel)
+│   └── landing/        # Astro 6 (SSG) Landing Page (Cloudflare)
+├── packages/           # Shared Workspace Packages
+│   ├── ui/             # Shared Vue component library
+│   ├── theme/          # Centralized Tailwind CSS v4 design tokens
+│   ├── utils/          # Business logic and telemetry helpers
+│   ├── eslint-config/  # Unified ESLint 9 configuration
+│   └── typescript-config/ # Base TypeScript 5.9 configurations
+├── docs/               # Technical documentation
+└── turbo.json          # Turborepo task pipeline
 ```
 
-## 🚀 Applications
+## 🚀 Core Components
 
-### 1. Landing Page (`apps/landing`)
-- **Technology**: [Astro](https://astro.build/)
-- **Styling**: Tailwind CSS
-- **Deployment**: [Cloudflare Pages](https://pages.cloudflare.com/) (SSG)
-- **Domain**: `t-minus.fjdcr.dev`
-- **Focus**: High performance (LCP/CWV), SEO optimization, and premium cinematic design.
+### 1. Web Application (`apps/webapp`)
+- **Technology**: [Nuxt 4](https://nuxt.com/) (Vue 3.5+)
+- **Styling**: Tailwind CSS v4 + Reka UI
+- **Focus**: Interactive mission control dashboard with real-time telemetry.
 
-### 2. Web Application (`apps/webapp`)
-- **Technology**: [Nuxt 4](https://nuxt.com/)
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Deployment**: [Vercel](https://vercel.com/) (SSR)
-- **Domain**: `app.t-minus.fjdcr.dev`
-- **Features**: Real-time orbital links, mission telemetry, secure API link (HMAC).
+### 2. Landing Page (`apps/landing`)
+- **Technology**: [Astro 6](https://astro.build/)
+- **Focus**: High performance, SEO-optimized marketing site for space intelligence.
+
+### 3. Shared Packages (`packages/`)
+- **`@t-minus/ui`**: Reusable components (buttons, cards, telemetry charts).
+- **`@t-minus/theme`**: Central point for Tailwind v4 configuration, ensuring visual consistency.
+- **`@t-minus/utils`**: Shared formatters, math helpers, and mission state logic.
 
 ## 🛠 Development Workflow
 
 ### Requirements
-- Node.js (v22+)
-- npm (v11+)
+- **Node.js**: >= 24.14
+- **pnpm**: >= 10.0
 
-### Common Commands
+### Local Setup
 
-Run these from the **root directory**:
+```bash
+# Install dependencies for all apps and packages
+pnpm install
 
-| Command | Description |
-| :--- | :--- |
-| `npm install` | Install all dependencies for all apps |
-| `npm run dev` | Start both Astro and Nuxt in local dev mode |
-| `npm run build` | Build both apps for production |
-| `npm run typecheck` | Run TypeScript validation across workspaces |
+# Build the entire workspace
+pnpm run build
 
-### Local Ports (Default)
-- **WebApp**: `http://localhost:3000`
-- **Landing**: `http://localhost:4321`
+# Start core applications in development mode
+pnpm run dev
+```
 
-## ☁️ Deployment Configuration
+### Task Execution (Turborepo)
+Turborepo orchestrates builds and checks efficiently. It will skip tasks that haven't changed since the last run.
 
-### Vercel (WebApp)
-1. **Import** the repository.
-2. Set **Root Directory** to `apps/webapp`.
-3. Vercel will auto-detect Nuxt and handle the SSR build via Nitro.
+```bash
+pnpm run lint        # Lint the entire monorepo
+pnpm run typecheck   # Validate TypeScript across all packages
+pnpm run format      # Standardize code style
+```
 
-### Cloudflare Pages (Landing)
-1. **Connect** the repository.
-2. Set **Root Directory** to `apps/landing`.
-3. **Build Command**: `npm run build`.
-4. **Build Output Directory**: `dist`.
+## 🛡️ Security Audit
 
-## 🔒 Security & API Enclosure
+Before committing or deploying, run the local security suite:
 
-The `webapp` implements a secure link with a required `NUXT_API_SECRET_KEY` for HMAC signing of requests. Ensure this environment variable is configured in your production environments (Vercel/Cloudflare).
+- `pnpm run scan:secrets`: Scans history and filesystem for leaks (TruffleHog).
+- `pnpm run audit:deps`: Checks for vulnerable third-party dependencies.
 
 ---
-*Created for the Orbitar mission - T-Minus Tracker.*
+*Exploración espacial con telemetría de vanguardia.*

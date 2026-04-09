@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "NITRO_PRESET=vercel pnpm run --filter @t-minus/webapp build && cp -r apps/webapp/.vercel/output .vercel/output",
+  "framework": null,
+  "git": {
+    "deploymentEnabled": false
+  }
+}
