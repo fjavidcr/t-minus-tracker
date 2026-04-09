@@ -28,10 +28,14 @@
     "deploy:webapp": "vercel --prod",
     "deploy:landing": "pnpm run build --filter=@t-minus/landing && wrangler pages deploy apps/landing/dist --project-name=t-minus-landing",
     "deploy:all": "pnpm run deploy:webapp && pnpm run deploy:landing",
+    "change": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish",
     "scan:secrets": "trufflehog git file://. && echo \"\" && trufflehog filesystem . --exclude-paths=.trufflehog-ignore",
     "audit:deps": "pnpm audit --audit-level high"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.28.1",
     "@types/node": "^25.5.2",
     "eslint": "^9.21.0",
     "jiti": "^2.6.1",
