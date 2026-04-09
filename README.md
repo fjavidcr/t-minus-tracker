@@ -5,7 +5,8 @@
 <div align="center">
   <p><strong>Real-time space mission tracking and telemetry monitoring platform.</strong></p>
 
-  [![Checks](https://github.com/fjavidcr/t-minus-tracker/actions/workflows/checks.yml/badge.svg)](https://github.com/fjavidcr/t-minus-tracker/actions/workflows/checks.yml)
+  [![Deploy Landing](https://github.com/fjavidcr/t-minus-tracker/actions/workflows/landing.yml/badge.svg)](https://github.com/fjavidcr/t-minus-tracker/actions/workflows/landing.yml)
+  [![Deploy WebApp](https://github.com/fjavidcr/t-minus-tracker/actions/workflows/webapp.yml/badge.svg)](https://github.com/fjavidcr/t-minus-tracker/actions/workflows/webapp.yml)
   [![Security](https://github.com/fjavidcr/t-minus-tracker/actions/workflows/security.yml/badge.svg)](https://github.com/fjavidcr/t-minus-tracker/actions/workflows/security.yml)
   [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 </div>
