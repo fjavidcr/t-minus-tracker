@@ -23,6 +23,9 @@ jobs:
     needs: checks
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
     environment: preview
     steps:
       - name: Checkout Repository
