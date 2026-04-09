@@ -38,10 +38,15 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          # This expects a pnpm script named "version-packages" 
-          # which we just added to package.json
+          # This expects a pnpm script named "version-packages"
+          # which bumps versions and generates changelogs
           version: pnpm run version-packages
-          # Since these are private apps, "publish" will only push tags/releases
-          publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Git Tags and GitHub Releases
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/create-releases.js
