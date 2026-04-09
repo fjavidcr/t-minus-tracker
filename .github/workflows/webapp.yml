@@ -53,9 +53,9 @@ jobs:
       - name: Deploy to Vercel (Preview)
         id: deploy-preview
         run: |
-          pnpm dlx vercel deploy \
-            --token=${{ secrets.VERCEL_TOKEN }} \
-            --no-wait
+          # Capturamos la salida y extraemos la URL (Vercel la imprime al final)
+          DEPLOY_URL=$(pnpm dlx vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes)
+          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -64,11 +64,13 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            const previewUrl = '${{ steps.deploy-preview.outputs.url }}';
+            
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `🚀 WebApp preview deployed!\n\nCheck the preview deployment in your Vercel dashboard.`
+              body: `🚀 WebApp preview deployed!\n\nCheck the preview deployment here: ${previewUrl}`
             })
 
   deploy-production:
