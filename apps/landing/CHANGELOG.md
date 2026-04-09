@@ -1,5 +1,11 @@
 # @t-minus/landing
 
+## 1.1.1
+
+### Patch Changes
+
+- ab4b550: change to private
+
 ## 1.1.0
 
 ### Minor Changes
