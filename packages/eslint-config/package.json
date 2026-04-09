@@ -7,15 +7,31 @@
   "main": "base.js",
   "files": [
     "base.js",
+    "base.d.ts",
     "astro.js",
+    "astro.d.ts",
     "vue.js",
-    "nuxt.js"
+    "vue.d.ts",
+    "nuxt.js",
+    "nuxt.d.ts"
   ],
   "exports": {
-    "./base": "./base.js",
-    "./astro": "./astro.js",
-    "./vue": "./vue.js",
-    "./nuxt": "./nuxt.js"
+    "./base": {
+      "types": "./base.d.ts",
+      "default": "./base.js"
+    },
+    "./astro": {
+      "types": "./astro.d.ts",
+      "default": "./astro.js"
+    },
+    "./vue": {
+      "types": "./vue.d.ts",
+      "default": "./vue.js"
+    },
+    "./nuxt": {
+      "types": "./nuxt.d.ts",
+      "default": "./nuxt.js"
+    }
   },
   "peerDependencies": {
     "eslint": ">=9.0.0",
