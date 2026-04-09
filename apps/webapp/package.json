@@ -1,6 +1,6 @@
 {
   "name": "@t-minus/webapp",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "private": true,
   "description": "T-Minus Web Application: Real-time mission tracking and orbital telemetry.",
