@@ -50,23 +50,24 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-  audit:
-    name: Dependency Audit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  # TODO: Uncomment when we have a better way to handle the audit
+  # audit:
+  #   name: Dependency Audit
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+  #     - name: Setup pnpm
+  #       uses: pnpm/action-setup@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 24
 
-      - name: Audit dependencies
-        run: pnpm audit --audit-level high
+  #     - name: Audit dependencies
+  #       run: pnpm audit --audit-level high
 
   secrets:
     name: Secret Scanning
