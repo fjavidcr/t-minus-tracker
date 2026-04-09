@@ -240,7 +240,7 @@ async function main() {
   try {
     if (results.created.length > 0) {
       log.info('Pushing tags to remote...')
-      exec('git push --tags')
+      exec('git', ['push', '--tags'])
       log.success(`Pushed ${results.created.length} tag(s) to remote`)
     }
   } catch (error) {
@@ -308,7 +308,7 @@ function readJSON(filePath) {
  * Check if a Git tag exists
  */
 function tagExists(tagName) {
-  const result = exec(`git tag -l "${tagName}"`, { ignoreError: true })
+  const result = exec('git', ['tag', '-l', tagName], { ignoreError: true })
   return result.length > 0
 }
 
