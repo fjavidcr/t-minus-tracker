@@ -1,7 +1,7 @@
 {
   "name": "@t-minus/theme",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Shared Tailwind v4 theme for T-Minus tracker.",
   "main": "./theme.css",
